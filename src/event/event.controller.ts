@@ -1,18 +1,19 @@
 import { Body, Controller, Delete, Get, InternalServerErrorException, NotFoundException, Param, ParseUUIDPipe, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBasicAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { MiddlewareService } from './middleware.service';
+import { EventMiddlewareService } from './event.service';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/common/middleware/jwt-auth.guard';
+import { Permissions } from 'src/common/decorator/permission.decorator';
 
-@ApiTags('middleware')
-@Controller('')
-export class MiddlewareController {
+@ApiTags('Event-Middleware')
+@Controller('event/v1')
+export class EventController {
 
     constructor(
-        private readonly middlewareService: MiddlewareService
+        private readonly middlewareService: EventMiddlewareService
     ) { }
 
-    @Post('event/v1/create')
+    @Post('/create')
     @ApiBasicAuth("access-token")
     @UseGuards(JwtAuthGuard)
     @ApiBody({
@@ -22,7 +23,7 @@ export class MiddlewareController {
         return this.middlewareService.createEvent(requestBody, response);
     }
 
-    @Post('event/v1/list')
+    @Post('/list')
     @ApiBody({
         type: Object
     })
@@ -30,14 +31,16 @@ export class MiddlewareController {
         return this.middlewareService.getAllEvent(requestBody, response);
     }
 
-    @Get('event/v1/:id')
+    @Get('/:id')
     @ApiBasicAuth("access-token")
+    @Permissions('event.read', 'event.create')
     @UseGuards(JwtAuthGuard)
-    async findOne(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+    async findOne(@Req() req, @Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
+        // console.log(req.user, "user");
         return this.middlewareService.getEventById(id, response);
     }
 
-    @Patch('event/v1/:id')
+    @Patch('/:id')
     @ApiBody({
         type: Object
     })
@@ -45,7 +48,7 @@ export class MiddlewareController {
         return this.middlewareService.updateEvent(id, requestBody, response)
     }
 
-    @Delete('event/v1/:id')
+    @Delete('/:id')
     deleteEvent(@Param('id', ParseUUIDPipe) id: string, @Res() response: Response) {
         return this.middlewareService.deleteEvent(id, response)
     }

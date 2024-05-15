@@ -7,10 +7,9 @@ async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Middleware  APIs')
-    .setDescription('The Middlware service')
+    .setTitle('Middleware')
+    .setDescription('Middlware services')
     .setVersion('1.0')
-    .addServer('http://localhost:3001/', 'Local environment')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger-docs', app, document);

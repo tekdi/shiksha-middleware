@@ -4,12 +4,10 @@ import { EventService } from 'src/services/event/event.service';
 
 
 @Injectable()
-export class MiddlewareService {
+export class EventMiddlewareService {
     constructor(
         private readonly eventService: EventService
-    ) {
-
-    }
+    ) { }
     async createEvent(requestBody, response: Response) {
         const result = await this.eventService.createEvent(requestBody)
         return response

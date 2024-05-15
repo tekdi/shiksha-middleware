@@ -1,70 +1,32 @@
-// jwt-auth.guard.ts
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
-    canActivate(context: ExecutionContext): boolean {
-        const request = context.switchToHttp().getRequest();
-        const token = request.headers['authorization'];
-        if (!token) {
-            return false;
-        }
-
-        // pass sub get from token as user id from get userRole API
-        const Role = ['student', 'admin', 'teacher']
-        // After get Roles get privilage of role
-        const privillage = ['event.create', 'event.read', 'event.delete', 'event.update'];
-
-        const method = request.method;
-        const isEventOrAttendeesRoute = this.extractEventKeyword(request.url);
-        if (method === 'GET') {
-            const privilegeToCheck = `${isEventOrAttendeesRoute}.read`;
-            if (privillage.includes(privilegeToCheck)) {
-                console.log(`${privilegeToCheck} is present in privillage array`);
-                return true;
-            } else {
-                console.log(`${privilegeToCheck} is not present in privillage array`);
-                return false;
-            }
-        }
-        else if (method === 'POST') {
-            const privilegeToCheck = `${isEventOrAttendeesRoute}.create`;
-            if (privillage.includes(privilegeToCheck)) {
-                console.log(`${privilegeToCheck} is present in privillage array`);
-                return true;
-            } else {
-                console.log(`${privilegeToCheck} is not present in privillage array`);
-                return false;
-            }
-        } else if (method === 'PUT') {
-            const privilegeToCheck = `${isEventOrAttendeesRoute}.update`;
-            if (privillage.includes(privilegeToCheck)) {
-                console.log(`${privilegeToCheck} is present in privillage array`);
-                return true;
-            } else {
-                console.log(`${privilegeToCheck} is not present in privillage array`);
-                return false;
-            }
-        } else if (method === 'DELETE') {
-            const privilegeToCheck = `${isEventOrAttendeesRoute}.delete`;
-            if (privillage.includes(privilegeToCheck)) {
-                console.log(`${privilegeToCheck} is present in privillage array`);
-                return true;
-            } else {
-                console.log(`${privilegeToCheck} is not present in privillage array`);
-                return false;
-            }
-        }
-        return true;
+export class JwtAuthGuard extends AuthGuard('jwt') {
+    constructor(private readonly reflector: Reflector) {
+        super();
     }
-    public extractEventKeyword(url: string): string | null {
-        const urlSegments = url.split('/');
-        const keywordIndex = urlSegments.findIndex((segment, index) => index > 0 && segment !== '' && segment !== '/');
-        if (keywordIndex !== -1 && keywordIndex < urlSegments.length - 1) {
-            return `${urlSegments[keywordIndex]}`;
-            // return `/${urlSegments[keywordIndex]}`;
+
+    canActivate(
+        context: ExecutionContext
+    ): boolean | Promise<boolean> | Observable<boolean> {
+        const requiredPermissions = this.reflector.get<string[]>(
+            "permissions",
+            context.getHandler()
+        );
+
+        const payload = super.getRequest(context);
+        if (!requiredPermissions) {
+            payload.requiredPermissions = [];
+            return super.canActivate(context);
+
         }
-        return null;
+        payload.requiredPermissions = requiredPermissions;
+        // const request = context.switchToHttp().getRequest();
+        // request.requiredPermissions = requiredPermissions;
+        return super.canActivate(context);
+
     }
 }
