@@ -10,10 +10,13 @@ async function bootstrap() {
     .setTitle('Middleware  APIs')
     .setDescription('The Middlware service')
     .setVersion('1.0')
-    .addServer('http://localhost:3001/', 'Local environment')
+    .addApiKey(
+      { type: 'apiKey', name: 'Authorization', in: 'header' },
+      'access-token',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger-docs', app, document);
-  await app.listen(3001);
+  await app.listen(3000);
 }
 bootstrap();
