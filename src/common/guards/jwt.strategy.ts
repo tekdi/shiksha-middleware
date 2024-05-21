@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     try {
       const tenantId = request.headers['tenant-id'];
       if (!tenantId?.trim()) {
-        throw new BadRequestException('Tanant id not found');
+        throw new BadRequestException('Tenant id not found');
       }
       const requiredPermissions = request.requiredPermissions;
       const userPrivileges = await this.permissionService.getUserPrivileges(

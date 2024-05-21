@@ -4,16 +4,10 @@ import { Response } from 'express';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
     catch(exception: unknown, host: ArgumentsHost) {
-        console.log(exception, "exception");
-        console.log(host, "host");
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
-        console.log(response, "response");
-
-        const status =
-            exception instanceof HttpException
-                ? exception.getStatus()
-                : HttpStatus.INTERNAL_SERVER_ERROR;
+        let status =
+            HttpStatus.INTERNAL_SERVER_ERROR;
 
         let responseBody: any = {
             statusCode: status,
@@ -21,6 +15,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         };
 
         if (exception instanceof HttpException) {
+            status = exception.getStatus();
             const exceptionResponse = exception.getResponse();
             responseBody = {
                 statusCode: status,
@@ -33,7 +28,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
                 ...exceptionResponse,
             };
         }
-
         response.status(responseBody.statusCode).json(responseBody);
     }
 }
