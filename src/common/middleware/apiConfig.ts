@@ -1,7 +1,7 @@
 export const apiMappings = {
   identifier1: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
+    // microservice: 'http://3.109.46.84:4000',
+    microservice: 'http://localhost:3000',
     endpoint: 'event/v1/{dynamicParam}',
     permission: ['event.read'],
     method: 'GET',
@@ -33,5 +33,12 @@ export const apiMappings = {
     endpoint: 'event/v1/list',
     permission: ['event.read'],
     method: 'POST',
+  },
+  identifier6: {
+    microservice: 'https://qa.prathamteacherapp.tekdinext.com',
+    // microservice: 'http://localhost:3000',
+    endpoint: 'api/v1/cohorts/{dynamicParam}',
+    permission: ['event.read'],
+    method: 'GET',
   },
 };
