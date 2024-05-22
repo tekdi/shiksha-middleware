@@ -1,8 +1,10 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionsService } from '../service/permissions.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -11,6 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private configService: ConfigService,
     private permissionService: PermissionsService,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -28,10 +31,22 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     const requiredPermissions = request.requiredPermissions;
-    const userPrivileges = await this.permissionService.getUserPrivileges(
-      payload.sub,
-    );
+    const ttl = 60 * 60 * 1000 * 2; // millisec
 
+    const cachedData = await this.cacheService.get(payload.sub);
+
+    console.log(cachedData,"cached")
+
+    let userPrivileges;
+    if (!cachedData) {
+      userPrivileges = await this.permissionService.getUserPrivileges(
+        payload.sub,
+      );
+      console.log('setting cache');
+      await this.cacheService.set(payload.sub, userPrivileges, ttl);
+    }
+
+    userPrivileges = cachedData;
     // console.log(
     //   requiredPermissions,
     //   'requiredPermissions',

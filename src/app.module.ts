@@ -1,3 +1,5 @@
+import { CacheModule } from '@nestjs/cache-manager';
+import { MemoryStore } from 'cache-manager-memory-store';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,6 +17,7 @@ import { GatewayService } from './middleware/gateway.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule.register({ isGlobal: true, store: MemoryStore }),
     TypeOrmModule.forFeature([UserRolesMapping]),
     HttpModule,
     DatabaseModule,
