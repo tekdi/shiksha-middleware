@@ -34,4 +34,11 @@ export const apiMappings = {
     permission: ['event.read'],
     method: 'POST',
   },
+  identifier6: {
+    microservice: 'https://qa.prathamteacherapp.tekdinext.com',
+    // microservice: 'http://localhost:3000',
+    endpoint: 'api/v1/cohorts/{dynamicParam}',
+    permission: ['event.read'],
+    method: 'GET',
+  },
 };

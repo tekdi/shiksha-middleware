@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionsService } from '../service/permissions.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -24,14 +24,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(request: any, payload: any) {
-    const tenantId = request.headers['tenant-id'];
-
-    if (!tenantId.trim()) {
-      throw new UnauthorizedException();
-    }
-
-    const requiredPermissions = request.requiredPermissions;
-    const ttl = 60 * 60 * 1000 * 2; // millisec
+    try {
+      const tenantId = request.headers['tenant-id'];
+      if (!tenantId?.trim()) {
+        throw new BadRequestException('Tenant id not found');
+      }
+      const requiredPermissions = request.requiredPermissions;
+      const ttl = 60 * 60 * 1000 * 2; // millisec
 
     const cachedData = await this.cacheService.get(payload.sub);
 
@@ -40,41 +39,43 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     let userPrivileges;
     if (!cachedData) {
       userPrivileges = await this.permissionService.getUserPrivileges(
-        payload.sub,
-      );
+          payload.sub,
+        );
       console.log('setting cache');
       await this.cacheService.set(payload.sub, userPrivileges, ttl);
     }
 
     userPrivileges = cachedData;
-    // console.log(
-    //   requiredPermissions,
-    //   'requiredPermissions',
-    //   userPrivileges,
-    //   'userPrivileges',
-    // );
+      // console.log(
+      //   requiredPermissions,
+      //   'requiredPermissions',
+      //   userPrivileges,
+      //   'userPrivileges',
+      // );
 
-    const privilegeOfTenant = userPrivileges[tenantId];
-    // console.log(privilegeOfTenant, 'privilegeOfTenant');
-    const userData = {
-      userId: payload.sub,
-      username: payload.preferred_username,
-      name: payload.name,
-      userPrivileges,
-    };
+      const privilegeOfTenant = userPrivileges[tenantId];
+      if (!privilegeOfTenant) {
+        throw new UnauthorizedException('Invalid Tenant or User')
+      }
+      const userData = {
+        userId: payload.sub,
+        username: payload.preferred_username,
+        name: payload.name,
+        userPrivileges,
+      };
 
-    // get tenantid
-    const isAuthorized = requiredPermissions.every((permission: string) =>
-      privilegeOfTenant.includes(permission),
-    );
-
-    // console.log(isAuthorized, 'isauth');
-
-    if (isAuthorized) {
-      request.user = payload; // Attach payload to request object
-
-      return userData;
+      // get tenantid
+      const isAuthorized = requiredPermissions.every((permission: string) =>
+        privilegeOfTenant.includes(permission),
+      );
+      if (isAuthorized) {
+        request.user = payload; // Attach payload to request object
+        return userData;
+      }
+      throw new UnauthorizedException();
     }
-    throw new UnauthorizedException();
+    catch (e) {
+      throw e;
+    }
   }
 }
