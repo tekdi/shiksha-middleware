@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRolesMapping } from './common/entities/UserRoleMapping.entity';
 import { PermissionsService } from './common/service/permissions.service';
 import { GatewayService } from './middleware/gateway.service';
+import { MiddlewareLoggerModule } from './common/loggers/logger.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { GatewayService } from './middleware/gateway.service';
     HttpModule,
     DatabaseModule,
     JwtModule,
+    MiddlewareLoggerModule
   ],
   controllers: [AppController],
   providers: [
