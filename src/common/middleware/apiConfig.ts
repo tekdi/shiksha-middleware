@@ -1,7 +1,7 @@
 export const apiMappings = {
   identifier1: {
-    // microservice: 'http://3.109.46.84:4000',
-    microservice: 'http://localhost:3000',
+    microservice: 'http://3.109.46.84:4000',
+    // microservice: 'http://localhost:3000',
     endpoint: 'event/v1/{dynamicParam}',
     permission: ['event.read'],
     method: 'GET',
