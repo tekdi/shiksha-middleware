@@ -38,6 +38,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(MiddlewareServices)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes('*');
   }
 }

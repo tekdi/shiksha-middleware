@@ -1,16 +1,12 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  Inject,
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Inject, BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionsService } from '../service/permissions.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { MiddlewareLogger } from '../loggers/logger.service';
+import { UserPrivilegeRoleDto } from '../service/dto/user-privileges';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -34,52 +30,36 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     let userPrivileges;
     const ttl = this.configService.get('TTL');
     try {
-      const tenantId = request.headers['tenant-id'];
+      const tenantId = request.headers['tenantid'];
       if (!tenantId?.trim()) {
         throw new BadRequestException('Tenant id not found');
       }
+      request.userId = payload.sub;
       const requiredPermissions = request.requiredPermissions;
 
-      const cachedData = await this.cacheService.get(payload.sub);
-
+      const cachedData : UserPrivilegeRoleDto = await this.cacheService.get(payload.sub);
       if (!cachedData) {
-        userPrivileges = await this.permissionService.getUserPrivileges(
+        const userPrivilegesAndRoles = await this.permissionService.getUserPrivilegesAndRoles(
           payload.sub,
         );
-        await this.cacheService.set(payload.sub, userPrivileges, ttl);
+        userPrivileges = userPrivilegesAndRoles['privileges'][tenantId];
+        this.cacheService.set(payload.sub, userPrivilegesAndRoles, ttl);
       } else {
-        userPrivileges = cachedData;
+        userPrivileges = cachedData.privileges[tenantId];
       }
-
-      const privilegeOfTenant = userPrivileges[tenantId];
-      if (!privilegeOfTenant) {
-        throw new UnauthorizedException('Invalid Tenant or User');
+      if (!userPrivileges) {
+        throw new UnauthorizedException('User does not have any privileges in the Tenant');
       }
-      const userData = {
-        userId: payload.sub,
-        username: payload.preferred_username,
-        name: payload.name,
-        userPrivileges,
-      };
-
-      // get tenantid
-      const isAuthorized = requiredPermissions.every((permission: string) =>
-        privilegeOfTenant.includes(permission),
+      this.middlewareLogger.log(
+        `user : ${payload.sub - payload.username} userPrivileges: ${userPrivileges}`,
       );
-      if (isAuthorized) {
-        request.user = payload; // Attach payload to request object
-        this.middlewareLogger.log(
-          `user : ${payload.sub - payload.username} userPrivileges: ${userPrivileges}`,
-        );
-        return userData;
-      }
-      throw new UnauthorizedException();
-    } catch (e) {
+      return true;
+    } catch (e) {    
+      console.log('strategy', e)  
       this.middlewareLogger.error(
         `user : ${payload.sub - payload.username} userPrivileges: ${userPrivileges}`,
         JSON.stringify(e),
       );
-      throw e;
     }
   }
 }

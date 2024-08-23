@@ -1,44 +1,47 @@
-export const apiMappings = {
-  identifier1: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'event/v1/{dynamicParam}',
-    permission: ['event.read'],
-    method: 'GET',
+
+'use strict';
+
+/**
+ * @file - Sourcing Portal Backend API(s) list
+ * @description - Whitelisted URL(s)
+ * @since release-4.1.0
+ * @version 1.0
+ */
+export const apiList = {
+  '/user/v1/create':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+    PRIVILEGE_CHECK: ['users.create'],
+    ROLE_CHECK: ['teacher','admin','team_leader']
   },
-  identifier2: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'event/v1/{dynamicParam}',
-    permission: ['event.delete'],
-    method: 'DELETE',
+  '/user/v1/read/:userId':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+    PRIVILEGE_CHECK: ['users.read'],
+    ROLE_CHECK: ['teacher','admin','team_leader']
   },
-  identifier3: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'event/v1/create',
-    permission: ['event.create'],
-    method: 'POST',
+  '/user/v1/update':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+    PRIVILEGE_CHECK: ['users.update'],
+    ROLE_CHECK: ['teacher','admin','team_leader']
   },
-  identifier4: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'event/v1/{dynamicParam}',
-    permission: ['event.update'],
-    method: 'PATCH',
-  },
-  identifier5: {
-    microservice: 'http://3.109.46.84:4000',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'event/v1/list',
-    permission: ['event.read'],
-    method: 'POST',
-  },
-  identifier6: {
-    microservice: 'https://qa.prathamteacherapp.tekdinext.com',
-    // microservice: 'http://localhost:3000',
-    endpoint: 'api/v1/cohorts/{dynamicParam}',
-    permission: ['event.read'],
-    method: 'GET',
-  },
+  '/user/v1/delete':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+    PRIVILEGE_CHECK: ['users.delete'],
+    ROLE_CHECK: ['teacher','admin','team_leader']
+  }
 };
+
+export const urlPatterns = [
+  '/user/v1/cohort/read/:cohortId',
+  '/user/v1/read/:userId'
+  ]
+
+function convertToRegex(pattern) {
+  const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');
+  return new RegExp(`^${regexString}$`);
+}
+
+export const regexPatterns = urlPatterns.map(convertToRegex);
