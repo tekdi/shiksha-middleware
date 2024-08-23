@@ -32,8 +32,6 @@ export class MiddlewareServices {
       let reqUrl = originalUrl;
       const withPattern = this.matchUrl(reqUrl)
       reqUrl = (withPattern) ? withPattern : reqUrl;
-      console.log("reqUrl: " ,reqUrl);
-      console.log("apiList[reqUrl]: ",apiList[reqUrl]);
       // check API is whitelisted 
       if (apiList[reqUrl]) {
         let checksToExecute = [];
@@ -97,8 +95,6 @@ export class MiddlewareServices {
 urlChecks = {
 
   PRIVILEGE_CHECK: async (resolve, reject, req, privilegesForURL, REQ_URL) => {
-    console.log("req-tenantid: ",req.headers['tenantid']);
-    console.log("req-userId: ",req.userId);
     //need userId and tenantId
     const privilegeOfTenant: any = await this.permissionService.getUserPrivilegesForTenant(req.userId,req.headers['tenantid']);
     //check for admin
@@ -155,7 +151,6 @@ executeChecks = async (req, res, next, checksToExecute) => {
   try {
     await Promise.allSettled(checksToExecute)
       .then(async (promiseRes:any) => {
-        //console.log(promiseRes, 'pSuccess')
         if (promiseRes) {
           let _isRejected = promiseRes.find(o => o.status === 'rejected');
           if (_isRejected) {
