@@ -73,33 +73,12 @@ export class PermissionsService {
       if (!cachedData) {
         const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(userId)
         await this.cacheService.set(userId, userPrivilegesAndRoles, this.configService.get('TTL'));
+        return cachedData.privileges[tenantId]
       } else {
         return cachedData.privileges[tenantId]
       }
   }  
   async getUserRolesForTenant(userId: string,tenantId: string) {
-    // const userId:any = await this.cacheService.get('userId');
-    // const tenantId:any = await this.cacheService.get('tenantId');
-    // const query = `SELECT "UserRolesMapping"."userId", "UserRolesMapping"."roleId", "UserRolesMapping"."tenantId" AS tenant_id,
-    //     "Roles"."code" AS Role_code, "Roles"."name" AS Role_name
-    //   FROM "UserRolesMapping"
-    //   LEFT JOIN "Roles" ON "Roles"."roleId" = "UserRolesMapping"."roleId"
-    //   WHERE "UserRolesMapping"."userId" = $1`;
-    // const result = await this.userRolesMapping.query(query, [userId]);
-    // let rolesPerTenant = [];
-    // rolesPerTenant = result.reduce(
-    //   (acc, { role_code, tenant_id }) => {
-    //     if (acc[tenant_id]) {
-    //       if(!acc[tenant_id].includes(role_code))
-    //           acc[tenant_id].push(role_code);
-    //     } else {
-    //       acc[tenant_id] = [role_code];
-    //     }
-    //     return acc;
-    //   },
-    //   {},
-    // );
-    // return rolesPerTenant[tenantId];
     const cachedData:any = await this.cacheService.get(userId);
       if (!cachedData) {
         const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(userId)

@@ -29,14 +29,14 @@ export class MiddlewareServices {
       // custom jwt.strategy will get executed 
       const canActivate = await guard.canActivate(context);
       const originalUrl = req.originalUrl;
-      let reqUrl = originalUrl;
+      let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl)
       reqUrl = (withPattern) ? withPattern : reqUrl;
       // check API is whitelisted 
       if (apiList[reqUrl]) {
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
-        apiList[reqUrl].checksNeeded.forEach(CHECK => {
+        apiList[reqUrl].checksNeeded?.forEach(CHECK => {
           checksToExecute.push(new Promise((res, rej) => {
             if (apiList[reqUrl][CHECK] && typeof this.urlChecks[CHECK] === 'function') {
               this.urlChecks[CHECK](res, rej, req, apiList[reqUrl][CHECK], reqUrl);
@@ -75,6 +75,15 @@ export class MiddlewareServices {
     // Determine the microservice URL based on the requested endpoint
     if (url.startsWith('/user')) {
       return this.configService.get('USER_SERVICE');
+    }
+    if(url.startsWith('/event-service')){
+      return this.configService.get('EVENT_SERVICE')
+    }
+    if(url.startsWith('/notification-templates') || url.startsWith('/notification') || url.startsWith('/queue')){
+      return this.configService.get('NOTIFICATION_SERVICE')
+    }
+    if(url.startsWith('/v1/tracking')){
+      return this.configService.get('TRACKING_SERVICE')
     }
   }
 
@@ -149,6 +158,11 @@ urlChecks = {
  */
 executeChecks = async (req, res, next, checksToExecute) => {
   try {
+    if(checksToExecute.length == 0){
+            const response = await this.forwardRequest(req, res);
+            console.log('response in middleware', response);
+            return res.json(response);
+    }
     await Promise.allSettled(checksToExecute)
       .then(async (promiseRes:any) => {
         if (promiseRes) {
