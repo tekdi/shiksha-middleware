@@ -11,19 +11,22 @@ export class GatewayService {
     method: string,
     url: string,
     body: Object,
-    headers: any,
+    oheaders: any,
   ){
-    const options = {
-      method, // HTTP method (GET, POST, PUT, DELETE, etc.)
-      url, // URL of the API endpoint,
-      data: body, // Request body object,
-      headers: headers,
-      timeout: 10000
-    };
+    let newheaders = {
+      tenantId: oheaders['tenantid'],
+      'content-type': 'application/json',
+      authorization: oheaders['authorization']
+    }
+
       try {
-        console.log("options: ",options)
-        console.log("typeOf", typeof options.data)
-        const response = await axios(options);
+        const response = await axios(
+          {
+            method,
+            url,
+            data :body,
+            headers: newheaders
+          });
         return response.data
       } catch (error) {
         if (error.response) {

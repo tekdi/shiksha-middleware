@@ -65,7 +65,7 @@ export class MiddlewareServices {
     const config = {
         method: req.method,
         url:`${microserviceUrl}${req.originalUrl}`,
-        headers: { ...req.headers },
+        headers: req.headers ,
         data: req.body
     };
     return await this.gatewayService.handleRequest(config.method,config.url,config.data,config.headers);
