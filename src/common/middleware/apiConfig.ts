@@ -340,6 +340,31 @@ export const apiList = {
     checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
     PRIVILEGE_CHECK: ['users.create'],
     ROLE_CHECK: ['teacher','admin','team_leader']
+  },
+  //attendance service
+  '/api/v1/attendance/create':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK','DATA_TENANT','DATA_CONTEXT','DATA_TENANT_CONTEXT'],
+    PRIVILEGE_CHECK: ['attendance.create','attendance.update','attendance.read'],
+    ROLE_CHECK: ['teacher','admin','team_leader'],
+    DATA_TENANT: [],
+    DATA_CONTEXT: [],
+    DATA_TENANT_CONTEXT: []
+  },
+  '/api/v1/attendance/list':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+    PRIVILEGE_CHECK: ['attendance.read'],
+    ROLE_CHECK: ['teacher','admin','team_leader']
+  },
+  '/api/v1/attendance/bulkAttendance':
+  {
+    checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK','DATA_TENANT','DATA_CONTEXT','DATA_TENANT_CONTEXT'],
+    PRIVILEGE_CHECK: ['attendance.create','attendance.update','attendance.read'],
+    ROLE_CHECK: ['teacher','admin','team_leader'],
+    DATA_TENANT: [],
+    DATA_CONTEXT: [],
+    DATA_TENANT_CONTEXT: []
   }
 };
 
@@ -415,8 +440,14 @@ export const urlPatterns = [
   '/v1/tracking/assesment/search',
   '/v1/tracking/assesment/search/status',
   '/v1/tracking/assesment/list',
-  '/v1/tracking/assesment/delete/:assesmentTrackingId'
-  ]
+  '/v1/tracking/assesment/delete/:assesmentTrackingId',
+
+  ///attendance-service
+  '/api/v1/attendance/create',
+  '/api/v1/attendance/list',
+  '/api/v1/attendance/bulkAttendance',
+
+]
 
 function convertToRegex(pattern) {
   const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');

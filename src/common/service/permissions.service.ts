@@ -18,14 +18,13 @@ export class PermissionsService {
 
   async getUserPrivilegesAndRoles(userId: string) {
     const query = `SELECT "UserRolesMapping"."userId", "UserRolesMapping"."roleId", "UserRolesMapping"."tenantId" AS tenant_id,
-        "RolePrivilegesMapping"."privilegeId", 
-        "Privileges"."name" AS privilege_name, "Privileges"."code" AS privilege_code,
-        "Roles"."code" AS Role_code, "Roles"."name" AS Role_name
-      FROM "UserRolesMapping"
-      LEFT JOIN "RolePrivilegesMapping" ON "RolePrivilegesMapping"."roleId"="UserRolesMapping"."roleId"
-      LEFT JOIN "Privileges" ON "Privileges"."privilegeId" = "RolePrivilegesMapping"."privilegeId"
-      LEFT JOIN "Roles" ON "Roles"."roleId" = "UserRolesMapping"."roleId"
-      WHERE "UserRolesMapping"."userId" = $1`;
+                  "RolePrivilegesMapping"."privilegeId", "Privileges"."name" AS privilege_name, "Privileges"."code" AS privilege_code,
+                  "Roles"."code" AS Role_code, "Roles"."name" AS Role_name
+                  FROM "UserRolesMapping"
+                  LEFT JOIN "RolePrivilegesMapping" ON "RolePrivilegesMapping"."roleId"="UserRolesMapping"."roleId"
+                  LEFT JOIN "Privileges" ON "Privileges"."privilegeId" = "RolePrivilegesMapping"."privilegeId"
+                  LEFT JOIN "Roles" ON "Roles"."roleId" = "UserRolesMapping"."roleId"
+                  WHERE "UserRolesMapping"."userId" = $1`;
     const result = await this.userRolesMapping.query(query, [userId]);
     
     if (!result.length) {
@@ -59,17 +58,14 @@ export class PermissionsService {
       },
       {},
     );
-    
-  return {
-    privileges : privilegesPerTenant,
-    roles : rolesPerTenant
-  };
+    return {
+      privileges : privilegesPerTenant,
+      roles : rolesPerTenant
+    };
   }
 
-  async getUserPrivilegesForTenant(userId,tenantId) {
-
+  async getUserPrivilegesForTenant(userId: string,tenantId: string) {
     const cachedData:any = await this.cacheService.get(userId);
-
       if (!cachedData) {
         const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(userId)
         await this.cacheService.set(userId, userPrivilegesAndRoles, this.configService.get('TTL'));

@@ -3,21 +3,18 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    UpdateDateColumn, 
+    UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('UserRolesMapping')
-export class UserRolesMapping {
-    @PrimaryGeneratedColumn('uuid', { name: 'userRolesId' })
+@Entity('UserTenantMapping')
+export class UserTenantMapping {
+    @PrimaryGeneratedColumn('uuid', { name: 'userTenantId' })
     userRolesId: string;
 
     @Column('uuid', { name: 'userId' })
     userId: string;
 
-    @Column('uuid', { name: 'roleId' })
-    roleId: string;
-
-    @Column('uuid', { name: 'tenantId', nullable: true })
+    @Column('uuid', { name: 'tenantId'})
     tenantId?: string;
 
     @Column('uuid', { name: 'createdBy', nullable: true })
@@ -32,8 +29,7 @@ export class UserRolesMapping {
     @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updatedAt' })
     updatedAt: Date;
 
-    constructor(obj: Partial<UserRolesMapping>) {
+    constructor(obj: Partial<UserTenantMapping>) {
         Object.assign(this, obj);
     }
-
 }
