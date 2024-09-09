@@ -8,8 +8,8 @@ import {
 
 @Entity('UserTenantMapping')
 export class UserTenantMapping {
-    @PrimaryGeneratedColumn('uuid', { name: 'userTenantId' })
-    userRolesId: string;
+    @PrimaryGeneratedColumn('uuid', { name: 'Id' })
+    Id: string;
 
     @Column('uuid', { name: 'userId' })
     userId: string;

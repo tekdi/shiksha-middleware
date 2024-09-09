@@ -17,12 +17,13 @@ import { GatewayService } from './middleware/gateway.service';
 import { MiddlewareLoggerModule } from './common/loggers/logger.module';
 import { DataValidationService } from './common/service/dataValidation.service';
 import { CohortMembers } from './common/entities/CohortMembers.entity'
+import { Cohort } from './common/entities/Cohort.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     CacheModule.register({ isGlobal: true, store: MemoryStore }),
-    TypeOrmModule.forFeature([UserRolesMapping,UserTenantMapping,CohortMembers]),
+    TypeOrmModule.forFeature([UserRolesMapping,UserTenantMapping,CohortMembers,Cohort]),
     HttpModule,
     DatabaseModule,
     JwtModule,
