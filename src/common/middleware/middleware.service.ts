@@ -160,7 +160,7 @@ urlChecks = {
     if(isValidUserTenantRelation){
       return resolve(true)
     }
-    return reject('Data reuested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
   },
   /**
     * @param  {Callback} resolve     - Callback to `isAllowed` function promise object
@@ -176,7 +176,7 @@ urlChecks = {
     if(isValidUserContextRelation){
       return resolve(true)
     }
-    return reject('Data reuested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
   },
   /**
     * @param  {Callback} resolve     - Callback to `isAllowed` function promise object
@@ -192,7 +192,7 @@ urlChecks = {
     if(isValidUserContextRelation){
       return resolve(true)
     }
-    return reject('Data reuested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
   }
 };
 
