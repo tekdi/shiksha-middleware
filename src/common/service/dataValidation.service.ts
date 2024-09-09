@@ -5,7 +5,7 @@ import { UserTenantMapping } from "../entities/UserTenantMapping.entity";
 import { CohortMembers } from "../entities/CohortMembers.entity";
 
 @Injectable()
-export class DataValidationervice {
+export class DataValidationService {
     @InjectRepository(UserTenantMapping)
     private readonly UserTenantMapping: Repository<UserTenantMapping>
     @InjectRepository(CohortMembers)

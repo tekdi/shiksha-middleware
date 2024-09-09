@@ -9,7 +9,7 @@ import { MiddlewareLogger } from '../loggers/logger.service';
 import { PermissionsService } from '../service/permissions.service';
 import APIResponse from "src/common/response/response";
 import { ConfigService } from '@nestjs/config';
-import { DataValidationervice } from '../service/dataValidation.service';
+import { DataValidationService } from '../service/dataValidation.service';
 
 @Injectable()
 export class MiddlewareServices {
@@ -19,7 +19,7 @@ export class MiddlewareServices {
     private readonly middlewareLogger: MiddlewareLogger,
     private permissionService: PermissionsService,
     private configService: ConfigService,
-    private dataValidationervice: DataValidationervice
+    private dataValidationervice: DataValidationService
   ) { }
 
   async use(req: Request, res: Response, next: NextFunction) {

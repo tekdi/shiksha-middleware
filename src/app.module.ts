@@ -15,7 +15,7 @@ import { UserTenantMapping } from './common/entities/UserTenantMapping.entity'
 import { PermissionsService } from './common/service/permissions.service';
 import { GatewayService } from './middleware/gateway.service';
 import { MiddlewareLoggerModule } from './common/loggers/logger.module';
-import { DataValidationervice } from './common/service/dataValidation.service';
+import { DataValidationService } from './common/service/dataValidation.service';
 import { CohortMembers } from './common/entities/CohortMembers.entity'
 
 @Module({
@@ -35,7 +35,7 @@ import { CohortMembers } from './common/entities/CohortMembers.entity'
     JwtStrategy,
     PermissionsService,
     GatewayService,
-    DataValidationervice
+    DataValidationService
   ],
 })
 export class AppModule {

@@ -20,7 +20,7 @@ export class CohortMembers {
     @Column({name:'status'})
     status : string
 
-    @Column({name:'status'})
+    @Column({name:'statusReason'})
     statusReason: string
 
     @Column('uuid', { name: 'createdBy', nullable: true })
