@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { apiList, regexPatterns, urlPatterns} from './apiConfig';
+import { apiList, regexPatterns, urlPatterns, publicAPI} from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Reflector } from '@nestjs/core';
@@ -24,24 +24,30 @@ export class MiddlewareServices {
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
-      // Basic check if user is a valid keyCloack user, if tenant ID present in the request
-      const context = new ExecutionContextHost([req, res, next]);
-      // Create an instance of the JwtAuthGuard
-      const guard = new JwtAuthGuard(this.reflector);
-      // custom jwt.strategy will get executed 
-      await guard.canActivate(context);
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl)
       reqUrl = (withPattern) || reqUrl;
+      //check for public api
+      if(!publicAPI.includes(reqUrl)){
+        // Basic check if user is a valid keyCloack user, if tenant ID present in the request
+        const context = new ExecutionContextHost([req, res, next]);
+        // Create an instance of the JwtAuthGuard
+        const guard = new JwtAuthGuard(this.reflector);
+        // custom jwt.strategy will get executed 
+        await guard.canActivate(context);
+      }
       // check API is whitelisted 
       if (apiList[reqUrl]) {
+        if(!apiList[reqUrl][req.method.toLowerCase()]){
+          throw new HttpException('SHIKSHA_API_WHITELIST: URL not whitelisted', HttpStatus.FORBIDDEN);
+        }
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
-        apiList[reqUrl].checksNeeded?.forEach(CHECK => {
+        apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(CHECK => {
           checksToExecute.push(new Promise((res, rej) => {
-            if (apiList[reqUrl][CHECK] && typeof this.urlChecks[CHECK] === 'function') {
-              this.urlChecks[CHECK](res, rej, req, apiList[reqUrl][CHECK], reqUrl);
+            if (apiList[reqUrl][req.method.toLowerCase()][CHECK] && typeof this.urlChecks[CHECK] === 'function') {
+              this.urlChecks[CHECK](res, rej, req, apiList[reqUrl][req.method.toLowerCase()][CHECK], reqUrl);
             }
           }));
         });
@@ -57,7 +63,7 @@ export class MiddlewareServices {
         throw new HttpException('SHIKSHA_API_WHITELIST: URL not whitelisted', HttpStatus.FORBIDDEN);      
       }
     } catch (error) {
-      console.log('error', error.response.data);
+      console.log('error', error);
       return APIResponse.error(res, 'api.middleware', null, error.message,error.response?.status || 500);
     }        
   }

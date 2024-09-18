@@ -37,9 +37,11 @@ export class PermissionsService {
         if (role_code === 'admin') {
           acc[tenant_id] = ['all'];
         } else if (acc[tenant_id]) {
-          acc[tenant_id].push(privilege_code);
+          if (privilege_code !== null) {
+            acc[tenant_id].push(privilege_code);
+          }
         } else {
-          acc[tenant_id] = [privilege_code];
+          acc[tenant_id] = privilege_code !== null ? [privilege_code] : [];
         }
         return acc;
       },

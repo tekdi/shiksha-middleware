@@ -17,8 +17,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger-docs', app, document);
-  await app.listen(3000, () => {
-    console.log(`Server middleware on port - 3000`);
+  await app.listen(4000, () => {
+    console.log(`Server middleware on port - 4000`);
   });
 }
 bootstrap();
