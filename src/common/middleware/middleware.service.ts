@@ -63,7 +63,7 @@ export class MiddlewareServices {
         throw new HttpException('SHIKSHA_API_WHITELIST: URL not whitelisted', HttpStatus.FORBIDDEN);      
       }
     } catch (error) {
-      console.log('error', error);
+      this.middlewareLogger.error(`Error in middleware: ${error.message}`, error);
       return APIResponse.error(res, 'api.middleware', null, error.message,error.response?.status || 500);
     }        
   }
