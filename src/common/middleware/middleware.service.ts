@@ -30,12 +30,12 @@ export class MiddlewareServices {
       reqUrl = (withPattern) || reqUrl;
       //check for public api
       if(!publicAPI.includes(reqUrl)){
-        // Basic check if user is a valid keyCloack user, if tenant ID present in the request
-        const context = new ExecutionContextHost([req, res, next]);
-        // Create an instance of the JwtAuthGuard
-        const guard = new JwtAuthGuard(this.reflector);
-        // custom jwt.strategy will get executed 
-        await guard.canActivate(context);
+          // Basic check if user is a valid keyCloack user, if tenant ID present in the request
+          const context = new ExecutionContextHost([req, res, next]);
+          // Create an instance of the JwtAuthGuard
+          const guard = new JwtAuthGuard(this.reflector);
+          // custom jwt.strategy will get executed 
+          await guard.canActivate(context);
       }
       // check API is whitelisted 
       if (apiList[reqUrl]) {
@@ -117,16 +117,16 @@ urlChecks = {
   PRIVILEGE_CHECK: async (resolve, reject, req, privilegesForURL, REQ_URL) => {
     const privilegeOfTenant: any = await this.permissionService.getUserPrivilegesForTenant(req.userId,req.headers['tenantid']);
     //check for admin
-    if(privilegeOfTenant.includes('all')){
+    if(privilegeOfTenant?.includes('all')){
       return resolve(true)
     }else{
         const isAuthorized = privilegesForURL.some((permission: string) =>
-                              privilegeOfTenant.includes(permission));
+                              privilegeOfTenant?.includes(permission));
         if (isAuthorized) {
           return resolve(true);
         }
     }
-    return reject('User doesn\'t have appropriate roles');
+    return reject('User doesn\'t have appropriate privilege');
   },
 
   /**
@@ -145,7 +145,7 @@ urlChecks = {
     const isAuthorized = rolesOfTenant?.includes('admin') ? 
                          true :
                           rolesForURL.filter((role: string) =>
-                              rolesOfTenant.includes(role)
+                              rolesOfTenant?.includes(role)
                           ).length > 0
                           
     if (isAuthorized) {

@@ -53,6 +53,7 @@ export const apiList = {
       ROLE_CHECK: ['teacher','admin','team_leader']
     }
   },
+  //need confirmation
   '/user/v1/password-reset-link':
   {
     method: ['post'],
@@ -62,6 +63,7 @@ export const apiList = {
       ROLE_CHECK: ['teacher','admin','team_leader']
     }
   },
+  //need confirmation
   '/user/v1/forgot-password':
   {
     method: ['post'],
@@ -71,13 +73,12 @@ export const apiList = {
       ROLE_CHECK: ['teacher','admin','team_leader']
     }
   },
+  //all
   '/user/v1/reset-password':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.delete'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: [],
     }
   },
   '/user/v1/check':
@@ -85,35 +86,7 @@ export const apiList = {
     method:[ 'post'],
     'post':{
       checksNeeded: ['ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.delete'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
-    }
-  },
-  //attendance
-  '/user/v1/attendance':
-  {
-    method: ['post'],
-    'post':{
-      checksNeeded: ['ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
-    }
-  },
-  '/user/v1/attendance/list':
-  {
-    method: ['post'],
-    'post':{
-      checksNeeded: ['ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
-    }
-  },
-  '/user/v1/attendance/bulkAttendance':
-  {
-    method: ['post'],
-    'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
+      PRIVILEGE_CHECK: ['users.read'],
       ROLE_CHECK: ['teacher','admin','team_leader']
     }
   },
@@ -123,7 +96,7 @@ export const apiList = {
     method: ['get'],
     'get':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
+      PRIVILEGE_CHECK: ['"cohort.read"'],
       ROLE_CHECK: ['teacher','admin','team_leader']
     }
   },
@@ -132,8 +105,8 @@ export const apiList = {
     method: ['post'],
     'post':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohort.create'],
+      ROLE_CHECK: ['team_leader']
     }
   },
   '/user/v1/cohort/search':
@@ -141,8 +114,8 @@ export const apiList = {
     method: ['post'],
     'post':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohort.read'],
+      ROLE_CHECK: ['teacher','team_leader']
     }
   },
   '/user/v1/cohort/update/:cohortId':
@@ -150,8 +123,8 @@ export const apiList = {
     method: ['put'],
     'put':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohort.update'],
+      ROLE_CHECK: ['team_leader']
     }
   },
   '/user/v1/cohort/delete/:cohortId':
@@ -159,8 +132,8 @@ export const apiList = {
     method: ['delete'],
     'delete':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohort.delete'],
+      ROLE_CHECK: ['team_leader']
     }
   },
   '/user/v1/cohort/mycohorts/:userId':
@@ -168,8 +141,8 @@ export const apiList = {
     method: ['get'],
     'get':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohort.read'],
+      ROLE_CHECK: ['teacher','team_leader']
     }
   },
   //cohort member
@@ -178,8 +151,8 @@ export const apiList = {
     method: ['post'],
     'post':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohortmembers.create'],
+      ROLE_CHECK: ['teacher']
     }
   },
   '/user/v1/cohortmember/read/:cohortId':
@@ -187,8 +160,8 @@ export const apiList = {
     method: ['get'],
     'get':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohortmembers.read'],
+      ROLE_CHECK: ['teacher','team_leader']
     }
   },
   '/user/v1/cohortmember/list':
@@ -196,8 +169,8 @@ export const apiList = {
     method: ['post'],
     'post':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohortmembers.read'],
+      ROLE_CHECK: ['teacher','team_leader']
     }
   },
   '/user/v1/cohortmember/update/:cohortmembershipid':
@@ -205,8 +178,8 @@ export const apiList = {
     method: ['put'],
     'put':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohortmembers.update'],
+      ROLE_CHECK: ['teacher']
     }
   },
   '/user/v1/cohortmember/delete/:id':
@@ -214,8 +187,8 @@ export const apiList = {
     method: ['delete'],
     'delete':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['"cohortmembers.delete"'],
+      ROLE_CHECK: ['teacher']
     }
   },
   '/user/v1/cohortmember/bulkcreate':
@@ -223,8 +196,8 @@ export const apiList = {
     method: ['post'],
     'post':{
       checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      PRIVILEGE_CHECK: ['cohortmembers.create'],
+      ROLE_CHECK: ['teacher']
     }
   },
   //AssignTenant
@@ -232,9 +205,8 @@ export const apiList = {
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   //rbac
@@ -242,111 +214,100 @@ export const apiList = {
   {
     method: ['get'],
     'get':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/roles/create':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/roles/update/:id':
   {
     method: ['put'],
     'put':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/roles/list/roles':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/roles/delete/:roleId':
   {
     method: ['delete'],
     'delete':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/privileges':
   {
     method: ['get'],
     'get':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader','student']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/privileges/:privilegeId':
   {
     method: ['get'],
     'get':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/privileges/create':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/usersRoles':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
+      checksNeeded: ['ROLE_CHECK'],
       PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/rbac/usersRoles/:userId':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.create'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/assignprivilege':
   {
     method: ['post'],
     'post':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.read'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
   '/user/v1/assignprivilege/:roleId':
   {
     method: ['get'],
     'get':{
-      checksNeeded: ['PRIVILEGE_CHECK','ROLE_CHECK'],
-      PRIVILEGE_CHECK: ['users.read'],
-      ROLE_CHECK: ['teacher','admin','team_leader']
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: ['admin','team_leader']
     }
   },
-  //auth
+  //auth - public
   '/user/v1/auth/login':
   {
     method: ['post'],
