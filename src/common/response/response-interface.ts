@@ -1,10 +1,8 @@
-
-
 // structure for server responses
 export interface ServerResponse {
     // api id
     id: string;
-
+    
     // response param
     params: Params;
 

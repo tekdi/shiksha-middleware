@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { apiList, regexPatterns, urlPatterns} from './apiConfig';
+import { apiList, regexPatterns, urlPatterns, publicAPI} from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Reflector } from '@nestjs/core';
@@ -9,6 +9,7 @@ import { MiddlewareLogger } from '../loggers/logger.service';
 import { PermissionsService } from '../service/permissions.service';
 import APIResponse from "src/common/response/response";
 import { ConfigService } from '@nestjs/config';
+import { DataValidationService } from '../service/dataValidation.service';
 
 @Injectable()
 export class MiddlewareServices {
@@ -17,29 +18,36 @@ export class MiddlewareServices {
     private gatewayService: GatewayService,
     private readonly middlewareLogger: MiddlewareLogger,
     private permissionService: PermissionsService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private dataValidationervice: DataValidationService
   ) { }
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
-      // Basic check if user is a valid keyCloack user, if tenant ID present in the request
-      const context = new ExecutionContextHost([req, res, next]);
-      // Create an instance of the JwtAuthGuard
-      const guard = new JwtAuthGuard(this.reflector);
-      // custom jwt.strategy will get executed 
-      const canActivate = await guard.canActivate(context);
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl)
-      reqUrl = (withPattern) ? withPattern : reqUrl;
+      reqUrl = (withPattern) || reqUrl;
+      //check for public api
+      if(!publicAPI.includes(reqUrl)){
+          // Basic check if user is a valid keyCloack user, if tenant ID present in the request
+          const context = new ExecutionContextHost([req, res, next]);
+          // Create an instance of the JwtAuthGuard
+          const guard = new JwtAuthGuard(this.reflector);
+          // custom jwt.strategy will get executed 
+          await guard.canActivate(context);
+      }
       // check API is whitelisted 
       if (apiList[reqUrl]) {
+        if(!apiList[reqUrl][req.method.toLowerCase()]){
+          throw new HttpException('SHIKSHA_API_WHITELIST: URL not whitelisted', HttpStatus.FORBIDDEN);
+        }
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
-        apiList[reqUrl].checksNeeded?.forEach(CHECK => {
+        apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(CHECK => {
           checksToExecute.push(new Promise((res, rej) => {
-            if (apiList[reqUrl][CHECK] && typeof this.urlChecks[CHECK] === 'function') {
-              this.urlChecks[CHECK](res, rej, req, apiList[reqUrl][CHECK], reqUrl);
+            if (apiList[reqUrl][req.method.toLowerCase()][CHECK] && typeof this.urlChecks[CHECK] === 'function') {
+              this.urlChecks[CHECK](res, rej, req, apiList[reqUrl][req.method.toLowerCase()][CHECK], reqUrl);
             }
           }));
         });
@@ -55,7 +63,7 @@ export class MiddlewareServices {
         throw new HttpException('SHIKSHA_API_WHITELIST: URL not whitelisted', HttpStatus.FORBIDDEN);      
       }
     } catch (error) {
-      console.log('error', error.response.data);
+      this.middlewareLogger.error(`Error in middleware: ${error.message}`, error);
       return APIResponse.error(res, 'api.middleware', null, error.message,error.response?.status || 500);
     }        
   }
@@ -85,6 +93,9 @@ export class MiddlewareServices {
     if(url.startsWith('/v1/tracking')){
       return this.configService.get('TRACKING_SERVICE')
     }
+    if(url.startsWith('/api/v1/attendance')){
+      return this.configService.get('ATTENDANCE_SERVICE')
+    }
   }
 
   matchUrl(url) {
@@ -104,19 +115,18 @@ export class MiddlewareServices {
 urlChecks = {
 
   PRIVILEGE_CHECK: async (resolve, reject, req, privilegesForURL, REQ_URL) => {
-    //need userId and tenantId
     const privilegeOfTenant: any = await this.permissionService.getUserPrivilegesForTenant(req.userId,req.headers['tenantid']);
     //check for admin
-    if(privilegeOfTenant.includes('all')){
+    if(privilegeOfTenant?.includes('all')){
       return resolve(true)
     }else{
         const isAuthorized = privilegesForURL.some((permission: string) =>
-                              privilegeOfTenant.includes(permission));
+                              privilegeOfTenant?.includes(permission));
         if (isAuthorized) {
           return resolve(true);
         }
     }
-    return reject('User doesn\'t have appropriate roles');
+    return reject('User doesn\'t have appropriate privilege');
   },
 
   /**
@@ -128,23 +138,70 @@ urlChecks = {
   * @description - Function to check session roles and defined roles are having one in common
   * @since - release-3.1.0
   */
- ROLE_CHECK: async (resolve, reject, req, rolesForURL, REQ_URL) => {
-  //resolve();
+  ROLE_CHECK: async (resolve, reject, req, rolesForURL, REQ_URL) => {
 
-  const rolesOfTenant: any = await this.permissionService.getUserRolesForTenant(req.userId,req.headers['tenantid']);
+    const rolesOfTenant: any = await this.permissionService.getUserRolesForTenant(req.userId,req.headers['tenantid']);
   
     const isAuthorized = rolesOfTenant?.includes('admin') ? 
                          true :
                           rolesForURL.filter((role: string) =>
-                              rolesOfTenant.includes(role)
+                              rolesOfTenant?.includes(role)
                           ).length > 0
                           
     if (isAuthorized) {
       return resolve(true);
     }
     return reject('User doesn\'t have appropriate roles');
- }
+  },
+  /**
+    * @param  {Callback} resolve     - Callback to `isAllowed` function promise object
+    * @param  {Callback} reject      - Callback to `isAllowed` function promise object
+    * @param  {Object} req           - API request object
+    * @access Private
+    * @description - Function to check user belongs to the requested tenant.
+    * @since - release-3.1.0
+    */
+  DATA_TENANT: async (resolve, reject, req) => {
+    const isValidUserTenantRelation =await this.dataValidationervice.checkUserTenantValidation(req.body.userId,req.headers['tenantid']);
+    if(isValidUserTenantRelation){
+      return resolve(true)
+    }
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+  },
+  /**
+    * @param  {Callback} resolve     - Callback to `isAllowed` function promise object
+    * @param  {Callback} reject      - Callback to `isAllowed` function promise object
+    * @param  {Object} req           - API request object
+    * @access Private
+    * @description - Function to check user is member of requested context.
+    * @since - release-3.1.0
+    */
+  DATA_CONTEXT: async (resolve, reject, req) => {
+
+    const isValidUserContextRelation =await this.dataValidationervice.checkUserCohortValidation(req.body.userId,req.body.contextId);
+    if(isValidUserContextRelation){
+      return resolve(true)
+    }
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+  },
+  /**
+    * @param  {Callback} resolve     - Callback to `isAllowed` function promise object
+    * @param  {Callback} reject      - Callback to `isAllowed` function promise object
+    * @param  {Object} req           - API request object
+    * @access Private
+    * @description - Function to check requested context is in the requested tenant.
+    * @since - release-3.1.0
+    */
+  DATA_TENANT_CONTEXT: async (resolve, reject, req) => {
+
+    const isValidUserContextRelation =await this.dataValidationervice.checkUserCohortValidation(req.body.userId,req.body.contextId);
+    if(isValidUserContextRelation){
+      return resolve(true)
+    }
+    return reject('Data requested for processing is not valid, please insure you have passesd correct userId and related tenantId, contextId');
+  }
 };
+
 /**
  * @param  {Object} req             - Request Object
  * @param  {Object} res             - Response Object
