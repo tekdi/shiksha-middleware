@@ -1,9 +1,9 @@
-name: Deploy to EKS-Pratham
+name: Deploy to Middleware on Dev EKS Cluster
 on:
   workflow_dispatch:
 env:
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_DEV }}
+  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME_DEV }}
   AWS_REGION: ${{ secrets.AWS_REGION_NAME }}
 jobs:
   build:
@@ -18,8 +18,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
         aws-region: ${{env.AWS_REGION}}
     - name: Setup Node Env
       uses: actions/setup-node@v3
@@ -27,7 +27,7 @@ jobs:
         node-version: 21.1.0
     - name: Copy .env file
       env:
-       ENV_FILE_CONTENT: ${{ secrets.ENV_FILE_CONTENT }}
+       ENV_FILE_CONTENT: ${{ secrets.DEV_ENV }}
       run: printf "%s" "$ENV_FILE_CONTENT" > manifest/configmap.yaml
     - name: Show PWD and list content
       run: |
@@ -37,8 +37,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
         aws-region: ${{ env.AWS_REGION }}
     - name: Login to Amazon ECR
       id: login-ecr
@@ -48,16 +48,15 @@ jobs:
         ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ secrets.ECR_IMAGE }}
       run: |
-        docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG }} .
-        docker push ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG }}
+        docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_DEV }} .
+        docker push ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_DEV }}
     - name: Update kube config
-      run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION_NAME }}
+      run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME_DEV }} --region ${{ secrets.AWS_REGION_NAME }}
     - name: Deploy to EKS
       env:
         ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
-        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-        ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
+        IMAGE_TAG: ${{ secrets.IMAGE_TAG_DEV }}
+        
       run: |
         export ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
         export IMAGE_TAG=${{ secrets.IMAGE_TAG }}
