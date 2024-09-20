@@ -56,6 +56,8 @@ jobs:
       env:
         ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ secrets.IMAGE_TAG_DEV }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+        ECR_IMAGE: ${{ secrets.ECR_IMAGE_DEV }}
         
       run: |
         export ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
