@@ -18,34 +18,32 @@ export class GatewayService {
       'content-type': 'application/json',
       authorization: oheaders['authorization']
     }
-
-      try {
-        const response = await axios(
-          {
-            method,
-            url,
-            data :body,
-            headers: newheaders
-          });
-        return response.data
-      } catch (error) {
-        if (error.response) {
-          
-          return error.response.data;
-        } else if (error.request) {
-          // No response was received
-          return {
-            result : {},
-            params : {
-              "err": "Internal server error",
-              "errmsg": "Internal server error",
-              "status": "failed"
-            }
+    try {
+      const response = await axios(
+        {
+          method,
+          url,
+          data :body,
+          headers: newheaders
+        });
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.request) {
+        // No response was received
+        return {
+          result : {},
+          params : {
+            "err": "Internal server error",
+            "errmsg": "Internal server error",
+            "status": "failed"
           }
-        } else {
-          // Error occurred in setting up the request
-          return error.message;
         }
+      } else {
+        // Error occurred in setting up the request
+        return error.message;
       }
+    }
   }
 }
