@@ -46,7 +46,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ secrets.ECR_IMAGE }}
+        IMAGE_TAG: ${{ secrets.IMAGE_TAG_DEV }}
       run: |
         docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_DEV }} .
         docker push ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_DEV }}
@@ -55,9 +55,7 @@ jobs:
     - name: Deploy to EKS
       env:
         ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ secrets.IMAGE_TAG_DEV }}
-        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-        ECR_IMAGE: ${{ secrets.ECR_IMAGE_DEV }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG_DEV }}
         
       run: |
         export ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
