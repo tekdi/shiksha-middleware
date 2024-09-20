@@ -1,4 +1,4 @@
-name: Deploy to EKS-Pratham
+name: Deploy to Middleware on Dev EKS Cluster
 on:
   workflow_dispatch:
 env:
