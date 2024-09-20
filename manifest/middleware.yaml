@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: middleware
+  name: middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: middleware
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: middleware
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - image: ${ECR_REPOSITORY}:${IMAGE_TAG}
+        imagePullPolicy: "Always"
+        name: middleware-pratham
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: middleware-service-config
+        resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: middleware
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    protocol: TCP
+  selector:
+    app: middleware
