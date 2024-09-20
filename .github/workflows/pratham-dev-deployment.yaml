@@ -59,8 +59,8 @@ jobs:
         
       run: |
         export ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
-        export IMAGE_TAG=${{ secrets.IMAGE_TAG }}
-        export ECR_IMAGE=${{ secrets.ECR_IMAGE }}
+        export IMAGE_TAG=${{ secrets.IMAGE_TAG_DEV }}
+        export ECR_IMAGE=${{ secrets.ECR_IMAGE_DEV }}
         envsubst < manifest/middleware.yaml > manifest/middleware-updated.yaml
         cat manifest/middleware-updated.yaml
         rm -rf manifest/middleware-service.yaml
