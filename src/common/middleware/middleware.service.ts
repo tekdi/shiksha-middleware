@@ -37,9 +37,11 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
+      console.log('reqUrl', reqUrl);
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
+          console.log('not whitelist');
           throw new HttpException(
             'SHIKSHA_API_WHITELIST: URL not whitelisted',
             HttpStatus.FORBIDDEN,
@@ -102,9 +104,14 @@ export class MiddlewareServices {
 
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
+    let forwardUrl = req.originalUrl;
+    //replace forwardUrl if redirectUrl present
+    if (apiList[forwardUrl]?.redirectUrl) {
+      forwardUrl = apiList[forwardUrl].redirectUrl;
+    }
     const config = {
       method: req.method,
-      url: `${microserviceUrl}${req.originalUrl}`,
+      url: `${microserviceUrl}${forwardUrl}`,
       headers: req.headers,
       data: req.body,
     };
@@ -131,8 +138,16 @@ export class MiddlewareServices {
     ) {
       return this.configService.get('NOTIFICATION_SERVICE');
     }
+    //for tracking microservice
     if (url.startsWith('/v1/tracking')) {
       return this.configService.get('TRACKING_SERVICE');
+    }
+    //for sunbird knowlg and inQuiry
+    if (
+      url.startsWith('/api/question') ||
+      url.startsWith('/action/questionset')
+    ) {
+      return this.configService.get('ASSESSMENT_SERVICE');
     }
     if (url.startsWith('/api/v1/attendance')) {
       return this.configService.get('ATTENDANCE_SERVICE');

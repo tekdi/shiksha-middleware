@@ -61,6 +61,7 @@ const rolesGroup = {
   common: ['admin', 'team_leader', 'teacher', 'student'],
   student: ['student'],
   restricted: ['admin', 'team_leader'],
+  content_restricted: ['admin', 'team_leader'],
 };
 const createPrivilegeGroup = (entity: string) => {
   return {
@@ -72,8 +73,9 @@ const createPrivilegeGroup = (entity: string) => {
 };
 const privilegeGroup = {
   tracking: createPrivilegeGroup('tracking'),
+  content: createPrivilegeGroup('content'),
 };
-const createRouteObject = (methods: any) => {
+const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
   const methodObject = allMethods.reduce((acc, method) => {
@@ -91,6 +93,7 @@ const createRouteObject = (methods: any) => {
   return {
     method: allMethods,
     ...methodObject,
+    redirectUrl, // Optionally include redirectUrl if it's passed
   };
 };
 
@@ -585,6 +588,17 @@ export const apiList = {
     },
   }),
 
+  //sunbird knowlg and inQuiry service
+  '/api/question/v2/list': createRouteObject(
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.read,
+        ROLE_CHECK: rolesGroup.common,
+      },
+    },
+    '/question/v5/list',
+  ),
+
   //attendance service
   '/api/v1/attendance': {
     method: ['post'],
@@ -638,7 +652,7 @@ export const apiList = {
   },
 };
 
-//console.log('api list', JSON.stringify(apiList, null, 2));
+console.log('api list', JSON.stringify(apiList, null, 2));
 
 export const urlPatterns = [
   //user-service
@@ -724,6 +738,9 @@ export const urlPatterns = [
   '/v1/tracking/content/search/status',
   '/v1/tracking/content/list',
   '/v1/tracking/content/delete/:contentTrackingId',
+
+  //sunbird knowlg and inQuiry service
+  '/api/question/v2/list',
 
   ///attendance-service
   '/api/v1/attendance/create',
