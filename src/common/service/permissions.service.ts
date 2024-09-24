@@ -8,11 +8,12 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PermissionsService {
+  
   constructor(
     @InjectRepository(UserRolesMapping)
     private readonly userRolesMapping: Repository<UserRolesMapping>,
     @Inject(CACHE_MANAGER) private cacheService: Cache,
-    private configService: ConfigService,
+    private configService : ConfigService
   ) {}
 
   async getUserPrivilegesAndRoles(userId: string) {
@@ -25,7 +26,7 @@ export class PermissionsService {
                   LEFT JOIN "Roles" ON "Roles"."roleId" = "UserRolesMapping"."roleId"
                   WHERE "UserRolesMapping"."userId" = $1`;
     const result = await this.userRolesMapping.query(query, [userId]);
-    console.log('result user role mapping', result);
+    
     if (!result.length) {
       return [];
     }
@@ -47,43 +48,41 @@ export class PermissionsService {
       {},
     );
     let rolesPerTenant = [];
-    rolesPerTenant = result.reduce((acc, { role_code, tenant_id }) => {
-      if (acc[tenant_id]) {
-        if (!acc[tenant_id].includes(role_code)) acc[tenant_id].push(role_code);
-      } else {
-        acc[tenant_id] = [role_code];
-      }
-      return acc;
-    }, {});
+    rolesPerTenant = result.reduce(
+      (acc, { role_code, tenant_id }) => {
+        if (acc[tenant_id]) {
+          if(!acc[tenant_id].includes(role_code))
+              acc[tenant_id].push(role_code);
+        } else {
+          acc[tenant_id] = [role_code];
+        }
+        return acc;
+      },
+      {},
+    );
     return {
-      privileges: privilegesPerTenant,
-      roles: rolesPerTenant,
+      privileges : privilegesPerTenant,
+      roles : rolesPerTenant
     };
   }
 
-  async getUserPrivilegesForTenant(userId: string, tenantId: string) {
-    const cachedData: any = await this.cacheService.get(userId);
-    if (!cachedData) {
-      const userPrivilegesAndRoles =
-        await this.getUserPrivilegesAndRoles(userId);
-      await this.cacheService.set(
-        userId,
-        userPrivilegesAndRoles,
-        this.configService.get('TTL'),
-      );
-      return cachedData.privileges[tenantId];
-    } else {
-      return cachedData.privileges[tenantId];
-    }
-  }
-  async getUserRolesForTenant(userId: string, tenantId: string) {
-    const cachedData: any = await this.cacheService.get(userId);
-    if (!cachedData) {
-      const userPrivilegesAndRoles =
-        await this.getUserPrivilegesAndRoles(userId);
-      await this.cacheService.set(userId, userPrivilegesAndRoles);
-    } else {
-      return cachedData.roles[tenantId];
-    }
+  async getUserPrivilegesForTenant(userId: string,tenantId: string) {
+    const cachedData:any = await this.cacheService.get(userId);
+      if (!cachedData) {
+        const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(userId)
+        await this.cacheService.set(userId, userPrivilegesAndRoles, this.configService.get('TTL'));
+        return cachedData.privileges[tenantId]
+      } else {
+        return cachedData.privileges[tenantId]
+      }
+  }  
+  async getUserRolesForTenant(userId: string,tenantId: string) {
+    const cachedData:any = await this.cacheService.get(userId);
+      if (!cachedData) {
+        const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(userId)
+        await this.cacheService.set(userId, userPrivilegesAndRoles, );
+      } else {
+        return cachedData.roles[tenantId]
+      }
   }
 }

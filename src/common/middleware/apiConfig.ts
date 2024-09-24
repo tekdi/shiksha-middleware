@@ -57,6 +57,22 @@ sample output from above input
 }
 ``
  */
+const rolesGroup = {
+  common: ['admin', 'team_leader', 'teacher', 'student'],
+  student: ['student'],
+  restricted: ['admin', 'team_leader'],
+};
+const createPrivilegeGroup = (entity: string) => {
+  return {
+    create: [`${entity}.create`],
+    read: [`${entity}.read`],
+    update: [`${entity}.update`],
+    delete: [`${entity}.delete`],
+  };
+};
+const privilegeGroup = {
+  tracking: createPrivilegeGroup('tracking'),
+};
 const createRouteObject = (methods: any) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
@@ -497,75 +513,75 @@ export const apiList = {
   //tracking
   '/v1/tracking/assessment/read/:assessmentTrackingId': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.create'],
-      ROLE_CHECK: ['student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.create,
+      ROLE_CHECK: rolesGroup.student,
     },
   }),
   '/v1/tracking/assessment/search': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/search/status': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/delete/:assessmentTrackingId': createRouteObject({
     delete: {
-      PRIVILEGE_CHECK: ['tracking.delete'],
-      ROLE_CHECK: ['admin', 'team_leader'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
+      ROLE_CHECK: rolesGroup.restricted,
     },
   }),
   //tracking-content
   '/v1/tracking/content/read/:contentTrackingId': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.create'],
-      ROLE_CHECK: ['student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.create,
+      ROLE_CHECK: rolesGroup.student,
     },
   }),
   '/v1/tracking/content/search': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/search/status': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: ['tracking.read'],
-      ROLE_CHECK: ['admin', 'team_leader', 'teacher', 'student'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/delete/:contentTrackingId': createRouteObject({
     delete: {
-      PRIVILEGE_CHECK: ['tracking.delete'],
-      ROLE_CHECK: ['admin', 'team_leader'],
+      PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
+      ROLE_CHECK: rolesGroup.restricted,
     },
   }),
 
