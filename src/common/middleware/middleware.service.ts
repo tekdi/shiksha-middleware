@@ -1,5 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { apiList, regexPatterns, urlPatterns, publicAPI } from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -19,11 +24,16 @@ export class MiddlewareServices {
     private readonly middlewareLogger: MiddlewareLogger,
     private permissionService: PermissionsService,
     private configService: ConfigService,
-    private dataValidationervice: DataValidationService,
+    private dataValidationService: DataValidationService,
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
+      //check for tenantId
+      const tenantId: any = req.headers['tenantid'];
+      if (!tenantId?.trim()) {
+        throw new BadRequestException('Tenant id not found');
+      }
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl);
@@ -37,6 +47,7 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
+
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
@@ -85,7 +96,6 @@ export class MiddlewareServices {
         );
       }
     } catch (error) {
-      //console.log(error);
       this.middlewareLogger.error(
         `Error in middleware: ${error.message}`,
         error,
@@ -116,7 +126,7 @@ export class MiddlewareServices {
     );
   }
 
-  getMicroserviceUrl(url: string): string {
+  getMicroserviceUrlold(url: string): string {
     // Determine the microservice URL based on the requested endpoint
     if (url.startsWith('/user')) {
       return this.configService.get('USER_SERVICE');
@@ -138,6 +148,28 @@ export class MiddlewareServices {
       return this.configService.get('ATTENDANCE_SERVICE');
     }
   }
+  getMicroserviceUrl(url: string): string | undefined {
+    // Mapping of URL prefixes to their corresponding service configuration keys
+    const serviceMapping: { [key: string]: string } = {
+      '/user': 'USER_SERVICE',
+      '/event-service': 'EVENT_SERVICE',
+      '/notification-templates': 'NOTIFICATION_SERVICE',
+      '/notification': 'NOTIFICATION_SERVICE',
+      '/queue': 'NOTIFICATION_SERVICE',
+      '/v1/tracking': 'TRACKING_SERVICE',
+      '/api/v1/attendance': 'ATTENDANCE_SERVICE',
+    };
+
+    // Iterate over the mapping to find the correct service based on the URL prefix
+    for (const [prefix, serviceKey] of Object.entries(serviceMapping)) {
+      if (url.startsWith(prefix)) {
+        return this.configService.get(serviceKey);
+      }
+    }
+
+    // Return undefined if no matching service is found
+    return undefined;
+  }
 
   matchUrl(url) {
     for (let i = 0; i < regexPatterns.length; i++) {
@@ -148,7 +180,29 @@ export class MiddlewareServices {
     return null;
   }
 
+
   /**
+   * @description
+   * Set of methods which checks for certain condition on URL
+   * @since release-3.1.0
+   */
+  urlChecks = {
+    PRIVILEGE_CHECK: async (
+      resolve,
+      reject,
+      req,
+      privilegesForURL,
+      REQ_URL,
+    ) => {
+      const privilegeOfTenant: any =
+        await this.permissionService.getUserPrivilegesForTenant(
+          req.userId,
+          req.headers['tenantid'],
+        );
+      //check for admin
+      if (privilegeOfTenant?.includes('all')) {
+        return resolve(true);
+      } else {
    * @description
    * Set of methods which checks for certain condition on URL
    * @since release-3.1.0
@@ -173,9 +227,14 @@ export class MiddlewareServices {
         const isAuthorized = privilegesForURL.some((permission: string) =>
           privilegeOfTenant?.includes(permission),
         );
+          privilegeOfTenant?.includes(permission),
+        );
         if (isAuthorized) {
           return resolve(true);
         }
+      }
+      return reject("User doesn't have appropriate privilege");
+    },
       }
       return reject("User doesn't have appropriate privilege");
     },
