@@ -24,7 +24,7 @@ export class PermissionsService {
                   LEFT JOIN "Privileges" ON "Privileges"."privilegeId" = "RolePrivilegesMapping"."privilegeId"
                   LEFT JOIN "Roles" ON "Roles"."roleId" = "UserRolesMapping"."roleId"
                   WHERE "UserRolesMapping"."userId" = $1 AND "RolePrivilegesMapping"."tenantId" = $2`;
-    const result = await this.userRolesMapping.query(query, [userId]);
+    const result = await this.userRolesMapping.query(query, [userId, tenantId]);
 
     if (!result.length) {
       return [];

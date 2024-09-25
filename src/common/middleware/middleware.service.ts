@@ -29,17 +29,17 @@ export class MiddlewareServices {
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
-      //check for tenantId
-      const tenantId: any = req.headers['tenantid'];
-      if (!tenantId?.trim()) {
-        throw new BadRequestException('Tenant id not found');
-      }
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl);
       reqUrl = withPattern || reqUrl;
       //check for public api
       if (!publicAPI.includes(reqUrl)) {
+        //check for tenantId
+        const tenantId: any = req.headers['tenantid'];
+        if (!tenantId?.trim()) {
+          throw new BadRequestException('Tenant id not found');
+        }
         // Basic check if user is a valid keyCloack user, if tenant ID present in the request
         const context = new ExecutionContextHost([req, res, next]);
         // Create an instance of the JwtAuthGuard
@@ -56,13 +56,15 @@ export class MiddlewareServices {
             HttpStatus.FORBIDDEN,
           );
         }
+        console.log(
+          'List[reqUrl][req.method.toLowerCase()]: ',
+          apiList[reqUrl][req.method.toLowerCase()],
+        );
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
         //console.log('req', req);
         apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
           (CHECK) => {
-            //console.log('reqUrl', reqUrl);
-            //console.log('CHECK', CHECK);
             checksToExecute.push(
               new Promise((res, rej) => {
                 if (
@@ -126,28 +128,6 @@ export class MiddlewareServices {
     );
   }
 
-  getMicroserviceUrlold(url: string): string {
-    // Determine the microservice URL based on the requested endpoint
-    if (url.startsWith('/user')) {
-      return this.configService.get('USER_SERVICE');
-    }
-    if (url.startsWith('/event-service')) {
-      return this.configService.get('EVENT_SERVICE');
-    }
-    if (
-      url.startsWith('/notification-templates') ||
-      url.startsWith('/notification') ||
-      url.startsWith('/queue')
-    ) {
-      return this.configService.get('NOTIFICATION_SERVICE');
-    }
-    if (url.startsWith('/v1/tracking')) {
-      return this.configService.get('TRACKING_SERVICE');
-    }
-    if (url.startsWith('/api/v1/attendance')) {
-      return this.configService.get('ATTENDANCE_SERVICE');
-    }
-  }
   getMicroserviceUrl(url: string): string | undefined {
     // Mapping of URL prefixes to their corresponding service configuration keys
     const serviceMapping: { [key: string]: string } = {
@@ -180,29 +160,7 @@ export class MiddlewareServices {
     return null;
   }
 
-
   /**
-   * @description
-   * Set of methods which checks for certain condition on URL
-   * @since release-3.1.0
-   */
-  urlChecks = {
-    PRIVILEGE_CHECK: async (
-      resolve,
-      reject,
-      req,
-      privilegesForURL,
-      REQ_URL,
-    ) => {
-      const privilegeOfTenant: any =
-        await this.permissionService.getUserPrivilegesForTenant(
-          req.userId,
-          req.headers['tenantid'],
-        );
-      //check for admin
-      if (privilegeOfTenant?.includes('all')) {
-        return resolve(true);
-      } else {
    * @description
    * Set of methods which checks for certain condition on URL
    * @since release-3.1.0
@@ -227,14 +185,9 @@ export class MiddlewareServices {
         const isAuthorized = privilegesForURL.some((permission: string) =>
           privilegeOfTenant?.includes(permission),
         );
-          privilegeOfTenant?.includes(permission),
-        );
         if (isAuthorized) {
           return resolve(true);
         }
-      }
-      return reject("User doesn't have appropriate privilege");
-    },
       }
       return reject("User doesn't have appropriate privilege");
     },
@@ -275,7 +228,7 @@ export class MiddlewareServices {
      */
     DATA_TENANT: async (resolve, reject, req) => {
       const isValidUserTenantRelation =
-        await this.dataValidationervice.checkUserTenantValidation(
+        await this.dataValidationService.checkUserTenantValidation(
           req.body.userId,
           req.headers['tenantid'],
         );
@@ -296,7 +249,7 @@ export class MiddlewareServices {
      */
     DATA_CONTEXT: async (resolve, reject, req) => {
       const isValidUserContextRelation =
-        await this.dataValidationervice.checkUserCohortValidation(
+        await this.dataValidationService.checkUserCohortValidation(
           req.body.userId,
           req.body.contextId,
         );
@@ -317,7 +270,7 @@ export class MiddlewareServices {
      */
     DATA_TENANT_CONTEXT: async (resolve, reject, req) => {
       const isValidUserContextRelation =
-        await this.dataValidationervice.checkUserCohortValidation(
+        await this.dataValidationService.checkUserCohortValidation(
           req.body.userId,
           req.body.contextId,
         );
