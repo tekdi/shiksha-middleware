@@ -1,0 +1,75 @@
+name: Deploy to Middleware on PROD EKS Cluster
+on:
+  workflow_dispatch:
+env:
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_PROD }}
+  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME_PROD }}
+  AWS_REGION: ${{ secrets.AWS_REGION_NAME }}
+jobs:
+  build:
+    name: Deployment
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set short git commit SHA
+      id: commit
+      uses: prompt/actions-commit-hash@v2
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+        aws-region: ${{env.AWS_REGION}}
+    - name: Setup Node Env
+      uses: actions/setup-node@v3
+      with:
+        node-version: 21.1.0
+    - name: Copy .env file
+      env:
+       ENV_FILE_CONTENT: ${{ secrets.PROD_ENV }}
+      run: printf "%s" "$ENV_FILE_CONTENT" > manifest/configmap.yaml
+    - name: Show PWD and list content
+      run: |
+           echo "Current Working Directory: pwd"
+           pwd
+           ls -ltra
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+        aws-region: ${{ env.AWS_REGION }}
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
+        IMAGE_TAG: ${{ secrets.IMAGE_TAG_PROD }}
+      run: |
+        docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_PROD }} .
+        docker push ${{ secrets.ECR_REPOSITORY }}:${{ secrets.IMAGE_TAG_PROD }}
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME_PROD }} --region ${{ secrets.AWS_REGION_NAME }}
+    - name: Deploy to EKS
+      env:
+        ECR_REGISTRY: ${{ secrets.ECR_REPOSITORY }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG_PROD }}
+        
+      run: |
+        export ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
+        export IMAGE_TAG=${{ secrets.IMAGE_TAG_PROD }}
+        export ECR_IMAGE=${{ secrets.ECR_IMAGE_PROD }}
+        envsubst < manifest/middleware.yaml > manifest/middleware-updated.yaml
+        cat manifest/middleware-updated.yaml
+        rm -rf manifest/middleware-service.yaml
+        kubectl delete deployment middleware
+        kubectl delete service middleware
+        kubectl delete cm middleware-service-config
+        kubectl apply -f manifest/middleware-updated.yaml
+        kubectl apply -f manifest/configmap.yaml
+        sleep 10
+        kubectl get pods
+        kubectl get services
+        kubectl get deployment 
