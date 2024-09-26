@@ -37,7 +37,7 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
-      console.log('reqUrl', reqUrl);
+      //console.log('reqUrl', reqUrl);
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
@@ -105,10 +105,25 @@ export class MiddlewareServices {
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
     let forwardUrl = req.originalUrl;
+    console.log('forwardUrl', forwardUrl);
     //replace forwardUrl if redirectUrl present
-    if (apiList[forwardUrl]?.redirectUrl) {
-      forwardUrl = apiList[forwardUrl].redirectUrl;
+    //check for dynamic url
+    const originalUrl = req.originalUrl;
+    let reqUrl = originalUrl.split('?')[0];
+    const withPattern = this.matchUrl(reqUrl);
+    reqUrl = withPattern || reqUrl;
+    if (apiList[reqUrl]?.redirectUrl) {
+      if (reqUrl.includes(':')) {
+        console.log('reqUrl', reqUrl);
+        console.log('apiList[reqUrl].redirectUrl', apiList[reqUrl].redirectUrl);
+        const parts = forwardUrl.split('/');
+        const lastEndpoint = parts[parts.length - 1];
+        console.log(lastEndpoint);
+      } else {
+        forwardUrl = apiList[reqUrl].redirectUrl;
+      }
     }
+    console.log('forwardUrl', forwardUrl);
     const config = {
       method: req.method,
       url: `${microserviceUrl}${forwardUrl}`,
@@ -149,6 +164,16 @@ export class MiddlewareServices {
     ) {
       return this.configService.get('ASSESSMENT_SERVICE');
     }
+    if (url.startsWith('/api/channel')) {
+      return this.configService.get('CONTENT_SERVICE');
+    }
+    if (url.startsWith('/api/framework')) {
+      return this.configService.get('TAXONOMY_SERVICE');
+    }
+    if (url.startsWith('/action/composite')) {
+      return this.configService.get('SEARCH_SERVICE');
+    }
+
     if (url.startsWith('/api/v1/attendance')) {
       return this.configService.get('ATTENDANCE_SERVICE');
     }
@@ -301,7 +326,7 @@ export class MiddlewareServices {
     try {
       if (checksToExecute.length == 0) {
         const response = await this.forwardRequest(req, res);
-        console.log('response in middleware', response);
+        //console.log('response in middleware', response);
         return res.json(response);
       }
       await Promise.allSettled(checksToExecute).then(
