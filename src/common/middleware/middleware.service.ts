@@ -115,7 +115,6 @@ export class MiddlewareServices {
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
     let forwardUrl = req.originalUrl;
-    console.log('forwardUrl', forwardUrl);
     //replace forwardUrl if redirectUrl present
     //check for dynamic url
     const originalUrl = req.originalUrl;
@@ -124,16 +123,16 @@ export class MiddlewareServices {
     reqUrl = withPattern || reqUrl;
     if (apiList[reqUrl]?.redirectUrl) {
       if (reqUrl.includes(':')) {
-        console.log('reqUrl', reqUrl);
-        console.log('apiList[reqUrl].redirectUrl', apiList[reqUrl].redirectUrl);
-        const parts = forwardUrl.split('/');
-        const lastEndpoint = parts[parts.length - 1];
-        console.log(lastEndpoint);
+        const forwardUrlParts = forwardUrl.split('/');
+        const dynamicId = forwardUrlParts[forwardUrlParts.length - 1];
+        const redirectUrlParts = apiList[reqUrl].redirectUrl.split('/');
+        // Replace the last endpoint with the new string
+        redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
+        forwardUrl = redirectUrlParts.join('/');
       } else {
         forwardUrl = apiList[reqUrl].redirectUrl;
       }
     }
-    console.log('forwardUrl', forwardUrl);
     const config = {
       method: req.method,
       url: `${microserviceUrl}${forwardUrl}`,
@@ -165,7 +164,6 @@ export class MiddlewareServices {
       '/api/channel': 'CONTENT_SERVICE',
       '/api/framework': 'TAXONOMY_SERVICE',
       '/action/composite': 'SEARCH_SERVICE',
-
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
