@@ -63,6 +63,8 @@ const rolesGroup = {
   team_leader: ['team_leader'],
   teacher: ['teacher'],
   student: ['student'],
+  restricted: ['admin', 'team_leader'],
+  content_restricted: ['admin', 'team_leader'],
   admin_team_leader: ['admin', 'team_leader'],
   admin_team_leader_teacher: ['admin', 'teacher', 'team_leader'],
   team_leader_teacher: ['teacher', 'team_leader'],
@@ -73,16 +75,19 @@ const createPrivilegeGroup = (entity: string) => {
     read: [`${entity}.read`],
     update: [`${entity}.update`],
     delete: [`${entity}.delete`],
+    review: [`${entity}.review`],
+    approve: [`${entity}.approve`],
   };
 };
 const privilegeGroup = {
   tracking: createPrivilegeGroup('tracking'),
+  content: createPrivilegeGroup('content'),
   users: createPrivilegeGroup('users'),
   cohort: createPrivilegeGroup('cohort'),
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
 };
-const createRouteObject = (methods: any) => {
+const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
   const methodObject = allMethods.reduce((acc, method) => {
@@ -100,6 +105,7 @@ const createRouteObject = (methods: any) => {
   return {
     method: allMethods,
     ...methodObject,
+    redirectUrl, // Optionally include redirectUrl if it's passed
   };
 };
 
@@ -484,6 +490,104 @@ export const apiList = {
     },
   }),
 
+  //sunbird knowlg and inQuiry service
+  //public
+  '/api/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
+  '/action/questionset/v2/read/:identifier': createRouteObject(
+    { get: {} },
+    '/questionset/v5/read/:identifier',
+  ),
+  '/action/questionset/v2/hierarchy/:identifier': createRouteObject(
+    { get: {} },
+    '/questionset/v5/hierarchy/:identifier',
+  ),
+  '/action/questionset/v2/comment/read/:identifier': createRouteObject(
+    { get: {} },
+    '/questionset/v5/comment/read/:identifier',
+  ),
+  '/api/channel/v1/read/:identifier': createRouteObject(
+    { get: {} },
+    '/channel/v3/read/:identifier',
+  ),
+  '/api/framework/v1/read/:identifier': createRouteObject(
+    { get: {} },
+    '/framework/v3/read/:identifier',
+  ),
+  '/action/composite/v3/search': createRouteObject({ post: {} }, '/v3/search'),
+  //secure
+  '/action/questionset/v2/create': createRouteObject(
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/create',
+  ),
+  '/action/questionset/v2/update/:identifier': createRouteObject(
+    {
+      patch: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/update/:identifier',
+  ),
+  '/action/questionset/v2/review/:identifier': createRouteObject(
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.review,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/review/:identifier',
+  ),
+  '/action/questionset/v2/publish/:identifier': createRouteObject(
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.approve,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/publish/:identifier',
+  ),
+  '/action/questionset/v2/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/retire/:identifier',
+  ),
+  '/action/questionset/v2/hierarchy/update': createRouteObject(
+    {
+      patch: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/hierarchy/update',
+  ),
+  '/action/questionset/v2/reject/:identifier': createRouteObject(
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/reject/:identifier',
+  ),
+  '/action/questionset/v2/comment/update/:identifier': createRouteObject(
+    {
+      patch: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/comment/update/:identifier',
+  ),
+
   //attendance service
   '/api/v1/attendance': createRouteObject({
     post: {
@@ -510,10 +614,20 @@ export const apiList = {
     },
   }),
 };
+console.log('api list', JSON.stringify(apiList, null, 2));
 export const urlPatterns = Object.keys(apiList);
 
 //add public api
-export const publicAPI = ['/user/v1/auth/login'];
+export const publicAPI = [
+  '/user/v1/auth/login',
+  '/api/question/v2/list',
+  '/action/questionset/v2/read/:identifier',
+  '/action/questionset/v2/hierarchy/:identifier',
+  '/action/questionset/v2/comment/read/:identifier',
+  '/api/channel/v1/read/:identifier',
+  '/api/framework/v1/read/:identifier',
+  '/action/composite/v3/search',
+];
 
 function convertToRegex(pattern) {
   const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');

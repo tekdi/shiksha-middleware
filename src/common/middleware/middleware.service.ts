@@ -47,10 +47,10 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
-
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
+          console.log('not whitelist');
           throw new HttpException(
             'SHIKSHA_API_WHITELIST: URL not whitelisted',
             HttpStatus.FORBIDDEN,
@@ -114,9 +114,28 @@ export class MiddlewareServices {
 
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
+    let forwardUrl = req.originalUrl;
+    //replace forwardUrl if redirectUrl present
+    //check for dynamic url
+    const originalUrl = req.originalUrl;
+    let reqUrl = originalUrl.split('?')[0];
+    const withPattern = this.matchUrl(reqUrl);
+    reqUrl = withPattern || reqUrl;
+    if (apiList[reqUrl]?.redirectUrl) {
+      if (reqUrl.includes(':')) {
+        const forwardUrlParts = forwardUrl.split('/');
+        const dynamicId = forwardUrlParts[forwardUrlParts.length - 1];
+        const redirectUrlParts = apiList[reqUrl].redirectUrl.split('/');
+        // Replace the last endpoint with the new string
+        redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
+        forwardUrl = redirectUrlParts.join('/');
+      } else {
+        forwardUrl = apiList[reqUrl].redirectUrl;
+      }
+    }
     const config = {
       method: req.method,
-      url: `${microserviceUrl}${req.originalUrl}`,
+      url: `${microserviceUrl}${forwardUrl}`,
       headers: req.headers,
       data: req.body,
     };
@@ -138,6 +157,13 @@ export class MiddlewareServices {
       '/queue': 'NOTIFICATION_SERVICE',
       '/v1/tracking': 'TRACKING_SERVICE',
       '/api/v1/attendance': 'ATTENDANCE_SERVICE',
+
+      //sunbird knowlg and inquiry
+      '/api/question': 'ASSESSMENT_SERVICE',
+      '/action/questionset': 'ASSESSMENT_SERVICE',
+      '/api/channel': 'CONTENT_SERVICE',
+      '/api/framework': 'TAXONOMY_SERVICE',
+      '/action/composite': 'SEARCH_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
@@ -298,7 +324,7 @@ export class MiddlewareServices {
     try {
       if (checksToExecute.length == 0) {
         const response = await this.forwardRequest(req, res);
-        console.log('response in middleware', response);
+        //console.log('response in middleware', response);
         return res.json(response);
       }
       await Promise.allSettled(checksToExecute).then(
