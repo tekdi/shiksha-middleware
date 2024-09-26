@@ -1,5 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { apiList, regexPatterns, urlPatterns, publicAPI } from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -19,7 +24,7 @@ export class MiddlewareServices {
     private readonly middlewareLogger: MiddlewareLogger,
     private permissionService: PermissionsService,
     private configService: ConfigService,
-    private dataValidationervice: DataValidationService,
+    private dataValidationService: DataValidationService,
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -30,6 +35,11 @@ export class MiddlewareServices {
       reqUrl = withPattern || reqUrl;
       //check for public api
       if (!publicAPI.includes(reqUrl)) {
+        //check for tenantId
+        const tenantId: any = req.headers['tenantid'];
+        if (!tenantId?.trim()) {
+          throw new BadRequestException('Tenant id not found');
+        }
         // Basic check if user is a valid keyCloack user, if tenant ID present in the request
         const context = new ExecutionContextHost([req, res, next]);
         // Create an instance of the JwtAuthGuard
@@ -37,6 +47,7 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
+
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
@@ -45,13 +56,15 @@ export class MiddlewareServices {
             HttpStatus.FORBIDDEN,
           );
         }
+        console.log(
+          'List[reqUrl][req.method.toLowerCase()]: ',
+          apiList[reqUrl][req.method.toLowerCase()],
+        );
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
         //console.log('req', req);
         apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
           (CHECK) => {
-            //console.log('reqUrl', reqUrl);
-            //console.log('CHECK', CHECK);
             checksToExecute.push(
               new Promise((res, rej) => {
                 if (
@@ -85,7 +98,6 @@ export class MiddlewareServices {
         );
       }
     } catch (error) {
-      //console.log(error);
       this.middlewareLogger.error(
         `Error in middleware: ${error.message}`,
         error,
@@ -116,27 +128,27 @@ export class MiddlewareServices {
     );
   }
 
-  getMicroserviceUrl(url: string): string {
-    // Determine the microservice URL based on the requested endpoint
-    if (url.startsWith('/user')) {
-      return this.configService.get('USER_SERVICE');
+  getMicroserviceUrl(url: string): string | undefined {
+    // Mapping of URL prefixes to their corresponding service configuration keys
+    const serviceMapping: { [key: string]: string } = {
+      '/user': 'USER_SERVICE',
+      '/event-service': 'EVENT_SERVICE',
+      '/notification-templates': 'NOTIFICATION_SERVICE',
+      '/notification': 'NOTIFICATION_SERVICE',
+      '/queue': 'NOTIFICATION_SERVICE',
+      '/v1/tracking': 'TRACKING_SERVICE',
+      '/api/v1/attendance': 'ATTENDANCE_SERVICE',
+    };
+
+    // Iterate over the mapping to find the correct service based on the URL prefix
+    for (const [prefix, serviceKey] of Object.entries(serviceMapping)) {
+      if (url.startsWith(prefix)) {
+        return this.configService.get(serviceKey);
+      }
     }
-    if (url.startsWith('/event-service')) {
-      return this.configService.get('EVENT_SERVICE');
-    }
-    if (
-      url.startsWith('/notification-templates') ||
-      url.startsWith('/notification') ||
-      url.startsWith('/queue')
-    ) {
-      return this.configService.get('NOTIFICATION_SERVICE');
-    }
-    if (url.startsWith('/v1/tracking')) {
-      return this.configService.get('TRACKING_SERVICE');
-    }
-    if (url.startsWith('/api/v1/attendance')) {
-      return this.configService.get('ATTENDANCE_SERVICE');
-    }
+
+    // Return undefined if no matching service is found
+    return undefined;
   }
 
   matchUrl(url) {
@@ -216,7 +228,7 @@ export class MiddlewareServices {
      */
     DATA_TENANT: async (resolve, reject, req) => {
       const isValidUserTenantRelation =
-        await this.dataValidationervice.checkUserTenantValidation(
+        await this.dataValidationService.checkUserTenantValidation(
           req.body.userId,
           req.headers['tenantid'],
         );
@@ -237,7 +249,7 @@ export class MiddlewareServices {
      */
     DATA_CONTEXT: async (resolve, reject, req) => {
       const isValidUserContextRelation =
-        await this.dataValidationervice.checkUserCohortValidation(
+        await this.dataValidationService.checkUserCohortValidation(
           req.body.userId,
           req.body.contextId,
         );
@@ -258,7 +270,7 @@ export class MiddlewareServices {
      */
     DATA_TENANT_CONTEXT: async (resolve, reject, req) => {
       const isValidUserContextRelation =
-        await this.dataValidationervice.checkUserCohortValidation(
+        await this.dataValidationService.checkUserCohortValidation(
           req.body.userId,
           req.body.contextId,
         );
