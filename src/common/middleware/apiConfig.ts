@@ -501,10 +501,7 @@ export const apiList = {
   // added update one before any identifier
   '/action/questionset/v2/hierarchy/update': createRouteObject(
     {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
+      patch: {},
     },
     '/questionset/v5/hierarchy/update',
   ),
@@ -634,6 +631,7 @@ export const publicAPI = [
   '/api/framework/v1/read/:identifier',
   '/action/composite/v3/search',
   '/action/object/category/definition/v1/read',
+  '/action/questionset/v2/hierarchy/update',
 ];
 
 function convertToRegex(pattern) {
