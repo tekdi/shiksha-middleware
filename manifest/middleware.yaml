@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: "Always"
         name: middleware-pratham
         ports:
-        - containerPort: 3000
+        - containerPort: 4000
         envFrom:
         - configMapRef:
             name: middleware-service-config
@@ -39,7 +39,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 3000
+  - port: 4000
     protocol: TCP
   selector:
     app: middleware
