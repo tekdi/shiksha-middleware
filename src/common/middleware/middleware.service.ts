@@ -129,14 +129,11 @@ export class MiddlewareServices {
         redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
         forwardUrl = redirectUrlParts.join('/');
       } else {
-        forwardUrl =
-          apiList[reqUrl].redirectUrl +
-          (originalUrl.split('?')[1] ? '?' + originalUrl.split('?')[1] : '');
+        forwardUrl = apiList[reqUrl].redirectUrl;
       }
       if (temp[1]) {
         forwardUrl = forwardUrl + '?' + temp[1];
       }
-      console.log('forwardUrl: ', forwardUrl);
     }
     const config = {
       method: req.method,
