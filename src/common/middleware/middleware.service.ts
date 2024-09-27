@@ -50,7 +50,6 @@ export class MiddlewareServices {
       // check API is whitelisted
       if (apiList[reqUrl]) {
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
-          console.log('not whitelist');
           throw new HttpException(
             'SHIKSHA_API_WHITELIST: URL not whitelisted',
             HttpStatus.FORBIDDEN,
@@ -62,7 +61,6 @@ export class MiddlewareServices {
         );
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
-        //console.log('req', req);
         apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
           (CHECK) => {
             checksToExecute.push(
@@ -118,7 +116,8 @@ export class MiddlewareServices {
     //replace forwardUrl if redirectUrl present
     //check for dynamic url
     const originalUrl = req.originalUrl;
-    let reqUrl = originalUrl.split('?')[0];
+    let temp = originalUrl.split('?');
+    let reqUrl = temp[0];
     const withPattern = this.matchUrl(reqUrl);
     reqUrl = withPattern || reqUrl;
     if (apiList[reqUrl]?.redirectUrl) {
@@ -131,6 +130,9 @@ export class MiddlewareServices {
         forwardUrl = redirectUrlParts.join('/');
       } else {
         forwardUrl = apiList[reqUrl].redirectUrl;
+      }
+      if (temp[1]) {
+        forwardUrl = forwardUrl + '?' + temp[1];
       }
     }
     const config = {
@@ -164,6 +166,7 @@ export class MiddlewareServices {
       '/api/channel': 'CONTENT_SERVICE',
       '/api/framework': 'TAXONOMY_SERVICE',
       '/action/composite': 'SEARCH_SERVICE',
+      '/action/object': 'TAXONOMY_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
@@ -324,7 +327,6 @@ export class MiddlewareServices {
     try {
       if (checksToExecute.length == 0) {
         const response = await this.forwardRequest(req, res);
-        //console.log('response in middleware', response);
         return res.json(response);
       }
       await Promise.allSettled(checksToExecute).then(

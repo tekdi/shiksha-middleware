@@ -492,10 +492,21 @@ export const apiList = {
 
   //sunbird knowlg and inQuiry service
   //public
+
   '/api/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
   '/action/questionset/v2/read/:identifier': createRouteObject(
     { get: {} },
     '/questionset/v5/read/:identifier',
+  ),
+  // added update one before any identifier
+  '/action/questionset/v2/hierarchy/update': createRouteObject(
+    {
+      patch: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/hierarchy/update',
   ),
   '/action/questionset/v2/hierarchy/:identifier': createRouteObject(
     { get: {} },
@@ -514,6 +525,10 @@ export const apiList = {
     '/framework/v3/read/:identifier',
   ),
   '/action/composite/v3/search': createRouteObject({ post: {} }, '/v3/search'),
+  '/action/object/category/definition/v1/read': createRouteObject(
+    { post: {} },
+    '/object/category/definition/v4/read',
+  ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
     {
@@ -560,15 +575,7 @@ export const apiList = {
     },
     '/questionset/v5/retire/:identifier',
   ),
-  '/action/questionset/v2/hierarchy/update': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/questionset/v5/hierarchy/update',
-  ),
+
   '/action/questionset/v2/reject/:identifier': createRouteObject(
     {
       post: {
@@ -614,7 +621,6 @@ export const apiList = {
     },
   }),
 };
-console.log('api list', JSON.stringify(apiList, null, 2));
 export const urlPatterns = Object.keys(apiList);
 
 //add public api
@@ -627,6 +633,7 @@ export const publicAPI = [
   '/api/channel/v1/read/:identifier',
   '/api/framework/v1/read/:identifier',
   '/action/composite/v3/search',
+  '/action/object/category/definition/v1/read',
 ];
 
 function convertToRegex(pattern) {
