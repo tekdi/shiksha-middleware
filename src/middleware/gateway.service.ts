@@ -17,6 +17,8 @@ export class GatewayService {
       'content-type': 'application/json',
       authorization: oheaders['authorization'],
     };
+    if (oheaders['x-channel-id'])
+      newheaders['x-channel-id'] = oheaders['x-channel-id'];
     try {
       const response = await axios({
         method,

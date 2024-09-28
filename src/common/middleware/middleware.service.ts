@@ -162,6 +162,7 @@ export class MiddlewareServices {
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
+      '/action/question': 'ASSESSMENT_SERVICE',
       '/action/questionset': 'ASSESSMENT_SERVICE',
       '/api/channel': 'CONTENT_SERVICE',
       '/api/framework': 'TAXONOMY_SERVICE',

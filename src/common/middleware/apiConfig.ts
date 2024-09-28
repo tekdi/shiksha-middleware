@@ -537,6 +537,14 @@ export const apiList = {
     { post: {} },
     '/asset/v4/upload/url/:identifier',
   ),
+  '/action/asset/v1/upload/:identifier': createRouteObject(
+    { post: {} },
+    '/asset/v4/upload/identifier',
+  ),
+  '/action/question/v2/read/:identifier': createRouteObject(
+    { get: {} },
+    '/question/v5/read/:identifier',
+  ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
     {
@@ -642,6 +650,7 @@ export const publicAPI = [
   '/api/framework/v1/read/:identifier',
   '/action/composite/v3/search',
   '/action/object/category/definition/v1/read',
+  '/action/question/v2/read/:identifier',
 ];
 
 function convertToRegex(pattern) {
