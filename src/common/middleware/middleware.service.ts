@@ -112,7 +112,7 @@ export class MiddlewareServices {
 
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
-    let forwardUrl = req.originalUrl;
+    let forwardUrl = req.originalUrl.split('?')[0];
     //replace forwardUrl if redirectUrl present
     //check for dynamic url
     const originalUrl = req.originalUrl;
@@ -167,6 +167,8 @@ export class MiddlewareServices {
       '/api/framework': 'TAXONOMY_SERVICE',
       '/action/composite': 'SEARCH_SERVICE',
       '/action/object': 'TAXONOMY_SERVICE',
+      '/action/asset': 'CONTENT_SERVICE',
+      '/action/content': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
