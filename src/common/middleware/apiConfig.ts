@@ -501,7 +501,10 @@ export const apiList = {
   // added update one before any identifier
   '/action/questionset/v2/hierarchy/update': createRouteObject(
     {
-      patch: {},
+      patch: {
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
     },
     '/questionset/v5/hierarchy/update',
   ),
