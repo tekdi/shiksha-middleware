@@ -526,6 +526,14 @@ export const apiList = {
     { post: {} },
     '/object/category/definition/v4/read',
   ),
+  '/action/asset/v1/create': createRouteObject(
+    { post: {} },
+    '/asset/v4/create',
+  ),
+  '/action/content/v3/upload/url/:identifier': createRouteObject(
+    { post: {} },
+    '/asset/v4/upload/url/:identifier',
+  ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
     {
