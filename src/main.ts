@@ -25,14 +25,20 @@ async function bootstrap() {
   }
 
   const corsOptions = {
-    origin: corsOriginList, // Array of allowed origins
+    origin: (origin, callback) => {
+      if (corsOriginList.includes(origin) || corsOriginList[0] === '*') {
+        callback(null, true);
+      } else {
+        callback(new ForbiddenException('Origin not allowed'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Specify allowed methods
     credentials: true, // Allow credentials (cookies, authorization headers)
   };
 
   const config = new DocumentBuilder()
     .setTitle('Middleware  APIs')
-    .setDescription('The Middlware service')
+    .setDescription('The Middleware service')
     .setVersion('1.0')
     .addApiKey(
       { type: 'apiKey', name: 'Authorization', in: 'header' },
@@ -41,22 +47,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger-docs', app, document);
-
-  app.use((req, res, next) => {
-    const origin = req.headers.origin;
-
-    if (corsOriginList.includes(origin) || corsOriginList[0] === '*') {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-      throw new ForbiddenException('Origin not allowed');
-    }
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.header(
-      'Access-Control-Allow-Methods',
-      'GET,HEAD,PUT,PATCH,POST,DELETE',
-    );
-    next();
-  });
 
   app.enableCors(corsOptions);
   app.use(helmet());
