@@ -4,17 +4,21 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
-import { InternalServerErrorException } from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
 
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
 
   const corsOriginList = configService
     .get<string>('CORS_ORIGIN_LIST')
     ?.split(',');
+
+  if (!corsOriginList || corsOriginList.length === 0) {
+    throw new Error('CORS_ORIGIN_LIST is not defined or empty');
+  }
 
   if (corsOriginList[0] !== '*' && !validateCorsOriginList(corsOriginList)) {
     throw new Error('Invalid CORS_ORIGIN_LIST');
@@ -44,7 +48,7 @@ async function bootstrap() {
     if (corsOriginList.includes(origin) || corsOriginList[0] === '*') {
       res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
-      throw new InternalServerErrorException('Invalid CORS_ORIGIN');
+      throw new ForbiddenException('Origin not allowed');
     }
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.header(
@@ -64,7 +68,12 @@ async function bootstrap() {
 
 function validateCorsOriginList(corsOriginList: string[]): boolean {
   return corsOriginList.every((origin) => {
-    return origin.includes('http://') || origin.includes('https://');
+    try {
+      new URL(origin);
+      return true;
+    } catch (error) {
+      return false;
+    }
   });
 }
 
