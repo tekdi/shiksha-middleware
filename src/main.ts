@@ -16,8 +16,6 @@ async function bootstrap() {
     .get<string>('CORS_ORIGIN_LIST')
     ?.split(',');
 
-  console.log(corsOriginList, 'sda');
-
   if (corsOriginList[0] !== '*' && !validateCorsOriginList(corsOriginList)) {
     throw new Error('Invalid CORS_ORIGIN_LIST');
   }
