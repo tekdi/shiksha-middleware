@@ -17,14 +17,42 @@ export class GatewayService {
       'content-type': 'application/json',
       authorization: oheaders['authorization'],
     };
-    if (oheaders['x-channel-id'])
+    if (oheaders['x-channel-id']) {
       newheaders['x-channel-id'] = oheaders['x-channel-id'];
+    }
     try {
       const response = await axios({
         method,
         url,
         data: body,
         headers: newheaders,
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return error.response.data;
+      } else if (error.request) {
+        // No response was received
+        return {
+          result: {},
+          params: {
+            err: 'Internal server error',
+            errmsg: 'Internal server error',
+            status: 'failed',
+          },
+        };
+      } else {
+        // Error occurred in setting up the request
+        return error.message;
+      }
+    }
+  }
+  async handleRequestForMultipartData(url: string, formData: any) {
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          ...formData.getHeaders(),
+        },
       });
       return response.data;
     } catch (error) {
