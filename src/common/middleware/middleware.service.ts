@@ -15,6 +15,9 @@ import { PermissionsService } from '../service/permissions.service';
 import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
+import * as multer from 'multer';
+import * as FormData from 'form-data';
+const upload = multer();
 
 @Injectable()
 export class MiddlewareServices {
@@ -135,18 +138,50 @@ export class MiddlewareServices {
         forwardUrl = forwardUrl + '?' + temp[1];
       }
     }
-    const config = {
-      method: req.method,
-      url: `${microserviceUrl}${forwardUrl}`,
-      headers: req.headers,
-      data: req.body,
-    };
-    return await this.gatewayService.handleRequest(
-      config.method,
-      config.url,
-      config.data,
-      config.headers,
-    );
+
+    const url = `${microserviceUrl}${forwardUrl}`;
+    //check for multipart/formdata
+    if (req.is('multipart/form-data')) {
+      // Wrap the Multer upload in a Promise
+      const uploadFiles = () => {
+        return new Promise((resolve, reject) => {
+          upload.any()(req, res, (err) => {
+            if (err) {
+              return reject(
+                new BadRequestException('Error processing form data.'),
+              );
+            }
+            resolve(req.files);
+          });
+        });
+      };
+      // Await the file upload
+      const files: any = await uploadFiles();
+
+      // Check if files are present
+      if (files && files.length > 0) {
+        const file = files[0]; // first file
+
+        // Prepare FormData for Axios call
+        const formData = new FormData();
+        formData.append('file', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        });
+
+        return await this.gatewayService.handleRequestForMultipartData(
+          url,
+          formData,
+        );
+      }
+    } else {
+      return await this.gatewayService.handleRequest(
+        req.method,
+        url,
+        req.body,
+        req.headers,
+      );
+    }
   }
 
   getMicroserviceUrl(url: string): string | undefined {

@@ -533,7 +533,7 @@ export const apiList = {
     { post: {} },
     '/asset/v4/create',
   ),
-  '/action/content/v3/upload/url/:identifier': createRouteObject(
+  '/action/asset/v1/upload/url/:identifier': createRouteObject(
     { post: {} },
     '/asset/v4/upload/url/:identifier',
   ),
@@ -544,6 +544,51 @@ export const apiList = {
   '/action/question/v2/read/:identifier': createRouteObject(
     { get: {} },
     '/question/v5/read/:identifier',
+  ),
+  '/action/asset/v1/read/:identifier': createRouteObject(
+    { get: {} },
+    '/asset/v4/read/:identifier',
+  ),
+  '/action/content/v3/upload/url/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v3/upload/url/:identifier',
+  ),
+  '/action/content/v3/create': createRouteObject(
+    { post: {} },
+    '/content/v4/create',
+  ),
+  '/action/content/v3/upload/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/upload/:identifier',
+  ),
+  '/action/content/v3/read/:identifier': createRouteObject(
+    { get: {} },
+    '/content/v4/read/:identifier',
+  ),
+  '/action/content/v3/update/:identifier': createRouteObject(
+    { patch: {} },
+    '/content/v4/update/:identifier',
+  ),
+  '/action/content/v3/review/:identifier': createRouteObject({ post: {} }),
+  '/api/content/v1/read/:identifier': createRouteObject(
+    { get: {} },
+    '/content/v4/read/:identifier',
+  ),
+  '/content/content/v1/reject/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/reject/:identifier',
+  ),
+  '/content/content/v1/publish/:identifier': createRouteObject(
+    { post: {} },
+    'content/v4/publish/:identifier',
+  ),
+  '/action/content/v1/reject/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/reject/:identifier',
+  ),
+  '/action/content/v1/publish/:identifier': createRouteObject(
+    { post: {} },
+    'content/v4/publish/:identifier',
   ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
