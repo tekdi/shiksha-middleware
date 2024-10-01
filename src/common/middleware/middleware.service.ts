@@ -152,8 +152,16 @@ export class MiddlewareServices {
         return new Promise((resolve, reject) => {
           upload.any()(req, res, (err) => {
             if (err) {
+              // Check if the error is due to file size limit
+              if (err instanceof multer.MulterError) {
+                return reject(
+                  new BadRequestException(`File too large: ${err.message}`),
+                );
+              }
               return reject(
-                new BadRequestException('Error processing form data.'),
+                new BadRequestException(
+                  'Error processing form data: ' + err.message,
+                ),
               );
             }
             resolve(req.files);
