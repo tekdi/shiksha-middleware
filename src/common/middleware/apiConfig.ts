@@ -487,7 +487,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
-  // todo-service
+  // todos
   '/todo/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
