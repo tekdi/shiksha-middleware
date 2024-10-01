@@ -86,6 +86,7 @@ const privilegeGroup = {
   cohort: createPrivilegeGroup('cohort'),
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
+  event: createPrivilegeGroup('event'),
 };
 const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
@@ -328,23 +329,20 @@ export const apiList = {
   '/event-service/event/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
   '/event-service/event/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.event.read,
     },
   }),
   '/event-service/event/v1/:id': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
     patch: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
-    delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
+      PRIVILEGE_CHECK: privilegeGroup.event.update,
+    }
   }),
   //event-attendance
   '/event-service/attendees/v1/create': createRouteObject({
@@ -370,7 +368,7 @@ export const apiList = {
   //notification templates
   '/notification-templates': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher
     },
   }),
   '/notification-templates/list': createRouteObject({
@@ -489,6 +487,29 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
+  // todo service
+  '/todo/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+  '/todo/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/todo/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+
 
   //sunbird knowlg and inQuiry service
   //public
