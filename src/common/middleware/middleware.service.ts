@@ -17,7 +17,12 @@ import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
-const upload = multer();
+// Set up Multer with file size limit (e.g., 2 MB)
+const upload = multer({
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2 MB limit
+  },
+});
 
 @Injectable()
 export class MiddlewareServices {
