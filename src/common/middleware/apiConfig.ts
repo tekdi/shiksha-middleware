@@ -511,7 +511,7 @@ export const apiList = {
     '/questionset/v5/hierarchy/update',
   ),
   '/action/questionset/v2/hierarchy/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/questionset/v5/hierarchy/:identifier',
   ),
   '/action/questionset/v2/comment/read/:identifier': createRouteObject(
