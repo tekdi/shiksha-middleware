@@ -89,7 +89,7 @@ const privilegeGroup = {
   attendance: createPrivilegeGroup('attendance'),
 };
 //added common values
-const get_with_no_check = { get: {} };
+//const get_with_no_check = { get: {} };
 const content_restricted_content_create = {
   post: {
     PRIVILEGE_CHECK: privilegeGroup.content.create,
@@ -125,7 +125,7 @@ export const apiList = {
   }),
 
   //user-service
-  '/user/v1/auth': createRouteObject(get_with_no_check),
+  '/user/v1/auth': createRouteObject({ get: {} }),
   '/user/v1/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
@@ -515,31 +515,31 @@ export const apiList = {
     '/questionset/v5/hierarchy/:identifier',
   ),
   '/action/questionset/v2/comment/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/questionset/v5/comment/read/:identifier',
   ),
   '/api/channel/v1/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/channel/v3/read/:identifier',
   ),
   '/api/framework/v1/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/framework/v3/read/:identifier',
   ),
   '/action/question/v2/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/question/v5/read/:identifier',
   ),
   '/action/asset/v1/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/asset/v4/read/:identifier',
   ),
   '/action/content/v3/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/content/v3/read/:identifier',
   ),
   '/api/content/v1/read/:identifier': createRouteObject(
-    get_with_no_check,
+    { get: {} },
     '/content/v3/read/:identifier',
   ),
   //secure
