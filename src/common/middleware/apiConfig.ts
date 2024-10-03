@@ -57,6 +57,7 @@ sample output from above input
 }
 ``
  */
+
 const rolesGroup = {
   common: ['admin', 'team_leader', 'teacher', 'student'],
   admin: ['admin'],
@@ -87,6 +88,14 @@ const privilegeGroup = {
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
 };
+//added common values
+const get_with_no_check = { get: {} };
+const content_restricted_content_create = {
+  post: {
+    PRIVILEGE_CHECK: privilegeGroup.content.create,
+    ROLE_CHECK: rolesGroup.content_restricted,
+  },
+};
 const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
@@ -116,9 +125,7 @@ export const apiList = {
   }),
 
   //user-service
-  '/user/v1/auth': createRouteObject({
-    get: {},
-  }),
+  '/user/v1/auth': createRouteObject(get_with_no_check),
   '/user/v1/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
@@ -318,15 +325,6 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
-  //auth - public // check
-  // '/user/v1/auth/login': createRouteObject({
-  //   post: {
-  //     checksNeeded: [],
-  //   },
-  //   post: {
-  //     checksNeeded: [],
-  //   },
-  // },
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
@@ -513,45 +511,40 @@ export const apiList = {
     '/questionset/v5/hierarchy/update',
   ),
   '/action/questionset/v2/hierarchy/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/questionset/v5/hierarchy/:identifier',
   ),
   '/action/questionset/v2/comment/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/questionset/v5/comment/read/:identifier',
   ),
   '/api/channel/v1/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/channel/v3/read/:identifier',
   ),
   '/api/framework/v1/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/framework/v3/read/:identifier',
   ),
   '/action/question/v2/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/question/v5/read/:identifier',
   ),
   '/action/asset/v1/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/asset/v4/read/:identifier',
   ),
   '/action/content/v3/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/content/v4/read/:identifier',
   ),
   '/api/content/v1/read/:identifier': createRouteObject(
-    { get: {} },
+    get_with_no_check,
     '/content/v4/read/:identifier',
   ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/questionset/v5/create',
   ),
   '/action/questionset/v2/update/:identifier': createRouteObject(
@@ -629,57 +622,27 @@ export const apiList = {
     '/object/category/definition/v4/read',
   ),
   '/action/asset/v1/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/asset/v4/create',
   ),
   '/action/asset/v1/upload/url/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/asset/v4/upload/url/:identifier',
   ),
   '/action/asset/v1/upload/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/asset/v4/upload/identifier',
   ),
   '/action/content/v3/upload/url/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/content/v3/upload/url/:identifier',
   ),
   '/action/content/v3/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/content/v4/create',
   ),
   '/action/content/v3/upload/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
+    content_restricted_content_create,
     '/content/v4/upload/:identifier',
   ),
   '/action/content/v3/update/:identifier': createRouteObject(
