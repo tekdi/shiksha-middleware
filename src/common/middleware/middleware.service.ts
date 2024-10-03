@@ -151,7 +151,6 @@ export class MiddlewareServices {
       const uploadFiles = () => {
         return new Promise((resolve, reject) => {
           upload.any()(req, res, (err) => {
-            console.log('req: ', typeof req.body);
             if (err) {
               // Check if the error is due to file size limit
               if (err instanceof multer.MulterError) {
@@ -165,33 +164,24 @@ export class MiddlewareServices {
                 ),
               );
             }
-            const reqObject = {
-              files: req.files,
-              data: req.body,
-            };
-            resolve(reqObject);
+            resolve(req.files);
           });
         });
       };
-
       // Await the file upload
-      const reqObject: any = await uploadFiles();
-      const formData = new FormData();
-      // Prepare FormData for Axios call
-      if (reqObject && Object.keys(reqObject).length > 0) {
-        // Check if files are present
-        if (reqObject.files && reqObject.files.length > 0) {
-          const file = reqObject.files[0]; // first file
-          formData.append('file', file.buffer, {
-            filename: file.originalname,
-            contentType: file.mimetype,
-          });
-        }
-        if (reqObject.data) {
-          for (const key in reqObject.data) {
-            formData.append(key, reqObject.data[key]);
-          }
-        }
+      const files: any = await uploadFiles();
+
+      // Check if files are present
+      if (files && files.length > 0) {
+        const file = files[0]; // first file
+
+        // Prepare FormData for Axios call
+        const formData = new FormData();
+        formData.append('file', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        });
+
         return await this.gatewayService.handleRequestForMultipartData(
           url,
           formData,
@@ -228,7 +218,6 @@ export class MiddlewareServices {
       '/action/object': 'TAXONOMY_SERVICE',
       '/action/asset': 'CONTENT_SERVICE',
       '/action/content': 'CONTENT_SERVICE',
-      '/api/content': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
