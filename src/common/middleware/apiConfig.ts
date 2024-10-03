@@ -631,7 +631,7 @@ export const apiList = {
   ),
   '/action/asset/v1/upload/:identifier': createRouteObject(
     content_restricted_content_create,
-    '/asset/v4/upload/identifier',
+    '/asset/v4/upload/:identifier',
   ),
   '/action/content/v3/upload/url/:identifier': createRouteObject(
     content_restricted_content_create,
