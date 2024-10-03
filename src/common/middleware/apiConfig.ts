@@ -57,7 +57,6 @@ sample output from above input
 }
 ``
  */
-
 const rolesGroup = {
   common: ['admin', 'team_leader', 'teacher', 'student'],
   admin: ['admin'],
@@ -88,14 +87,6 @@ const privilegeGroup = {
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
 };
-//added common values
-//const get_with_no_check = { get: {} };
-const content_restricted_content_create = {
-  post: {
-    PRIVILEGE_CHECK: privilegeGroup.content.create,
-    ROLE_CHECK: rolesGroup.content_restricted,
-  },
-};
 const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
@@ -123,9 +114,7 @@ export const apiList = {
   '/user/v1/auth/login': createRouteObject({
     post: {},
   }),
-
   //user-service
-  '/user/v1/auth': createRouteObject({ get: {} }),
   '/user/v1/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
@@ -325,6 +314,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
+  //auth - public // check
+  // '/user/v1/auth/login': createRouteObject({
+  //   post: {
+  //     checksNeeded: [],
+  //   },
+  //   post: {
+  //     checksNeeded: [],
+  //   },
+  // },
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
@@ -526,6 +524,23 @@ export const apiList = {
     { get: {} },
     '/framework/v3/read/:identifier',
   ),
+  '/action/composite/v3/search': createRouteObject({ post: {} }, '/v3/search'),
+  '/action/object/category/definition/v1/read': createRouteObject(
+    { post: {} },
+    '/object/category/definition/v4/read',
+  ),
+  '/action/asset/v1/create': createRouteObject(
+    { post: {} },
+    '/asset/v4/create',
+  ),
+  '/action/asset/v1/upload/url/:identifier': createRouteObject(
+    { post: {} },
+    '/asset/v4/upload/url/:identifier',
+  ),
+  '/action/asset/v1/upload/:identifier': createRouteObject(
+    { post: {} },
+    '/asset/v4/upload/identifier',
+  ),
   '/action/question/v2/read/:identifier': createRouteObject(
     { get: {} },
     '/question/v5/read/:identifier',
@@ -534,17 +549,55 @@ export const apiList = {
     { get: {} },
     '/asset/v4/read/:identifier',
   ),
+  '/action/content/v3/upload/url/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v3/upload/url/:identifier',
+  ),
+  '/action/content/v3/create': createRouteObject(
+    { post: {} },
+    '/content/v4/create',
+  ),
+  '/action/content/v3/upload/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/upload/:identifier',
+  ),
   '/action/content/v3/read/:identifier': createRouteObject(
     { get: {} },
-    '/content/v3/read/:identifier',
+    '/content/v4/read/:identifier',
   ),
+  '/action/content/v3/update/:identifier': createRouteObject(
+    { patch: {} },
+    '/content/v4/update/:identifier',
+  ),
+  '/action/content/v3/review/:identifier': createRouteObject({ post: {} }),
   '/api/content/v1/read/:identifier': createRouteObject(
     { get: {} },
-    '/content/v3/read/:identifier',
+    '/content/v4/read/:identifier',
+  ),
+  '/content/content/v1/reject/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/reject/:identifier',
+  ),
+  '/content/content/v1/publish/:identifier': createRouteObject(
+    { post: {} },
+    'content/v4/publish/:identifier',
+  ),
+  '/action/content/v1/reject/:identifier': createRouteObject(
+    { post: {} },
+    '/content/v4/reject/:identifier',
+  ),
+  '/action/content/v1/publish/:identifier': createRouteObject(
+    { post: {} },
+    'content/v4/publish/:identifier',
   ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
-    content_restricted_content_create,
+    {
+      post: {
+        PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
     '/questionset/v5/create',
   ),
   '/action/questionset/v2/update/:identifier': createRouteObject(
@@ -601,94 +654,6 @@ export const apiList = {
       },
     },
     '/questionset/v5/comment/update/:identifier',
-  ),
-  ////////////////////////////////////////////////////
-  '/action/composite/v3/search': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/v3/search',
-  ),
-  '/action/object/category/definition/v1/read': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/object/category/definition/v4/read',
-  ),
-  '/action/asset/v1/create': createRouteObject(
-    content_restricted_content_create,
-    '/asset/v4/create',
-  ),
-  '/action/asset/v1/upload/url/:identifier': createRouteObject(
-    content_restricted_content_create,
-    '/asset/v4/upload/url/:identifier',
-  ),
-  '/action/asset/v1/upload/:identifier': createRouteObject(
-    content_restricted_content_create,
-    '/asset/v4/upload/:identifier',
-  ),
-  '/action/content/v3/upload/url/:identifier': createRouteObject(
-    content_restricted_content_create,
-    '/content/v3/upload/url/:identifier',
-  ),
-  '/action/content/v3/create': createRouteObject(
-    content_restricted_content_create,
-    '/content/v3/create',
-  ),
-  '/action/content/v3/upload/:identifier': createRouteObject(
-    content_restricted_content_create,
-    '/content/v3/upload/:identifier',
-  ),
-  '/action/content/v3/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/content/v3/update/:identifier',
-  ),
-  '/action/content/v3/review/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/content/v3/review/:identifier',
-  ),
-  '/action/content/v3/reject/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/content/v3/reject/:identifier',
-  ),
-  '/action/content/v3/publish/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/content/v3/publish/:identifier',
-  ),
-  '/action/content/v3/retire/:identifier': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
-      },
-    },
-    '/content/v3/retire/:identifier',
   ),
 
   //attendance service
