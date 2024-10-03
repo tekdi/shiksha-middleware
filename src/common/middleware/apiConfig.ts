@@ -536,11 +536,11 @@ export const apiList = {
   ),
   '/action/content/v3/read/:identifier': createRouteObject(
     get_with_no_check,
-    '/content/v4/read/:identifier',
+    '/content/v3/read/:identifier',
   ),
   '/api/content/v1/read/:identifier': createRouteObject(
     get_with_no_check,
-    '/content/v4/read/:identifier',
+    '/content/v3/read/:identifier',
   ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
@@ -639,11 +639,11 @@ export const apiList = {
   ),
   '/action/content/v3/create': createRouteObject(
     content_restricted_content_create,
-    '/content/v4/create',
+    '/content/v3/create',
   ),
   '/action/content/v3/upload/:identifier': createRouteObject(
     content_restricted_content_create,
-    '/content/v4/upload/:identifier',
+    '/content/v3/upload/:identifier',
   ),
   '/action/content/v3/update/:identifier': createRouteObject(
     {
@@ -652,7 +652,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.content_restricted,
       },
     },
-    '/content/v4/update/:identifier',
+    '/content/v3/update/:identifier',
   ),
   '/action/content/v3/review/:identifier': createRouteObject(
     {
@@ -661,7 +661,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.content_restricted,
       },
     },
-    '/content/v4/review/:identifier',
+    '/content/v3/review/:identifier',
   ),
   '/action/content/v3/reject/:identifier': createRouteObject(
     {
@@ -670,7 +670,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.content_restricted,
       },
     },
-    '/content/v4/reject/:identifier',
+    '/content/v3/reject/:identifier',
   ),
   '/action/content/v3/publish/:identifier': createRouteObject(
     {
@@ -679,7 +679,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.content_restricted,
       },
     },
-    '/content/v4/publish/:identifier',
+    '/content/v3/publish/:identifier',
   ),
   '/action/content/v3/retire/:identifier': createRouteObject(
     {
@@ -688,7 +688,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.content_restricted,
       },
     },
-    '/content/v4/retire/:identifier',
+    '/content/v3/retire/:identifier',
   ),
 
   //attendance service
