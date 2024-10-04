@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Middleware  APIs')
     .setDescription('The Middlware service')
