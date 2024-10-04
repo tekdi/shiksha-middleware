@@ -1,5 +1,5 @@
 {
-  "name": "middleware_micorservice",
+  "name": "middleware_microservice",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -34,7 +34,9 @@
     "cache-manager-memory-store": "^1.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "helmet": "^8.0.0",
     "nest-winston": "^1.9.6",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.14",
