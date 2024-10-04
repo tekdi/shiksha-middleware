@@ -218,6 +218,7 @@ export class MiddlewareServices {
       '/action/object': 'TAXONOMY_SERVICE',
       '/action/asset': 'CONTENT_SERVICE',
       '/action/content': 'CONTENT_SERVICE',
+      '/api/content': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
