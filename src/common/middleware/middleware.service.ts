@@ -164,23 +164,32 @@ export class MiddlewareServices {
                 ),
               );
             }
-            resolve(req.files);
+            const reqObject = {
+              files: req.files,
+              data: req.body,
+            };
+            resolve(reqObject);
           });
         });
       };
       // Await the file upload
-      const files: any = await uploadFiles();
-
-      // Check if files are present
-      if (files && files.length > 0) {
-        const file = files[0]; // first file
-
-        // Prepare FormData for Axios call
-        const formData = new FormData();
-        formData.append('file', file.buffer, {
-          filename: file.originalname,
-          contentType: file.mimetype,
-        });
+      const reqObject: any = await uploadFiles();
+      const formData = new FormData();
+      // Prepare FormData for Axios call
+      if (reqObject && Object.keys(reqObject).length > 0) {
+        // Check if files are present
+        if (reqObject.files && reqObject.files.length > 0) {
+          const file = reqObject.files[0]; // first file
+          formData.append('file', file.buffer, {
+            filename: file.originalname,
+            contentType: file.mimetype,
+          });
+        }
+        if (reqObject.data) {
+          for (const key in reqObject.data) {
+            formData.append(key, reqObject.data[key]);
+          }
+        }
 
         return await this.gatewayService.handleRequestForMultipartData(
           url,
@@ -218,6 +227,7 @@ export class MiddlewareServices {
       '/action/object': 'TAXONOMY_SERVICE',
       '/action/asset': 'CONTENT_SERVICE',
       '/action/content': 'CONTENT_SERVICE',
+      '/api/content': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
