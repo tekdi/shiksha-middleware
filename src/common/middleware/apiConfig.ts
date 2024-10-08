@@ -318,15 +318,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
-  //auth - public // check
-  // '/user/v1/auth/login': createRouteObject({
-  //   post: {
-  //     checksNeeded: [],
-  //   },
-  //   post: {
-  //     checksNeeded: [],
-  //   },
-  // },
+  '/user/v1/academicyears/create': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/academicyears/list': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/academicyears/:identifier': createRouteObject({
+    get: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
@@ -767,6 +767,13 @@ export const publicAPI = [
   // '/action/composite/v3/search',
   // '/action/object/category/definition/v1/read',
   '/action/question/v2/read/:identifier',
+];
+
+// api which required academic year
+export const apiListForAcademicYear = [
+  '/user/v1/academicyears/create',
+  '/user/v1/academicyears/list',
+  '/user/v1/academicyears/:identifier',
 ];
 
 function convertToRegex(pattern) {
