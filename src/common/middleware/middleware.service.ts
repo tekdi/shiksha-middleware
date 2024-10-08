@@ -268,8 +268,11 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (privilegeOfTenant.name == 'UnauthorizedException') {
+        return reject("User doesn't have appropriate privilege");
+      }
       //check for admin
-      if (privilegeOfTenant?.includes('all')) {
+      if (privilegeOfTenant.includes('all')) {
         return resolve(true);
       } else {
         const isAuthorized = privilegesForURL.some((permission: string) =>
@@ -297,6 +300,9 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (rolesOfTenant.name == 'UnauthorizedException') {
+        return reject("User doesn't have appropriate privilege");
+      }
 
       const isAuthorized = rolesOfTenant?.includes('admin')
         ? true

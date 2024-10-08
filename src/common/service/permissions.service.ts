@@ -68,8 +68,9 @@ export class PermissionsService {
         userId,
         tenantId,
       );
+      console.log('userPrivilegesAndRoles: ', userPrivilegesAndRoles);
       if (userPrivilegesAndRoles.length == 0) {
-        throw new UnauthorizedException(
+        return new UnauthorizedException(
           'User does not have any privileges in the Tenant',
         );
       }
@@ -89,10 +90,15 @@ export class PermissionsService {
     let cachedData: any = await this.cacheService.get(userId);
     if (!cachedData) {
       // If not cached, fetch and cache user privileges and roles
-      const userPrivilegesAndRoles = await this.getUserPrivilegesAndRoles(
+      const userPrivilegesAndRoles: any = await this.getUserPrivilegesAndRoles(
         userId,
         tenantId,
       );
+      if (userPrivilegesAndRoles.length == 0) {
+        return new UnauthorizedException(
+          'User does not have any privileges in the Tenant',
+        );
+      }
       await this.cacheService.set(userId, userPrivilegesAndRoles);
       cachedData = userPrivilegesAndRoles;
     }
