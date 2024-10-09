@@ -327,6 +327,9 @@ export const apiList = {
   '/user/v1/academicyears/:identifier': createRouteObject({
     get: {},
   }),
+  '/user/v1/form/read': createRouteObject({
+    get: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
