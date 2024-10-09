@@ -5,7 +5,13 @@ import {
   HttpStatus,
   BadRequestException,
 } from '@nestjs/common';
-import { apiList, regexPatterns, urlPatterns, publicAPI } from './apiConfig';
+import {
+  apiList,
+  regexPatterns,
+  urlPatterns,
+  publicAPI,
+  apiListForAcademicYear,
+} from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Reflector } from '@nestjs/core';
@@ -55,8 +61,14 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
-      // check API is whitelisted
+      //check for academic year
+      if (apiListForAcademicYear.includes(reqUrl)) {
+        if (!req.headers['academicyearid']) {
+          throw new BadRequestException('Academic year id not found');
+        }
+      }
       if (apiList[reqUrl]) {
+        // check API is whitelisted
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
           throw new HttpException(
             'SHIKSHA_API_WHITELIST: URL not whitelisted',
@@ -120,90 +132,103 @@ export class MiddlewareServices {
 
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
-    let forwardUrl = req.originalUrl.split('?')[0];
-    //replace forwardUrl if redirectUrl present
-    //check for dynamic url
-    const originalUrl = req.originalUrl;
-    let temp = originalUrl.split('?');
-    let reqUrl = temp[0];
-    const withPattern = this.matchUrl(reqUrl);
-    reqUrl = withPattern || reqUrl;
-    if (apiList[reqUrl]?.redirectUrl) {
-      if (reqUrl.includes(':')) {
-        const forwardUrlParts = forwardUrl.split('/');
-        const dynamicId = forwardUrlParts[forwardUrlParts.length - 1];
-        const redirectUrlParts = apiList[reqUrl].redirectUrl.split('/');
-        // Replace the last endpoint with the new string
-        redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
-        forwardUrl = redirectUrlParts.join('/');
-      } else {
-        forwardUrl = apiList[reqUrl].redirectUrl;
-      }
-      if (temp[1]) {
-        forwardUrl = forwardUrl + '?' + temp[1];
-      }
-    }
+    const originalUrl = req.originalUrl.split('?');
+    const reqUrl = this.matchUrl(originalUrl[0]) || originalUrl[0];
+    let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
 
-    const url = `${microserviceUrl}${forwardUrl}`;
-    //check for multipart/formdata
+    const fullUrl = `${microserviceUrl}${forwardUrl}`;
+
+    // Handle multipart/form-data
     if (req.is('multipart/form-data')) {
-      // Wrap the Multer upload in a Promise
-      const uploadFiles = () => {
-        return new Promise((resolve, reject) => {
-          upload.any()(req, res, (err) => {
-            if (err) {
-              // Check if the error is due to file size limit
-              if (err instanceof multer.MulterError) {
-                return reject(
-                  new BadRequestException(`File too large: ${err.message}`),
-                );
-              }
-              return reject(
-                new BadRequestException(
-                  'Error processing form data: ' + err.message,
-                ),
-              );
-            }
-            const reqObject = {
-              files: req.files,
-              data: req.body,
-            };
-            resolve(reqObject);
-          });
-        });
-      };
-      // Await the file upload
-      const reqObject: any = await uploadFiles();
-      const formData = new FormData();
-      // Prepare FormData for Axios call
-      if (reqObject && Object.keys(reqObject).length > 0) {
-        // Check if files are present
-        if (reqObject.files && reqObject.files.length > 0) {
-          const file = reqObject.files[0]; // first file
-          formData.append('file', file.buffer, {
-            filename: file.originalname,
-            contentType: file.mimetype,
-          });
-        }
-        if (reqObject.data) {
-          for (const key in reqObject.data) {
-            formData.append(key, reqObject.data[key]);
-          }
-        }
-
+      const reqObject = await this.processMultipartForm(req, res);
+      if (reqObject) {
+        const formData = this.prepareFormData(reqObject);
         return await this.gatewayService.handleRequestForMultipartData(
-          url,
+          fullUrl,
           formData,
         );
       }
     } else {
       return await this.gatewayService.handleRequest(
         req.method,
-        url,
+        fullUrl,
         req.body,
         req.headers,
       );
     }
+  }
+
+  // Construct forward URL based on redirect or original URL
+  constructForwardUrl(
+    reqUrl: string,
+    originalUrlParts: string[],
+    apiList: any,
+  ): string {
+    const queryString = originalUrlParts[1] ? `?${originalUrlParts[1]}` : '';
+    const redirectUrl = apiList[reqUrl]?.redirectUrl;
+
+    if (redirectUrl) {
+      return (
+        this.getDynamicRedirectUrl(originalUrlParts[0], reqUrl, redirectUrl) +
+        queryString
+      );
+    }
+
+    return originalUrlParts[0] + queryString;
+  }
+
+  // Handle dynamic URLs with placeholders
+  getDynamicRedirectUrl(
+    originalUrlBase,
+    reqUrl: string,
+    redirectUrl: string,
+  ): string {
+    if (reqUrl.includes(':')) {
+      const reqUrlParts = originalUrlBase.split('/');
+      const dynamicId = reqUrlParts[reqUrlParts.length - 1];
+      const redirectUrlParts = redirectUrl.split('/');
+      redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
+      return redirectUrlParts.join('/');
+    }
+    return redirectUrl;
+  }
+
+  // Handle multipart/form-data
+  async processMultipartForm(req: Request, res: Response) {
+    return new Promise((resolve, reject) => {
+      upload.any()(req, res, (err) => {
+        if (err) {
+          const errorMessage =
+            err instanceof multer.MulterError
+              ? `File too large: ${err.message}`
+              : `Error processing form data: ${err.message}`;
+          return reject(new BadRequestException(errorMessage));
+        }
+
+        resolve({ files: req.files, data: req.body });
+      });
+    });
+  }
+
+  // Prepare FormData for Axios call
+  prepareFormData(reqObject: any): FormData {
+    const formData = new FormData();
+
+    if (reqObject.files && reqObject.files.length > 0) {
+      const file = reqObject.files[0];
+      formData.append('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+    }
+
+    if (reqObject.data) {
+      Object.keys(reqObject.data).forEach((key) => {
+        formData.append(key, reqObject.data[key]);
+      });
+    }
+
+    return formData;
   }
 
   getMicroserviceUrl(url: string): string | undefined {
