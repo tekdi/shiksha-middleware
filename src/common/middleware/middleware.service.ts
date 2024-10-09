@@ -5,7 +5,13 @@ import {
   HttpStatus,
   BadRequestException,
 } from '@nestjs/common';
-import { apiList, regexPatterns, urlPatterns, publicAPI } from './apiConfig';
+import {
+  apiList,
+  regexPatterns,
+  urlPatterns,
+  publicAPI,
+  apiListForAcademicYear,
+} from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Reflector } from '@nestjs/core';
@@ -15,6 +21,14 @@ import { PermissionsService } from '../service/permissions.service';
 import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
+import * as multer from 'multer';
+import * as FormData from 'form-data';
+// Set up Multer with file size limit (e.g., 2 MB)
+const upload = multer({
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2 MB limit
+  },
+});
 
 @Injectable()
 export class MiddlewareServices {
@@ -47,8 +61,14 @@ export class MiddlewareServices {
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
-      // check API is whitelisted
+      //check for academic year
+      if (apiListForAcademicYear.includes(reqUrl)) {
+        if (!req.headers['academicyearid']) {
+          throw new BadRequestException('Academic year id not found');
+        }
+      }
       if (apiList[reqUrl]) {
+        // check API is whitelisted
         if (!apiList[reqUrl][req.method.toLowerCase()]) {
           throw new HttpException(
             'SHIKSHA_API_WHITELIST: URL not whitelisted',
@@ -112,41 +132,103 @@ export class MiddlewareServices {
 
   async forwardRequest(req: Request, res: Response) {
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
-    let forwardUrl = req.originalUrl.split('?')[0];
-    //replace forwardUrl if redirectUrl present
-    //check for dynamic url
-    const originalUrl = req.originalUrl;
-    let temp = originalUrl.split('?');
-    let reqUrl = temp[0];
-    const withPattern = this.matchUrl(reqUrl);
-    reqUrl = withPattern || reqUrl;
-    if (apiList[reqUrl]?.redirectUrl) {
-      if (reqUrl.includes(':')) {
-        const forwardUrlParts = forwardUrl.split('/');
-        const dynamicId = forwardUrlParts[forwardUrlParts.length - 1];
-        const redirectUrlParts = apiList[reqUrl].redirectUrl.split('/');
-        // Replace the last endpoint with the new string
-        redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
-        forwardUrl = redirectUrlParts.join('/');
-      } else {
-        forwardUrl = apiList[reqUrl].redirectUrl;
+    const originalUrl = req.originalUrl.split('?');
+    const reqUrl = this.matchUrl(originalUrl[0]) || originalUrl[0];
+    let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
+
+    const fullUrl = `${microserviceUrl}${forwardUrl}`;
+
+    // Handle multipart/form-data
+    if (req.is('multipart/form-data')) {
+      const reqObject = await this.processMultipartForm(req, res);
+      if (reqObject) {
+        const formData = this.prepareFormData(reqObject);
+        return await this.gatewayService.handleRequestForMultipartData(
+          fullUrl,
+          formData,
+        );
       }
-      if (temp[1]) {
-        forwardUrl = forwardUrl + '?' + temp[1];
-      }
+    } else {
+      return await this.gatewayService.handleRequest(
+        req.method,
+        fullUrl,
+        req.body,
+        req.headers,
+      );
     }
-    const config = {
-      method: req.method,
-      url: `${microserviceUrl}${forwardUrl}`,
-      headers: req.headers,
-      data: req.body,
-    };
-    return await this.gatewayService.handleRequest(
-      config.method,
-      config.url,
-      config.data,
-      config.headers,
-    );
+  }
+
+  // Construct forward URL based on redirect or original URL
+  constructForwardUrl(
+    reqUrl: string,
+    originalUrlParts: string[],
+    apiList: any,
+  ): string {
+    const queryString = originalUrlParts[1] ? `?${originalUrlParts[1]}` : '';
+    const redirectUrl = apiList[reqUrl]?.redirectUrl;
+
+    if (redirectUrl) {
+      return (
+        this.getDynamicRedirectUrl(originalUrlParts[0], reqUrl, redirectUrl) +
+        queryString
+      );
+    }
+
+    return originalUrlParts[0] + queryString;
+  }
+
+  // Handle dynamic URLs with placeholders
+  getDynamicRedirectUrl(
+    originalUrlBase,
+    reqUrl: string,
+    redirectUrl: string,
+  ): string {
+    if (reqUrl.includes(':')) {
+      const reqUrlParts = originalUrlBase.split('/');
+      const dynamicId = reqUrlParts[reqUrlParts.length - 1];
+      const redirectUrlParts = redirectUrl.split('/');
+      redirectUrlParts[redirectUrlParts.length - 1] = dynamicId;
+      return redirectUrlParts.join('/');
+    }
+    return redirectUrl;
+  }
+
+  // Handle multipart/form-data
+  async processMultipartForm(req: Request, res: Response) {
+    return new Promise((resolve, reject) => {
+      upload.any()(req, res, (err) => {
+        if (err) {
+          const errorMessage =
+            err instanceof multer.MulterError
+              ? `File too large: ${err.message}`
+              : `Error processing form data: ${err.message}`;
+          return reject(new BadRequestException(errorMessage));
+        }
+
+        resolve({ files: req.files, data: req.body });
+      });
+    });
+  }
+
+  // Prepare FormData for Axios call
+  prepareFormData(reqObject: any): FormData {
+    const formData = new FormData();
+
+    if (reqObject.files && reqObject.files.length > 0) {
+      const file = reqObject.files[0];
+      formData.append('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+    }
+
+    if (reqObject.data) {
+      Object.keys(reqObject.data).forEach((key) => {
+        formData.append(key, reqObject.data[key]);
+      });
+    }
+
+    return formData;
   }
 
   getMicroserviceUrl(url: string): string | undefined {
@@ -171,6 +253,7 @@ export class MiddlewareServices {
       '/action/object': 'TAXONOMY_SERVICE',
       '/action/asset': 'CONTENT_SERVICE',
       '/action/content': 'CONTENT_SERVICE',
+      '/api/content': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
@@ -211,8 +294,11 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (privilegeOfTenant.name == 'UnauthorizedException') {
+        return reject("User doesn't have appropriate privilege");
+      }
       //check for admin
-      if (privilegeOfTenant?.includes('all')) {
+      if (privilegeOfTenant.includes('all')) {
         return resolve(true);
       } else {
         const isAuthorized = privilegesForURL.some((permission: string) =>
@@ -240,6 +326,9 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (rolesOfTenant.name == 'UnauthorizedException') {
+        return reject("User doesn't have appropriate privilege");
+      }
 
       const isAuthorized = rolesOfTenant?.includes('admin')
         ? true
