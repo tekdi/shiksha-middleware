@@ -39,7 +39,7 @@ export class MiddlewareServices {
     private permissionService: PermissionsService,
     private configService: ConfigService,
     private dataValidationService: DataValidationService,
-  ) {}
+  ) { }
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
@@ -236,6 +236,7 @@ export class MiddlewareServices {
     const serviceMapping: { [key: string]: string } = {
       '/user': 'USER_SERVICE',
       '/event-service': 'EVENT_SERVICE',
+      '/todo': 'TODO_SERVICE',
       '/notification-templates': 'NOTIFICATION_SERVICE',
       '/notification': 'NOTIFICATION_SERVICE',
       '/queue': 'NOTIFICATION_SERVICE',
@@ -332,7 +333,7 @@ export class MiddlewareServices {
       const isAuthorized = rolesOfTenant?.includes('admin')
         ? true
         : rolesForURL.filter((role: string) => rolesOfTenant?.includes(role))
-            .length > 0;
+          .length > 0;
 
       if (isAuthorized) {
         return resolve(true);
