@@ -801,6 +801,8 @@ export const apiListForAcademicYear = [
   'user/v1/cohortmember/read/:identifier',
   'user/v1/cohort/create',
   'user/v1/cohort/search',
+  'user/v1/cohort/cohortHierarchy/:identifier',
+  'user/v1/cohort/mycohorts/:identifier'
 ];
 
 function convertToRegex(pattern) {

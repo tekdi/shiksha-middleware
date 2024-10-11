@@ -14,7 +14,7 @@ export class GatewayService {
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
-      academicyearid: oheaders['academicyearid'], // stop gap
+      academicyearid: oheaders['academicyearid'],
       'content-type': 'application/json',
       authorization: oheaders['authorization'],
     };
