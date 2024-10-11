@@ -4,7 +4,7 @@ import { MiddlewareLogger } from 'src/common/loggers/logger.service';
 
 @Injectable()
 export class GatewayService {
-  constructor(private readonly middlewareLogger: MiddlewareLogger) {}
+  constructor(private readonly middlewareLogger: MiddlewareLogger) { }
 
   async handleRequest(
     method: string,
@@ -14,6 +14,7 @@ export class GatewayService {
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
+      academicyearid: oheaders['academicyearid'], // stop gap
       'content-type': 'application/json',
       authorization: oheaders['authorization'],
     };

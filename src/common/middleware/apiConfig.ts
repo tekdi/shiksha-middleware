@@ -795,9 +795,12 @@ export const publicAPI = [
 
 // api which required academic year
 export const apiListForAcademicYear = [
-  '/user/v1/academicyears/create',
-  '/user/v1/academicyears/list',
-  '/user/v1/academicyears/:identifier',
+  'user/v1/cohortmember/list',
+  'user/v1/cohortmember/bulkCreate',
+  'user/v1/cohortmember/create',
+  'user/v1/cohortmember/read/:identifier',
+  'user/v1/cohort/create',
+  'user/v1/cohort/search',
 ];
 
 function convertToRegex(pattern) {
