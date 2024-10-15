@@ -244,7 +244,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
-  '/user/v1/cohortmember/bulkcreate': createRouteObject({
+  '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
       ROLE_CHECK: rolesGroup.teacher,
