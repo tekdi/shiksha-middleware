@@ -86,6 +86,7 @@ const privilegeGroup = {
   cohort: createPrivilegeGroup('cohort'),
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
+  event: createPrivilegeGroup('event'),
 };
 const common_public_get = { get: {} };
 const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
@@ -335,23 +336,20 @@ export const apiList = {
   '/event-service/event/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
   '/event-service/event/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.event.read,
     },
   }),
   '/event-service/event/v1/:id': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
     patch: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
-    delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-    },
+      PRIVILEGE_CHECK: privilegeGroup.event.update,
+    }
   }),
   //event-attendance
   '/event-service/attendees/v1/create': createRouteObject({
@@ -377,7 +375,7 @@ export const apiList = {
   //notification templates
   '/notification-templates': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher
     },
   }),
   '/notification-templates/list': createRouteObject({
@@ -496,6 +494,29 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
+  // todos
+  '/todo/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+  '/todo/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/todo/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+
 
   //sunbird knowlg and inQuiry service
   //public
@@ -774,9 +795,14 @@ export const publicAPI = [
 
 // api which required academic year
 export const apiListForAcademicYear = [
-  '/user/v1/academicyears/create',
-  '/user/v1/academicyears/list',
-  '/user/v1/academicyears/:identifier',
+  'user/v1/cohortmember/list',
+  'user/v1/cohortmember/bulkCreate',
+  'user/v1/cohortmember/create',
+  'user/v1/cohortmember/read/:identifier',
+  'user/v1/cohort/create',
+  'user/v1/cohort/search',
+  'user/v1/cohort/cohortHierarchy/:identifier',
+  'user/v1/cohort/mycohorts/:identifier'
 ];
 
 function convertToRegex(pattern) {
