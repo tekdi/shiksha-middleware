@@ -153,15 +153,15 @@ export const apiList = {
   //need confirmation
   '/user/v1/password-reset-link': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.delete,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      // PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
   //need confirmation
   '/user/v1/forgot-password': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.delete,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      // PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
   //all
@@ -522,6 +522,11 @@ export const apiList = {
   //public
 
   '/api/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
+
+  '/action/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
+  '/action/question/v2/private/read/:identifier': createRouteObject(common_public_get, '/question/v5/private/read/:identifier'),
+
+
   '/action/questionset/v2/read/:identifier': createRouteObject(
     common_public_get,
     '/questionset/v5/read/:identifier',
@@ -567,6 +572,10 @@ export const apiList = {
   '/api/content/v1/read/:identifier': createRouteObject(
     common_public_get,
     '/content/v3/read/:identifier',
+  ),
+  '/action/questionset/private/v2/read/:identifier': createRouteObject(
+    common_public_get,
+    '/questionset/v5/private/read/:identifier',
   ),
   //secure
   '/action/questionset/v2/create': createRouteObject(
@@ -750,6 +759,134 @@ export const apiList = {
     },
     '/content/v3/retire/:identifier',
   ),
+  '/action/question/v2/create': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/create',
+  ),
+  '/action/question/v2/update/:identifier': createRouteObject(
+    {
+      patch: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/update/:identifier',
+  ),
+  '/action/question/v2/review/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.review,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/review/:identifier',
+  ),
+  '/action/question/v2/publish/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.approve,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/publish/:identifier',
+  ),
+  '/action/question/v2/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/retire/:identifier',
+  ),
+  '/action/question/v2/copy/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/copy/:identifier',
+  ),
+  '/action/question/v2/reject/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/reject/:identifier',
+  ),
+  '/action/question/v2/system/update/:identifier': createRouteObject(
+    {
+      patch: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/system/update/:identifier',
+  ),
+  '/action/question/v2/import': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/question/v5/import',
+  ),
+  '/action/questionset/v2/import': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/import',
+  ),
+  '/action/questionset/v2/copy/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/copy/:identifier',
+  ),
+  '/action/questionset/v2/add': createRouteObject(
+    {
+      patch: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/add',
+  ),
+  '/action/questionset/v2/remove': createRouteObject(
+    {
+      delete: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/remove',
+  ),
+  '/action/questionset/v2/system/update/:identifier': createRouteObject(
+    {
+      delete: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.content_restricted,
+      },
+    },
+    '/questionset/v5/system/update/:identifier',
+  ),
+
+
 
   //attendance service
   '/api/v1/attendance': createRouteObject({
@@ -783,6 +920,8 @@ export const urlPatterns = Object.keys(apiList);
 export const publicAPI = [
   '/user/v1/auth/login',
   '/api/question/v2/list',
+  '/action/question/v2/list',
+  '/action/question/v2/private/read/:identifier',
   '/action/questionset/v2/read/:identifier',
   '/action/questionset/v2/hierarchy/:identifier',
   '/action/questionset/v2/comment/read/:identifier',
@@ -791,18 +930,22 @@ export const publicAPI = [
   // '/action/composite/v3/search',
   // '/action/object/category/definition/v1/read',
   '/action/question/v2/read/:identifier',
+  '/action/questionset/private/v2/read/:identifier',
+  '/user/v1/password-reset-link',
+  '/user/v1/forgot-password',
+  '/questionset/v5/private/read/:identifier'
 ];
 
 // api which required academic year
 export const apiListForAcademicYear = [
-  'user/v1/cohortmember/list',
-  'user/v1/cohortmember/bulkCreate',
-  'user/v1/cohortmember/create',
-  'user/v1/cohortmember/read/:identifier',
-  'user/v1/cohort/create',
-  'user/v1/cohort/search',
-  'user/v1/cohort/cohortHierarchy/:identifier',
-  'user/v1/cohort/mycohorts/:identifier'
+  '/user/v1/cohortmember/list',
+  '/user/v1/cohortmember/bulkCreate',
+  '/user/v1/cohortmember/create',
+  '/user/v1/cohortmember/read/:identifier',
+  '/user/v1/cohort/create',
+  '/user/v1/cohort/search',
+  '/user/v1/cohort/cohortHierarchy/:identifier',
+  '/user/v1/cohort/mycohorts/:identifier'
 ];
 
 function convertToRegex(pattern) {
