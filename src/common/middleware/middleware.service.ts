@@ -39,7 +39,7 @@ export class MiddlewareServices {
     private permissionService: PermissionsService,
     private configService: ConfigService,
     private dataValidationService: DataValidationService,
-  ) { }
+  ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
@@ -251,6 +251,7 @@ export class MiddlewareServices {
       '/api/framework': 'TAXONOMY_SERVICE',
       '/action/composite': 'SEARCH_SERVICE',
       '/action/object': 'TAXONOMY_SERVICE',
+      '/api/object': 'TAXONOMY_SERVICE',
       '/action/asset': 'CONTENT_SERVICE',
       '/action/content': 'CONTENT_SERVICE',
       '/api/content': 'CONTENT_SERVICE',
@@ -333,7 +334,7 @@ export class MiddlewareServices {
       const isAuthorized = rolesOfTenant?.includes('admin')
         ? true
         : rolesForURL.filter((role: string) => rolesOfTenant?.includes(role))
-          .length > 0;
+            .length > 0;
 
       if (isAuthorized) {
         return resolve(true);

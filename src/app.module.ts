@@ -11,23 +11,28 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './common/guards/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRolesMapping } from './common/entities/UserRoleMapping.entity';
-import { UserTenantMapping } from './common/entities/UserTenantMapping.entity'
+import { UserTenantMapping } from './common/entities/UserTenantMapping.entity';
 import { PermissionsService } from './common/service/permissions.service';
 import { GatewayService } from './middleware/gateway.service';
 import { MiddlewareLoggerModule } from './common/loggers/logger.module';
 import { DataValidationService } from './common/service/dataValidation.service';
-import { CohortMembers } from './common/entities/CohortMembers.entity'
+import { CohortMembers } from './common/entities/CohortMembers.entity';
 import { Cohort } from './common/entities/Cohort.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     CacheModule.register({ isGlobal: true, store: MemoryStore }),
-    TypeOrmModule.forFeature([UserRolesMapping,UserTenantMapping,CohortMembers,Cohort]),
+    TypeOrmModule.forFeature([
+      UserRolesMapping,
+      UserTenantMapping,
+      CohortMembers,
+      Cohort,
+    ]),
     HttpModule,
     DatabaseModule,
     JwtModule,
-    MiddlewareLoggerModule
+    MiddlewareLoggerModule,
   ],
   controllers: [AppController],
   providers: [
@@ -36,13 +41,11 @@ import { Cohort } from './common/entities/Cohort.entity';
     JwtStrategy,
     PermissionsService,
     GatewayService,
-    DataValidationService
+    DataValidationService,
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(MiddlewareServices)
-      .forRoutes('*');
+    consumer.apply(MiddlewareServices).forRoutes('*');
   }
 }
