@@ -802,14 +802,6 @@ export const apiList = {
     },
     '/channel/v3/create',
   ),
-  'api/channel/v1/read/:identifier': createRouteObject(
-    {
-      get: {
-        ...common_role_check,
-      },
-    },
-    '/channel/v3/read/:identifier',
-  ),
   '/api/channel/v1/update/:identifier': createRouteObject(
     {
       patch: {
