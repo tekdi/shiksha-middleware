@@ -424,74 +424,74 @@ export const apiList = {
   //tracking
   '/v1/tracking/assessment/read/:assessmentTrackingId': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.create,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.create,
       ROLE_CHECK: rolesGroup.student,
     },
   }),
   '/v1/tracking/assessment/search': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/search/status': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/assessment/delete/:assessmentTrackingId': createRouteObject({
     delete: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
   //tracking-content
   '/v1/tracking/content/read/:contentTrackingId': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.create,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.create,
       ROLE_CHECK: rolesGroup.student,
     },
   }),
   '/v1/tracking/content/search': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/search/status': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/delete/:contentTrackingId': createRouteObject({
     delete: {
-      PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
