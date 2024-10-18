@@ -34,10 +34,7 @@ export class GatewayService {
       if (error.response) {
         if (changeResponse) {
           if (
-            error.response.data.params.err ===
-              'ERR_YOUTUBE_LICENSE_VALIDATION' &&
-            url ===
-              'https://content-dev.prathamdigital.org/asset/v4/validate?field=license'
+            error.response.data.params.err === 'ERR_YOUTUBE_LICENSE_VALIDATION'
           ) {
             error.response.data.responseCode = 'OK';
             error.response.data.result = {
