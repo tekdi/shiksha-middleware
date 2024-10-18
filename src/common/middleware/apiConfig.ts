@@ -771,7 +771,7 @@ export const apiList = {
   '/action/content/v3/hierarchy/update': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/content/v3/hierarchy/update',
@@ -779,7 +779,7 @@ export const apiList = {
   '/action/content/v3/hierarchy/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/content/v3/hierarchy/:identifier',
@@ -797,7 +797,7 @@ export const apiList = {
   '/api/channel/v1/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/channel/v3/create',
@@ -805,7 +805,7 @@ export const apiList = {
   'api/channel/v1/read/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/channel/v3/read/:identifier',
@@ -813,7 +813,7 @@ export const apiList = {
   '/api/channel/v1/update/:identifier': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/channel/v3/update/:identifier',
@@ -823,7 +823,7 @@ export const apiList = {
   '/api/framework/v1/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/create',
@@ -831,7 +831,7 @@ export const apiList = {
   '/api/framework/v1/update/:identifier': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/update/:identifier',
@@ -839,33 +839,39 @@ export const apiList = {
   '/api/framework/v1/list': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/list',
   ),
   '/api/framework/v1/copy/:identifier': createRouteObject(
     {
-      post: {},
+      post: {
+        ...common_role_check,
+      },
     },
     '/framework/v3/copy/',
   ),
   '/api/framework/v1/retire/:identifier': createRouteObject(
     {
-      delete: {},
+      delete: {
+        ...common_role_check,
+      },
     },
     '/framework/v3/retire/:identifier',
   ),
   '/api/framework/v1/publish/:identifier': createRouteObject(
     {
-      post: {},
+      post: {
+        ...common_role_check,
+      },
     },
     '/framework/v3/publish/:identifier',
   ),
   '/api/framework/v1/category/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/create',
@@ -873,7 +879,7 @@ export const apiList = {
   '/api/framework/v1/category/read/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/read/:identifier',
@@ -881,7 +887,7 @@ export const apiList = {
   '/api/framework/v1/category/update/:identifier': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/update/:identifier',
@@ -890,7 +896,7 @@ export const apiList = {
   '/api/framework/v1/category/retire/:identifier': createRouteObject(
     {
       delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/retire/:identifier',
@@ -898,7 +904,7 @@ export const apiList = {
   '/api/framework/v1/category/master/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/master/create',
@@ -906,7 +912,7 @@ export const apiList = {
   '/api/framework/v1/category/master/update/:identifier': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/master/update/:identifier',
@@ -914,7 +920,7 @@ export const apiList = {
   '/api/framework/v1/category/master/read/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/master/read/:identifier',
@@ -922,7 +928,7 @@ export const apiList = {
   '/api/framework/v1/category/master/retire/:identifier': createRouteObject(
     {
       delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/category/master/retire/:identifier',
@@ -931,7 +937,7 @@ export const apiList = {
   '/api/framework/v1/term/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/term/create',
@@ -939,7 +945,7 @@ export const apiList = {
   '/api/framework/v1/term/read/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/term/read/:identifier',
@@ -947,7 +953,7 @@ export const apiList = {
   '/api/framework/v1/term/update/:identifier': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/term/update/:identifier',
@@ -955,7 +961,7 @@ export const apiList = {
   '/api/framework/v1/term/retire/:identifier': createRouteObject(
     {
       delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/framework/v3/term/retire/:identifier',
@@ -964,7 +970,7 @@ export const apiList = {
   '/api/object/category/v1/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/v4/create',
@@ -972,7 +978,7 @@ export const apiList = {
   '/api/object/category/v1/update': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/v4/update',
@@ -980,7 +986,7 @@ export const apiList = {
   '/api/object/category/v1/read': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/v4/read',
@@ -988,7 +994,7 @@ export const apiList = {
   '/api/object/category/definition/v1/create': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/definition/v4/create',
@@ -996,7 +1002,7 @@ export const apiList = {
   '/api/object/category/definition/v1/update': createRouteObject(
     {
       patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/definition/v4/update',
@@ -1004,7 +1010,7 @@ export const apiList = {
   '/api/object/category/definition/v1/read/:identifier': createRouteObject(
     {
       get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/definition/v4/read/:identifier',
@@ -1012,7 +1018,7 @@ export const apiList = {
   '/api/object/category/definition/v1/read': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ...common_role_check,
       },
     },
     '/object/category/definition/v4/read',
