@@ -4,13 +4,14 @@ import { MiddlewareLogger } from 'src/common/loggers/logger.service';
 
 @Injectable()
 export class GatewayService {
-  constructor(private readonly middlewareLogger: MiddlewareLogger) { }
+  constructor(private readonly middlewareLogger: MiddlewareLogger) {}
 
   async handleRequest(
     method: string,
     url: string,
     body: Object,
     oheaders: any,
+    changeResponse: boolean,
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
@@ -31,6 +32,19 @@ export class GatewayService {
       return response.data;
     } catch (error) {
       if (error.response) {
+        if (changeResponse) {
+          if (
+            error.response.data.params.err === 'ERR_YOUTUBE_LICENSE_VALIDATION'
+          ) {
+            error.response.data.responseCode = 'OK';
+            error.response.data.result = {
+              license: {
+                valid: false,
+                value: 'youtube',
+              },
+            };
+          }
+        }
         return error.response.data;
       } else if (error.request) {
         // No response was received

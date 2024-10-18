@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
@@ -63,8 +62,8 @@ const rolesGroup = {
   team_leader: ['team_leader'],
   teacher: ['teacher'],
   student: ['student'],
-  restricted: ['admin', 'team_leader'],
-  content_restricted: ['admin', 'team_leader'],
+  //restricted: ['admin', 'team_leader'],
+  //content_restricted: ['admin', 'team_leader'],
   admin_team_leader: ['admin', 'team_leader'],
   admin_team_leader_teacher: ['admin', 'teacher', 'team_leader'],
   team_leader_teacher: ['teacher', 'team_leader'],
@@ -89,7 +88,12 @@ const privilegeGroup = {
   event: createPrivilegeGroup('event'),
 };
 const common_public_get = { get: {} };
-const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
+const common_role_check = { ROLE_CHECK: rolesGroup.admin_team_leader };
+const createRouteObject = (
+  methods: any,
+  redirectUrl: string | null = null,
+  changeResponse: boolean | null = false,
+) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
   const methodObject = allMethods.reduce((acc, method) => {
@@ -108,6 +112,7 @@ const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
     method: allMethods,
     ...methodObject,
     redirectUrl, // Optionally include redirectUrl if it's passed
+    changeResponse, // Optionally include changeResponse if it's passed
   };
 };
 
@@ -118,7 +123,7 @@ export const apiList = {
   }),
   //user-service
   '/user/v1/auth': createRouteObject({
-    get: {},
+    common_public_get,
   }),
   '/user/v1/create': createRouteObject({
     post: {
@@ -326,10 +331,10 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/academicyears/:identifier': createRouteObject({
-    get: {},
+    common_public_get,
   }),
   '/user/v1/form/read': createRouteObject({
-    get: {},
+    common_public_get,
   }),
   //event-service
   //event
@@ -349,7 +354,7 @@ export const apiList = {
     patch: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
       PRIVILEGE_CHECK: privilegeGroup.event.update,
-    }
+    },
   }),
   //event-attendance
   '/event-service/attendees/v1/create': createRouteObject({
@@ -375,7 +380,7 @@ export const apiList = {
   //notification templates
   '/notification-templates': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
   '/notification-templates/list': createRouteObject({
@@ -517,15 +522,19 @@ export const apiList = {
     },
   }),
 
-
   //sunbird knowlg and inQuiry service
   //public
 
   '/api/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
 
-  '/action/question/v2/list': createRouteObject({ post: {} }, '/question/v5/list'),
-  '/action/question/v2/private/read/:identifier': createRouteObject(common_public_get, '/question/v5/private/read/:identifier'),
-
+  '/action/question/v2/list': createRouteObject(
+    { post: {} },
+    '/question/v5/list',
+  ),
+  '/action/question/v2/private/read/:identifier': createRouteObject(
+    common_public_get,
+    '/question/v5/private/read/:identifier',
+  ),
 
   '/action/questionset/v2/read/:identifier': createRouteObject(
     common_public_get,
@@ -536,7 +545,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/hierarchy/update',
@@ -582,7 +591,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/create',
@@ -591,7 +600,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/update/:identifier',
@@ -600,7 +609,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/review/:identifier',
@@ -609,7 +618,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.approve,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/publish/:identifier',
@@ -618,7 +627,7 @@ export const apiList = {
     {
       delete: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/retire/:identifier',
@@ -628,7 +637,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/reject/:identifier',
@@ -637,7 +646,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/comment/update/:identifier',
@@ -646,7 +655,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/v3/search',
@@ -655,7 +664,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/object/category/definition/v4/read',
@@ -664,7 +673,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/asset/v4/create',
@@ -673,7 +682,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/asset/v4/upload/url/:identifier',
@@ -682,7 +691,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/asset/v4/upload/identifier',
@@ -691,7 +700,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/upload/url/:identifier',
@@ -700,7 +709,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/create',
@@ -709,7 +718,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/upload/:identifier',
@@ -718,7 +727,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/update/:identifier',
@@ -727,7 +736,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/review/:identifier',
@@ -736,7 +745,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/reject/:identifier',
@@ -745,7 +754,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/publish/:identifier',
@@ -754,16 +763,263 @@ export const apiList = {
     {
       delete: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/retire/:identifier',
+  ),
+  '/action/content/v3/hierarchy/update': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/content/v3/hierarchy/update',
+  ),
+  '/action/content/v3/hierarchy/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/content/v3/hierarchy/:identifier',
+  ),
+  '/action/asset/v3/validate': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/asset/v4/validate',
+    true,
+  ),
+  //channel API
+  '/api/channel/v1/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/channel/v3/create',
+  ),
+  '/api/channel/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/channel/v3/update/:identifier',
+  ),
+
+  //framework API
+  '/api/framework/v1/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/create',
+  ),
+  '/api/framework/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/update/:identifier',
+  ),
+  '/api/framework/v1/list': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/list',
+  ),
+  '/api/framework/v1/copy/:identifier': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/copy/',
+  ),
+  '/api/framework/v1/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/retire/:identifier',
+  ),
+  '/api/framework/v1/publish/:identifier': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/publish/:identifier',
+  ),
+  '/api/framework/v1/category/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/create',
+  ),
+  '/api/framework/v1/category/read/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/read/:identifier',
+  ),
+  '/api/framework/v1/category/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/update/:identifier',
+  ),
+
+  '/api/framework/v1/category/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/retire/:identifier',
+  ),
+  '/api/framework/v1/category/master/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/master/create',
+  ),
+  '/api/framework/v1/category/master/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/master/update/:identifier',
+  ),
+  '/api/framework/v1/category/master/read/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/master/read/:identifier',
+  ),
+  '/api/framework/v1/category/master/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/category/master/retire/:identifier',
+  ),
+
+  '/api/framework/v1/term/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/term/create',
+  ),
+  '/api/framework/v1/term/read/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/term/read/:identifier',
+  ),
+  '/api/framework/v1/term/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/term/update/:identifier',
+  ),
+  '/api/framework/v1/term/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/framework/v3/term/retire/:identifier',
+  ),
+  //Object API
+  '/api/object/category/v1/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/v4/create',
+  ),
+  '/api/object/category/v1/update': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/v4/update',
+  ),
+  '/api/object/category/v1/read': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/v4/read',
+  ),
+  '/api/object/category/definition/v1/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/create',
+  ),
+  '/api/object/category/definition/v1/update': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/update',
+  ),
+  '/api/object/category/definition/v1/read/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/read/:identifier',
+  ),
+  '/api/object/category/definition/v1/read': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/read',
   ),
   '/action/question/v2/create': createRouteObject(
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/create',
@@ -772,7 +1028,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/update/:identifier',
@@ -781,7 +1037,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/review/:identifier',
@@ -790,7 +1046,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.approve,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/publish/:identifier',
@@ -799,7 +1055,7 @@ export const apiList = {
     {
       delete: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/retire/:identifier',
@@ -808,7 +1064,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/copy/:identifier',
@@ -817,7 +1073,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/reject/:identifier',
@@ -826,7 +1082,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/system/update/:identifier',
@@ -835,7 +1091,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/question/v5/import',
@@ -844,7 +1100,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/import',
@@ -853,7 +1109,7 @@ export const apiList = {
     {
       post: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/copy/:identifier',
@@ -862,7 +1118,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/add',
@@ -871,7 +1127,7 @@ export const apiList = {
     {
       delete: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/remove',
@@ -880,13 +1136,11 @@ export const apiList = {
     {
       delete: {
         //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.content_restricted,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/questionset/v5/system/update/:identifier',
   ),
-
-
 
   //attendance service
   '/api/v1/attendance': createRouteObject({
@@ -927,13 +1181,11 @@ export const publicAPI = [
   '/action/questionset/v2/comment/read/:identifier',
   '/api/channel/v1/read/:identifier',
   '/api/framework/v1/read/:identifier',
-  // '/action/composite/v3/search',
-  // '/action/object/category/definition/v1/read',
   '/action/question/v2/read/:identifier',
   '/action/questionset/private/v2/read/:identifier',
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
-  '/questionset/v5/private/read/:identifier'
+  '/questionset/v5/private/read/:identifier',
 ];
 
 // api which required academic year
@@ -945,7 +1197,7 @@ export const apiListForAcademicYear = [
   '/user/v1/cohort/create',
   '/user/v1/cohort/search',
   '/user/v1/cohort/cohortHierarchy/:identifier',
-  '/user/v1/cohort/mycohorts/:identifier'
+  '/user/v1/cohort/mycohorts/:identifier',
 ];
 
 function convertToRegex(pattern) {
