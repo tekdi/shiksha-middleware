@@ -154,6 +154,7 @@ export class MiddlewareServices {
         fullUrl,
         req.body,
         req.headers,
+        apiList[reqUrl].changeResponse,
       );
     }
   }

@@ -88,7 +88,11 @@ const privilegeGroup = {
   event: createPrivilegeGroup('event'),
 };
 const common_public_get = { get: {} };
-const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
+const createRouteObject = (
+  methods: any,
+  redirectUrl: string | null = null,
+  changeResponse: boolean | null = false,
+) => {
   const allMethods = Object.keys(methods); // Extract method names (e.g., 'get', 'patch', 'delete')
 
   const methodObject = allMethods.reduce((acc, method) => {
@@ -107,6 +111,7 @@ const createRouteObject = (methods: any, redirectUrl: string | null = null) => {
     method: allMethods,
     ...methodObject,
     redirectUrl, // Optionally include redirectUrl if it's passed
+    changeResponse, // Optionally include changeResponse if it's passed
   };
 };
 
@@ -748,6 +753,57 @@ export const apiList = {
     },
     '/content/v3/retire/:identifier',
   ),
+  '/action/content/v3/hierarchy/update': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/content/v3/hierarchy/update',
+  ),
+  '/action/content/v3/hierarchy/:identifier': createRouteObject(
+    {
+      get: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/content/v3/hierarchy/:identifier',
+  ),
+  '/action/asset/v3/validate': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/asset/v4/validate',
+    true,
+  ),
+  //channel API
+  '/api/channel/v1/create': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/channel/v3/create',
+  ),
+  'api/channel/v1/read/:identifier': createRouteObject(
+    {
+      get: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/channel/v3/read/:identifier',
+  ),
+  '/api/channel/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/channel/v3/update/:identifier',
+  ),
+
   //framework API
   '/api/framework/v1/create': createRouteObject(
     {
