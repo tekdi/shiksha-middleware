@@ -122,9 +122,9 @@ export const apiList = {
     post: {},
   }),
   //user-service
-  '/user/v1/auth': createRouteObject({
+  '/user/v1/auth': createRouteObject(
     common_public_get,
-  }),
+  ),
   '/user/v1/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
