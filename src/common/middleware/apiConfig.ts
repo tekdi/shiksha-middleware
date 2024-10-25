@@ -674,6 +674,24 @@ export const apiList = {
     },
     '/asset/v4/create',
   ),
+  '/action/asset/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/asset/v4/update/:identifier',
+  ),
+  '/action/asset/v1/copy/:identifier': createRouteObject(
+    {
+      post: {
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/asset/v4/copy/:identifier',
+  ),
   '/action/asset/v1/upload/url/:identifier': createRouteObject(
     {
       post: {
@@ -690,7 +708,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
-    '/asset/v4/upload/identifier',
+    '/asset/v4/upload/:identifier',
   ),
   '/action/content/v3/upload/url/:identifier': createRouteObject(
     {
@@ -701,6 +719,31 @@ export const apiList = {
     },
     '/content/v3/upload/url/:identifier',
   ),
+  '/action/content/v3/copy/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/content/v3/copy/:identifier ',
+  ),
+  '/action/content/v3/import': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/content/v3/import',
+  ),
+  '/action/content/v3/dialcode/link': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/content/v3/dialcode/link',
+  ),
+
   '/action/content/v3/create': createRouteObject(
     {
       post: {
@@ -764,6 +807,14 @@ export const apiList = {
     },
     '/content/v3/retire/:identifier',
   ),
+  '/action/content/v3/hierarchy/add': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/content/v3/hierarchy/add',
+  ),
   '/action/content/v3/hierarchy/update': createRouteObject(
     {
       patch: {
@@ -771,6 +822,14 @@ export const apiList = {
       },
     },
     '/content/v3/hierarchy/update',
+  ),
+  '/action/content/v3/hierarchy/remove': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/content/v3/hierarchy/remove',
   ),
   '/action/content/v3/hierarchy/:identifier': createRouteObject(
     {
@@ -780,6 +839,40 @@ export const apiList = {
     },
     '/content/v3/hierarchy/:identifier',
   ),
+
+  '/action/license/v3/create': createRouteObject(
+    {
+      post: {
+        ...common_role_check,
+      },
+    },
+    '/license/v3/create',
+  ),
+  '/action/license/v3/read/:identifier': createRouteObject(
+    {
+      get: {
+        ...common_role_check,
+      },
+    },
+    '/license/v3/read/:identifier',
+  ),
+  '/action/license/v3/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/license/v3/update/:identifier',
+  ),
+  '/action/license/v3/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/license/v3/retire/:identifier',
+  ),
+
   '/action/asset/v3/validate': createRouteObject(
     {
       post: {
@@ -805,6 +898,14 @@ export const apiList = {
       },
     },
     '/channel/v3/update/:identifier',
+  ),
+  '/api/channel/v1/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/channel/v3/retire/:identifier',
   ),
 
   //framework API
@@ -1136,6 +1237,103 @@ export const apiList = {
       },
     },
     '/questionset/v5/system/update/:identifier',
+  ),
+  //collection framework
+  '/action/collection/v1/create': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/create',
+  ),
+  '/action/collection/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/update/:identifier',
+  ),
+  '/action/collection/v1/read/:identifier': createRouteObject(
+    {
+      get: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/read/:identifier',
+  ),
+  '/action/collection/v1/private/read/:identifier': createRouteObject(
+    {
+      get: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/private/read/:identifier',
+  ),
+  '/action/collection/v1/hierarchy/add': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/hierarchy/add',
+  ),
+  '/action/collection/v1/hierarchy/remove': createRouteObject(
+    {
+      delete: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/hierarchy/remove',
+  ),
+  '/action/collection/v1/hierarchy/update': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/hierarchy/update',
+  ),
+  '/action/collection/v1/hierarchy/:identifier': createRouteObject(
+    {
+      get: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/hierarchy/:identifier',
+  ),
+  '/action/collection/v1/flag/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/flag/:identifier',
+  ),
+  '/action/collection/v1/flag/accept/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/flag/accept/:identifier',
+  ),
+  '/action/collection/v1/discard/:identifier': createRouteObject(
+    {
+      delete: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/discard/:identifier',
+  ),
+  '/action/collection/v1/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/retire/:identifier',
   ),
 
   //attendance service
