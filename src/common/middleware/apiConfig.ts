@@ -725,7 +725,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
-    '/content/v3/copy/:identifier ',
+    '/content/v3/copy/:identifier',
   ),
   '/action/content/v3/import': createRouteObject(
     {
@@ -1080,6 +1080,14 @@ export const apiList = {
     },
     '/object/category/v4/read',
   ),
+  '/api/object/category/v1/retire': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/v4/retire',
+  ),
   '/api/object/category/definition/v1/create': createRouteObject(
     {
       post: {
@@ -1334,6 +1342,77 @@ export const apiList = {
       },
     },
     '/collection/v4/retire/:identifier',
+  ),
+  '/action/collection/v1/copy/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/copy/:identifier  ',
+  ),
+  '/action/collection/v1/system/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/system/update/:identifier',
+  ),
+  '/action/collection/v1/reject/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/reject/:identifier ',
+  ),
+  '/action/collection/v1/publish/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/publish/:identifier',
+  ),
+  '/action/collection/v1/unlisted/publish/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/unlisted/publish/:identifier',
+  ),
+  '/action/collection/v1/import/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/import/:identifier',
+  ),
+  '/action/collection/v1/export/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/export/:identifier',
+  ),
+  '/action/collection/v1/review/:identifier': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.admin_team_leader,
+      },
+    },
+    '/collection/v4/review/:identifier',
+  ),
+
+  '/api/content/v1/bundle': createRouteObject(
+    {
+      post: {},
+    },
+    '/content/v3/bundle',
   ),
 
   //attendance service
