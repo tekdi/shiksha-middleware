@@ -1349,7 +1349,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
-    '/collection/v4/copy/:identifier  ',
+    '/collection/v4/copy/:identifier',
   ),
   '/action/collection/v1/system/update/:identifier': createRouteObject(
     {
@@ -1365,7 +1365,7 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
-    '/collection/v4/reject/:identifier ',
+    '/collection/v4/reject/:identifier',
   ),
   '/action/collection/v1/publish/:identifier': createRouteObject(
     {
