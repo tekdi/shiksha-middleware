@@ -122,9 +122,7 @@ export const apiList = {
     post: {},
   }),
   //user-service
-  '/user/v1/auth': createRouteObject(
-    common_public_get,
-  ),
+  '/user/v1/auth': createRouteObject(common_public_get),
   '/user/v1/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
@@ -493,6 +491,18 @@ export const apiList = {
     delete: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
       ROLE_CHECK: rolesGroup.admin_team_leader,
+    },
+  }),
+  '/v1/tracking/content/course/status': createRouteObject({
+    post: {
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/v1/tracking/content/unit/status': createRouteObject({
+    post: {
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   // todos
