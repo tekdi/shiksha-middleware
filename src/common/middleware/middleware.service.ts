@@ -136,8 +136,18 @@ export class MiddlewareServices {
     const reqUrl = this.matchUrl(originalUrl[0]) || originalUrl[0];
     let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
 
-    const fullUrl = `${microserviceUrl}${forwardUrl}`;
+    let fullUrl = `${microserviceUrl}${forwardUrl}`;
 
+    //get userId
+    const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
+    const decodedPayload = atob(payload); // Decode the base64 payload
+    const parsedPayload = JSON.parse(decodedPayload);
+    let userId = parsedPayload.sub;
+    if (userId) {
+      fullUrl =
+        fullUrl +
+        (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
+    }
     // Handle multipart/form-data
     if (req.is('multipart/form-data')) {
       const reqObject = await this.processMultipartForm(req, res);
