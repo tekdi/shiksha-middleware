@@ -330,6 +330,9 @@ export const apiList = {
   }),
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
   '/user/v1/form/read': createRouteObject(common_public_get),
+  '/user/v1/fields/options/read': createRouteObject({
+    post: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
