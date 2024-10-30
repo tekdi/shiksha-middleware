@@ -333,6 +333,9 @@ export const apiList = {
   '/user/v1/fields/options/read': createRouteObject({
     post: {},
   }),
+  '/user/v1/fields/update/:identifier': createRouteObject({
+    patch: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
