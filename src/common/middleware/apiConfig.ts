@@ -57,11 +57,11 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'team_leader', 'teacher', 'student'],
+  common: ['admin', 'team_leader', 'teacher', 'student', 'learner'],
   admin: ['admin'],
   team_leader: ['team_leader'],
   teacher: ['teacher'],
-  student: ['student'],
+  student: ['student', 'learner'],
   //restricted: ['admin', 'team_leader'],
   //content_restricted: ['admin', 'team_leader'],
   admin_team_leader: ['admin', 'team_leader'],
