@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { MiddlewareLogger } from 'src/common/loggers/logger.service';
+import { Response } from 'express';
 
 @Injectable()
 export class GatewayService {
@@ -12,6 +13,7 @@ export class GatewayService {
     body: Object,
     oheaders: any,
     changeResponse: boolean,
+    res: Response,
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
@@ -29,23 +31,28 @@ export class GatewayService {
         data: body,
         headers: newheaders,
       });
-      return response.data;
+      res.status(response.status);
+      res.json(response.data);
+      return res;
     } catch (error) {
       if (error.response) {
         if (changeResponse) {
           if (
             error.response.data.params.err === 'ERR_YOUTUBE_LICENSE_VALIDATION'
           ) {
-            error.response.data.responseCode = 'OK';
+            error.response.data.responseCode = 200;
             error.response.data.result = {
               license: {
                 valid: false,
                 value: 'youtube',
               },
             };
+            error.response.status = 200;
           }
         }
-        return error.response.data;
+        res.status(error.response.status);
+        res.json(error.response.data);
+        return res;
       } else if (error.request) {
         // No response was received
         return {
@@ -55,6 +62,7 @@ export class GatewayService {
             errmsg: 'Internal server error',
             status: 'failed',
           },
+          responseCode: 500,
         };
       } else {
         // Error occurred in setting up the request
@@ -62,7 +70,11 @@ export class GatewayService {
       }
     }
   }
-  async handleRequestForMultipartData(url: string, formData: any) {
+  async handleRequestForMultipartData(
+    url: string,
+    formData: any,
+    res: Response,
+  ) {
     try {
       const response = await axios.post(url, formData, {
         headers: {
