@@ -255,11 +255,9 @@ export const apiList = {
   }),
   '/user/v1/cohortmember/board_enrolment': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
       ROLE_CHECK: rolesGroup.teacher,
     },
     get: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
