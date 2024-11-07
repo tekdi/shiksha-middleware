@@ -33,7 +33,6 @@ export class GatewayService {
       });
       res.status(response.status);
       res.json(response.data);
-      return res;
     } catch (error) {
       if (error.response) {
         if (changeResponse) {
@@ -52,7 +51,6 @@ export class GatewayService {
         }
         res.status(error.response.status);
         res.json(error.response.data);
-        return res;
       } else if (error.request) {
         // No response was received
         return {
