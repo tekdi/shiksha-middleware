@@ -261,6 +261,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
+  '/user/v1/cohortmember/board_enrolments': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
@@ -343,6 +348,12 @@ export const apiList = {
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {},
+  }),
+  '/user/v1/fields/formfields': createRouteObject({
+    get: {},
+  }),
+  '/user/v1/fields/search': createRouteObject({
+    post: {},
   }),
   //event-service
   //event
