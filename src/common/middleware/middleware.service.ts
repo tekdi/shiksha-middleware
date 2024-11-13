@@ -272,6 +272,7 @@ export class MiddlewareServices {
       '/api/content': 'CONTENT_SERVICE',
       '/action/license': 'CONTENT_SERVICE',
       '/action/collection': 'CONTENT_SERVICE',
+      '/api/course/': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix

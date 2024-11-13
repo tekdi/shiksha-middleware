@@ -871,7 +871,10 @@ export const apiList = {
     },
     '/content/v3/hierarchy/:identifier',
   ),
-
+  '/api/course/v1/hierarchy/:identifier': createRouteObject(
+    common_public_get,
+    '/content/v3/hierarchy/:identifier',
+  ),
   '/action/license/v3/create': createRouteObject(
     {
       post: {
@@ -1492,6 +1495,8 @@ export const publicAPI = [
   '/user/v1/forgot-password',
   '/questionset/v5/private/read/:identifier',
   '/action/composite/v3/search',
+  '/api/content/v1/read/:identifier',
+  '/api/course/v1/hierarchy/:identifier',
 ];
 
 // api which required academic year
