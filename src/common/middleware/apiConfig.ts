@@ -253,6 +253,19 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
+  '/user/v1/cohortmember/board_enrolment': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+  }),
+  '/user/v1/cohortmember/board_enrolments': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
@@ -335,6 +348,12 @@ export const apiList = {
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {},
+  }),
+  '/user/v1/fields/formfields': createRouteObject({
+    get: {},
+  }),
+  '/user/v1/fields/search': createRouteObject({
+    post: {},
   }),
   //event-service
   //event
@@ -665,10 +684,7 @@ export const apiList = {
   ),
   '/action/composite/v3/search': createRouteObject(
     {
-      post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
+      post: {},
     },
     '/v3/search',
   ),
@@ -1475,6 +1491,7 @@ export const publicAPI = [
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
   '/questionset/v5/private/read/:identifier',
+  '/action/composite/v3/search',
 ];
 
 // api which required academic year
