@@ -137,7 +137,7 @@ export class MiddlewareServices {
     let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
 
     let fullUrl = `${microserviceUrl}${forwardUrl}`;
-
+    const token = req.headers['authorization'].replace('Bearer ', '').trim();
     //get userId
     if(req?.headers['authorization']){
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
@@ -158,6 +158,7 @@ export class MiddlewareServices {
         return await this.gatewayService.handleRequestForMultipartData(
           fullUrl,
           formData,
+          token
         );
       }
     } else {
@@ -255,6 +256,7 @@ export class MiddlewareServices {
       '/queue': 'NOTIFICATION_SERVICE',
       '/v1/tracking': 'TRACKING_SERVICE',
       '/api/v1/attendance': 'ATTENDANCE_SERVICE',
+      '/prathamservice/v1':'PRATHAM_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',

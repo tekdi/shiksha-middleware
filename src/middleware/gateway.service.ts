@@ -62,11 +62,12 @@ export class GatewayService {
       }
     }
   }
-  async handleRequestForMultipartData(url: string, formData: any) {
+  async handleRequestForMultipartData(url: string, formData: any,token?: string) {
     try {
       const response = await axios.post(url, formData, {
         headers: {
           ...formData.getHeaders(),
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
         },
       });
       return response.data;
