@@ -125,7 +125,7 @@ export class MiddlewareServices {
         'api.middleware',
         null,
         error.message,
-        error.response?.status || 500,
+        error.response?.status || error.status || 500,
       );
     }
   }
@@ -139,15 +139,15 @@ export class MiddlewareServices {
     let fullUrl = `${microserviceUrl}${forwardUrl}`;
     const token = req.headers['authorization'].replace('Bearer ', '').trim();
     //get userId
-    if(req?.headers['authorization']){
+    if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
       const decodedPayload = atob(payload); // Decode the base64 payload
       const parsedPayload = JSON.parse(decodedPayload);
       let userId = parsedPayload.sub;
       if (userId) {
-      fullUrl =
-        fullUrl +
-        (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
+        fullUrl =
+          fullUrl +
+          (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
     // Handle multipart/form-data
@@ -168,6 +168,7 @@ export class MiddlewareServices {
         req.body,
         req.headers,
         apiList[reqUrl].changeResponse,
+        res,
       );
     }
   }
@@ -272,6 +273,7 @@ export class MiddlewareServices {
       '/api/content': 'CONTENT_SERVICE',
       '/action/license': 'CONTENT_SERVICE',
       '/action/collection': 'CONTENT_SERVICE',
+      '/api/course/': 'CONTENT_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix
@@ -460,7 +462,6 @@ export class MiddlewareServices {
               );
             } else {
               const response = await this.forwardRequest(req, res);
-              console.log('response in middleware', response);
               return res.json(response);
             }
           }

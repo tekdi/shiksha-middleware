@@ -57,11 +57,11 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'team_leader', 'teacher', 'student'],
+  common: ['admin', 'team_leader', 'teacher', 'student', 'learner'],
   admin: ['admin'],
   team_leader: ['team_leader'],
   teacher: ['teacher'],
-  student: ['student'],
+  student: ['student', 'learner'],
   //restricted: ['admin', 'team_leader'],
   //content_restricted: ['admin', 'team_leader'],
   admin_team_leader: ['admin', 'team_leader'],
@@ -252,6 +252,19 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
+  '/user/v1/cohortmember/board_enrolment': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+  }),
+  '/user/v1/cohortmember/board_enrolments': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.teacher,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
@@ -334,6 +347,12 @@ export const apiList = {
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {},
+  }),
+  '/user/v1/fields/formfields': createRouteObject({
+    get: {},
+  }),
+  '/user/v1/fields/search': createRouteObject({
+    post: {},
   }),
   //event-service
   //event
@@ -664,10 +683,7 @@ export const apiList = {
   ),
   '/action/composite/v3/search': createRouteObject(
     {
-      post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.read,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
+      post: {},
     },
     '/v3/search',
   ),
@@ -854,7 +870,10 @@ export const apiList = {
     },
     '/content/v3/hierarchy/:identifier',
   ),
-
+  '/api/course/v1/hierarchy/:identifier': createRouteObject(
+    common_public_get,
+    '/content/v3/hierarchy/:identifier',
+  ),
   '/action/license/v3/create': createRouteObject(
     {
       post: {
@@ -1480,7 +1499,10 @@ export const publicAPI = [
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
   '/questionset/v5/private/read/:identifier',
-  '/user/v1/form/read'
+  '/user/v1/form/read',
+  '/action/composite/v3/search',
+  '/api/content/v1/read/:identifier',
+  '/api/course/v1/hierarchy/:identifier',
 ];
 
 // api which required academic year
@@ -1491,7 +1513,6 @@ export const apiListForAcademicYear = [
   '/user/v1/cohortmember/read/:identifier',
   '/user/v1/cohort/create',
   '/user/v1/cohort/search',
-  '/user/v1/cohort/cohortHierarchy/:identifier',
   '/user/v1/cohort/mycohorts/:identifier',
 ];
 
