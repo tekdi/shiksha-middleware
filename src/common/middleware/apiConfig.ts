@@ -107,7 +107,6 @@ const createRouteObject = (
 
     return acc;
   }, {});
-
   return {
     method: allMethods,
     ...methodObject,
@@ -1475,6 +1474,12 @@ export const apiList = {
       DATA_TENANT_CONTEXT: [],
     },
   }),
+  // Pratham Speicfic Mico-service
+  '/prathamservice/v1/course-planner/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin
+    },
+  })
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1494,6 +1499,7 @@ export const publicAPI = [
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
   '/questionset/v5/private/read/:identifier',
+  '/user/v1/form/read',
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
