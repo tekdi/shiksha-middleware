@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   BadRequestException,
+  ConsoleLogger,
 } from '@nestjs/common';
 import {
   apiList,
@@ -137,7 +138,7 @@ export class MiddlewareServices {
     let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
 
     let fullUrl = `${microserviceUrl}${forwardUrl}`;
-    const token = req.headers['authorization'].replace('Bearer ', '').trim();
+    const token = req.headers['authorization']? req.headers['authorization'].replace('Bearer ', '').trim(): '';
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
