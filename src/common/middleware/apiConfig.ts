@@ -116,16 +116,21 @@ const createRouteObject = (
 };
 
 export const apiList = {
+  //tenant api
+  '/user/v1/tenant/read': createRouteObject({
+    get: {},
+  }),
   //public api
   '/user/v1/auth/login': createRouteObject({
     post: {},
   }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
+  //Need confirmation in to self registration
   '/user/v1/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.create,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      // PRIVILEGE_CHECK: privilegeGroup.users.create,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
   '/user/v1/read/:userId': createRouteObject({
@@ -237,13 +242,13 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.delete,
-      ROLE_CHECK: rolesGroup.teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher,
     },
   }),
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
@@ -1485,6 +1490,10 @@ export const urlPatterns = Object.keys(apiList);
 
 //add public api
 export const publicAPI = [
+  '/user/v1/auth',
+  '/user/v1/create',
+  'user/v1/fields/options/read',
+  '/user/v1/tenant/read',
   '/user/v1/auth/login',
   '/api/question/v2/list',
   '/action/question/v2/list',
