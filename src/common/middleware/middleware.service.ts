@@ -316,16 +316,11 @@ export class MiddlewareServices {
       if (privilegeOfTenant.name == 'UnauthorizedException') {
         return reject("User doesn't have appropriate privilege");
       }
-      //check for admin
-      if (privilegeOfTenant.includes('all')) {
+      const isAuthorized = privilegesForURL.some((permission: string) =>
+        privilegeOfTenant?.includes(permission),
+      );
+      if (isAuthorized) {
         return resolve(true);
-      } else {
-        const isAuthorized = privilegesForURL.some((permission: string) =>
-          privilegeOfTenant?.includes(permission),
-        );
-        if (isAuthorized) {
-          return resolve(true);
-        }
       }
       return reject("User doesn't have appropriate privilege");
     },
@@ -349,10 +344,9 @@ export class MiddlewareServices {
         return reject("User doesn't have appropriate privilege");
       }
 
-      const isAuthorized = rolesOfTenant?.includes('admin')
-        ? true
-        : rolesForURL.filter((role: string) => rolesOfTenant?.includes(role))
-            .length > 0;
+      const isAuthorized =
+        rolesForURL.filter((role: string) => rolesOfTenant?.includes(role))
+          .length > 0;
 
       if (isAuthorized) {
         return resolve(true);

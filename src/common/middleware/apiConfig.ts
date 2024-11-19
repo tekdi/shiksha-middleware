@@ -57,16 +57,39 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'team_leader', 'teacher', 'student', 'learner'],
-  admin: ['admin'],
+  common: [
+    'admin',
+    'team_leader',
+    'teacher',
+    'student',
+    'learner',
+    'state_admin_mme',
+    'central_admin_mme',
+  ],
+  //admin: ['admin'], //state_admin_mme
+  central_admin_ccta: ['central_admin_ccta'],
+  central_admin_mme: ['central_admin_mme'],
+  state_admin_scta: ['state_admin_scta'],
+  state_admin_mme: ['state_admin_mme'],
+  admin_mme: ['state_admin_mme', 'central_admin_mme'],
+  admin_scta_ccta: ['state_admin_scta', 'central_admin_ccta'],
   team_leader: ['team_leader'],
   teacher: ['teacher'],
   student: ['student', 'learner'],
-  //restricted: ['admin', 'team_leader'],
-  //content_restricted: ['admin', 'team_leader'],
-  admin_team_leader: ['admin', 'team_leader'],
-  admin_team_leader_teacher: ['admin', 'teacher', 'team_leader'],
-  team_leader_teacher: ['teacher', 'team_leader'],
+  admin_team_leader: [
+    'admin',
+    'team_leader',
+    'state_admin_mme',
+    'central_admin_mme',
+  ],
+  admin_team_leader_teacher: [
+    'admin',
+    'teacher',
+    'team_leader',
+    'state_admin_mme',
+    'central_admin_mme',
+  ],
+  team_leader_teacher: ['teacher', 'team_leader', 'state_admin_mme'],
 };
 const createPrivilegeGroup = (entity: string) => {
   return {
@@ -76,6 +99,7 @@ const createPrivilegeGroup = (entity: string) => {
     delete: [`${entity}.delete`],
     review: [`${entity}.review`],
     approve: [`${entity}.approve`],
+    publish: [`${entity}.publish`],
   };
 };
 const privilegeGroup = {
@@ -238,31 +262,18 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.delete,
-      ROLE_CHECK: rolesGroup.teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher,
     },
   }),
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.teacher,
-    },
-  }),
-  '/user/v1/cohortmember/board_enrolment': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.teacher,
-    },
-    get: {
-      ROLE_CHECK: rolesGroup.teacher,
-    },
-  }),
-  '/user/v1/cohortmember/board_enrolments': createRouteObject({
-    post: {
       ROLE_CHECK: rolesGroup.teacher,
     },
   }),
@@ -745,8 +756,8 @@ export const apiList = {
   '/action/content/v3/upload/url/:identifier': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/upload/url/:identifier',
@@ -754,7 +765,7 @@ export const apiList = {
   '/action/content/v3/copy/:identifier': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/copy/:identifier',
@@ -762,7 +773,7 @@ export const apiList = {
   '/action/content/v3/import': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/import',
@@ -779,8 +790,8 @@ export const apiList = {
   '/action/content/v3/create': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/create',
@@ -788,8 +799,8 @@ export const apiList = {
   '/action/content/v3/upload/:identifier': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.create,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/upload/:identifier',
@@ -797,8 +808,8 @@ export const apiList = {
   '/action/content/v3/update/:identifier': createRouteObject(
     {
       patch: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.update,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/update/:identifier',
@@ -806,8 +817,8 @@ export const apiList = {
   '/action/content/v3/review/:identifier': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.review,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/review/:identifier',
@@ -815,8 +826,8 @@ export const apiList = {
   '/action/content/v3/reject/:identifier': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.review,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/reject/:identifier',
@@ -824,8 +835,8 @@ export const apiList = {
   '/action/content/v3/publish/:identifier': createRouteObject(
     {
       post: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.publish,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/publish/:identifier',
@@ -833,8 +844,8 @@ export const apiList = {
   '/action/content/v3/retire/:identifier': createRouteObject(
     {
       delete: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/retire/:identifier',
@@ -842,7 +853,7 @@ export const apiList = {
   '/action/content/v3/hierarchy/add': createRouteObject(
     {
       patch: {
-        ...common_role_check,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/hierarchy/add',
@@ -850,7 +861,7 @@ export const apiList = {
   '/action/content/v3/hierarchy/update': createRouteObject(
     {
       patch: {
-        ...common_role_check,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/hierarchy/update',
@@ -858,7 +869,7 @@ export const apiList = {
   '/action/content/v3/hierarchy/remove': createRouteObject(
     {
       delete: {
-        ...common_role_check,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/hierarchy/remove',
@@ -1481,6 +1492,8 @@ export const urlPatterns = Object.keys(apiList);
 //add public api
 export const publicAPI = [
   '/user/v1/auth/login',
+  '/user/v1/auth',
+  'user/v1/fields/options/read',
   '/api/question/v2/list',
   '/action/question/v2/list',
   '/action/question/v2/private/read/:identifier',

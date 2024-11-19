@@ -30,12 +30,9 @@ export class PermissionsService {
       return [];
     }
     let privilegesPerTenant = [];
-    // If role is 'admin' then add 'all' to privilege
     privilegesPerTenant = result.reduce(
       (acc, { privilege_code, role_code, tenant_id }) => {
-        if (role_code === 'admin') {
-          acc[tenant_id] = ['all'];
-        } else if (acc[tenant_id]) {
+        if (acc[tenant_id]) {
           if (privilege_code !== null) {
             acc[tenant_id].push(privilege_code);
           }
