@@ -131,7 +131,6 @@ const createRouteObject = (
 
     return acc;
   }, {});
-
   return {
     method: allMethods,
     ...methodObject,
@@ -141,16 +140,21 @@ const createRouteObject = (
 };
 
 export const apiList = {
+  //tenant api
+  '/user/v1/tenant/read': createRouteObject({
+    get: {},
+  }),
   //public api
   '/user/v1/auth/login': createRouteObject({
     post: {},
   }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
+  //Need confirmation in to self registration
   '/user/v1/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.create,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      // PRIVILEGE_CHECK: privilegeGroup.users.create,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
   '/user/v1/read/:userId': createRouteObject({
@@ -1486,11 +1490,21 @@ export const apiList = {
       DATA_TENANT_CONTEXT: [],
     },
   }),
+  // Pratham Speicfic Mico-service
+  '/prathamservice/v1/course-planner/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin
+    },
+  })
 };
 export const urlPatterns = Object.keys(apiList);
 
 //add public api
 export const publicAPI = [
+  '/user/v1/auth',
+  '/user/v1/create',
+  'user/v1/fields/options/read',
+  '/user/v1/tenant/read',
   '/user/v1/auth/login',
   '/user/v1/auth',
   'user/v1/fields/options/read',
@@ -1507,6 +1521,7 @@ export const publicAPI = [
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
   '/questionset/v5/private/read/:identifier',
+  '/user/v1/form/read',
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
