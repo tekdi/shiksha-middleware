@@ -90,6 +90,14 @@ const rolesGroup = {
     'central_admin_mme',
   ],
   team_leader_teacher: ['teacher', 'team_leader', 'state_admin_mme'],
+  admin_team_leader_teacher_state_admin_scta: [
+    'admin',
+    'teacher',
+    'team_leader',
+    'state_admin_mme',
+    'central_admin_mme',
+    'state_admin_scta',
+  ],
 };
 const createPrivilegeGroup = (entity: string) => {
   return {
@@ -160,7 +168,7 @@ export const apiList = {
   '/user/v1/read/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher_state_admin_scta,
     },
   }),
   '/user/v1/update/:userId': createRouteObject({
@@ -319,14 +327,14 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
-
-  '/user/v1/rbac/privileges/:privilegeId': createRouteObject({
-    get: {
+  // add create first
+  '/user/v1/rbac/privileges/create': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
-  '/user/v1/rbac/privileges/create': createRouteObject({
-    post: {
+  '/user/v1/rbac/privileges/:privilegeId': createRouteObject({
+    get: {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
