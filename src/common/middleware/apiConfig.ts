@@ -1503,11 +1503,10 @@ export const urlPatterns = Object.keys(apiList);
 export const publicAPI = [
   '/user/v1/auth',
   '/user/v1/create',
-  'user/v1/fields/options/read',
+  '/user/v1/fields/options/read',
   '/user/v1/tenant/read',
   '/user/v1/auth/login',
   '/user/v1/auth',
-  'user/v1/fields/options/read',
   '/api/question/v2/list',
   '/action/question/v2/list',
   '/action/question/v2/private/read/:identifier',
