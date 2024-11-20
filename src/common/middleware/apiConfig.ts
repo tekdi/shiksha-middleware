@@ -1493,9 +1493,9 @@ export const apiList = {
   // Pratham Speicfic Mico-service
   '/prathamservice/v1/course-planner/upload': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin
+      ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
-  })
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
