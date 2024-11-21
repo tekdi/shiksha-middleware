@@ -249,7 +249,7 @@ export const apiList = {
   '/user/v1/cohort/mycohorts/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher.concat(rolesGroup.student),
     },
   }),
   //cohort member
