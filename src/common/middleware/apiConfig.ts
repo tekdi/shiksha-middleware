@@ -174,7 +174,9 @@ export const apiList = {
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
+        rolesGroup.student,
+      ),
     },
   }),
   '/user/v1/delete/:userId': createRouteObject({
@@ -186,7 +188,9 @@ export const apiList = {
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
+        rolesGroup.student,
+      ),
     },
   }),
   //need confirmation
@@ -212,8 +216,13 @@ export const apiList = {
   '/user/v1/check': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
+        rolesGroup.student,
+      ),
     },
+  }),
+  '/user/v1/auth/refresh': createRouteObject({
+    post: {},
   }),
   //cohort
   '/user/v1/cohort/cohortHierarchy/:cohortId': createRouteObject({
@@ -1483,7 +1492,9 @@ export const apiList = {
   '/api/v1/attendance/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.attendance.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
+        rolesGroup.student,
+      ),
     },
   }),
   '/api/v1/attendance/bulkAttendance': createRouteObject({
