@@ -903,7 +903,8 @@ export const apiList = {
   '/action/content/v3/hierarchy/:identifier': createRouteObject(
     {
       get: {
-        ...common_role_check,
+        ROLE_CHECK:
+          rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
       },
     },
     '/content/v3/hierarchy/:identifier',
