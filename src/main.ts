@@ -9,7 +9,7 @@ import { ForbiddenException } from '@nestjs/common';
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
   const app = await NestFactory.create(AppModule);
-
+  //app.use(LoggingMiddleware);
   const configService = app.get(ConfigService);
 
   const corsOriginList = configService

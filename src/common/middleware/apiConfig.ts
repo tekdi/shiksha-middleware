@@ -89,7 +89,12 @@ const rolesGroup = {
     'state_admin_mme',
     'central_admin_mme',
   ],
-  team_leader_teacher: ['teacher', 'team_leader', 'state_admin_mme'],
+  team_leader_teacher: [
+    'teacher',
+    'team_leader',
+    'state_admin_mme',
+    'central_admin_mme',
+  ],
   admin_team_leader_teacher_student_state_admin_scta_ccta: [
     'admin',
     'teacher',
@@ -98,7 +103,7 @@ const rolesGroup = {
     'central_admin_mme',
     'state_admin_scta',
     'central_admin_ccta',
-    'student'
+    'student',
   ],
 };
 const createPrivilegeGroup = (entity: string) => {
@@ -170,7 +175,8 @@ export const apiList = {
   '/user/v1/read/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
+      ROLE_CHECK:
+        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
     },
   }),
   '/user/v1/update/:userId': createRouteObject({
