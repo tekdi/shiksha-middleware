@@ -18,6 +18,7 @@ import { MiddlewareLoggerModule } from './common/loggers/logger.module';
 import { DataValidationService } from './common/service/dataValidation.service';
 import { CohortMembers } from './common/entities/CohortMembers.entity';
 import { Cohort } from './common/entities/Cohort.entity';
+import { LoggingMiddleware } from './common/loggers/logging.middleware';
 
 @Module({
   imports: [
@@ -46,6 +47,6 @@ import { Cohort } from './common/entities/Cohort.entity';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(MiddlewareServices).forRoutes('*');
+    consumer.apply(LoggingMiddleware, MiddlewareServices).forRoutes('*');
   }
 }

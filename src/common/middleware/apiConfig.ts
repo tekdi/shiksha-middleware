@@ -89,7 +89,12 @@ const rolesGroup = {
     'state_admin_mme',
     'central_admin_mme',
   ],
-  team_leader_teacher: ['teacher', 'team_leader', 'state_admin_mme'],
+  team_leader_teacher: [
+    'teacher',
+    'team_leader',
+    'state_admin_mme',
+    'central_admin_mme',
+  ],
   admin_team_leader_teacher_student_state_admin_scta_ccta: [
     'admin',
     'teacher',
