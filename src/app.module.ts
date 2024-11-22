@@ -47,6 +47,10 @@ import { LoggingMiddleware } from './common/loggers/logging.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggingMiddleware, MiddlewareServices).forRoutes('*');
+    consumer
+      .apply(LoggingMiddleware) // Apply LoggerMiddleware
+      .forRoutes('*') // Apply globally to all routes
+      .apply(MiddlewareServices)
+      .forRoutes('*');
   }
 }

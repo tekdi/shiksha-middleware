@@ -4,7 +4,6 @@ import {
   HttpException,
   HttpStatus,
   BadRequestException,
-  ConsoleLogger,
 } from '@nestjs/common';
 import {
   apiList,
@@ -76,9 +75,8 @@ export class MiddlewareServices {
             HttpStatus.FORBIDDEN,
           );
         }
-        console.log(
-          'List[reqUrl][req.method.toLowerCase()]: ',
-          apiList[reqUrl][req.method.toLowerCase()],
+        this.middlewareLogger.log(
+          reqUrl + ': ' + apiList[reqUrl][req.method.toLowerCase()],
         );
         let checksToExecute = [];
         // Iterate for checks defined for API and push to array
@@ -102,6 +100,7 @@ export class MiddlewareServices {
             );
           },
         );
+
         this.executeChecks(req, res, next, checksToExecute);
       } else {
         //If API is not whitelisted
@@ -138,7 +137,9 @@ export class MiddlewareServices {
     let forwardUrl = this.constructForwardUrl(reqUrl, originalUrl, apiList);
 
     let fullUrl = `${microserviceUrl}${forwardUrl}`;
-    const token = req.headers['authorization']? req.headers['authorization'].replace('Bearer ', '').trim(): '';
+    const token = req.headers['authorization']
+      ? req.headers['authorization'].replace('Bearer ', '').trim()
+      : '';
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
@@ -157,9 +158,10 @@ export class MiddlewareServices {
       if (reqObject) {
         const formData = this.prepareFormData(reqObject);
         return await this.gatewayService.handleRequestForMultipartData(
+          res,
           fullUrl,
           formData,
-          token
+          token,
         );
       }
     } else {
@@ -258,7 +260,7 @@ export class MiddlewareServices {
       '/queue': 'NOTIFICATION_SERVICE',
       '/v1/tracking': 'TRACKING_SERVICE',
       '/api/v1/attendance': 'ATTENDANCE_SERVICE',
-      '/prathamservice/v1':'PRATHAM_SERVICE',
+      '/prathamservice/v1': 'PRATHAM_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
