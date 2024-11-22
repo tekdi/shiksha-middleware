@@ -175,6 +175,8 @@ export const apiList = {
   '/user/v1/read/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
+      ROLE_CHECK:
+        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
     },
   }),
   '/user/v1/update/:userId': createRouteObject({
