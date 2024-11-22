@@ -9,8 +9,8 @@ export class LoggingMiddleware {
     // Log request details
     const { method, originalUrl, body, query } = req;
     this.loggerService.log(`[Request] ${method} ${originalUrl}`);
-    this.loggerService.log(`Request Body:  ${body}`);
-    this.loggerService.log(`Request Query: ${query}`);
+    this.loggerService.log('Request Body: ' + JSON.stringify(body));
+    +this.loggerService.log('Request Query:' + JSON.stringify(query || {}));
 
     // Listen for the response and log it after the response is sent
     res.on('finish', () => {
