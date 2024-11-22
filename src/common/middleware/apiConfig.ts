@@ -948,7 +948,7 @@ export const apiList = {
   '/action/asset/v3/validate': createRouteObject(
     {
       post: {
-        ...common_role_check,
+        ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/validate',
