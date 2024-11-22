@@ -65,7 +65,6 @@ export class PermissionsService {
         userId,
         tenantId,
       );
-      console.log('userPrivilegesAndRoles: ', userPrivilegesAndRoles);
       if (userPrivilegesAndRoles.length == 0) {
         return new UnauthorizedException(
           'User does not have any privileges in the Tenant',

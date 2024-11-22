@@ -32,6 +32,7 @@ export class GatewayService {
         headers: newheaders,
       });
       res.status(response.status);
+      res.locals.responseBody = response.data;
       res.json(response.data);
     } catch (error) {
       if (error.response) {
@@ -50,6 +51,7 @@ export class GatewayService {
           }
         }
         res.status(error.response.status);
+        res.locals.responseBody = error.response.data;
         res.json(error.response.data);
       } else if (error.request) {
         // No response was received
@@ -68,17 +70,24 @@ export class GatewayService {
       }
     }
   }
-  async handleRequestForMultipartData(url: string, formData: any,token?: string) {
+  async handleRequestForMultipartData(
+    res,
+    url: string,
+    formData: any,
+    token?: string,
+  ) {
     try {
       const response = await axios.post(url, formData, {
         headers: {
           ...formData.getHeaders(),
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
+      res.locals.responseBody = response.data;
       return response.data;
     } catch (error) {
       if (error.response) {
+        res.locals.responseBody = error.data;
         return error.response.data;
       } else if (error.request) {
         // No response was received

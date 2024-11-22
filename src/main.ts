@@ -9,7 +9,7 @@ import { ForbiddenException } from '@nestjs/common';
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
   const app = await NestFactory.create(AppModule);
-  //app.use(LoggingMiddleware);
+
   const configService = app.get(ConfigService);
 
   const corsOriginList = configService
@@ -51,9 +51,7 @@ async function bootstrap() {
   app.enableCors(corsOptions);
   app.use(helmet());
 
-  await app.listen(4000, () => {
-    console.log(`Server middleware on port - 4000`);
-  });
+  await app.listen(configService.get('port') || 4000, () => {});
 }
 
 function validateCorsOriginList(corsOriginList: string[]): boolean {
