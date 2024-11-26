@@ -163,6 +163,10 @@ export const apiList = {
   '/user/v1/auth/login': createRouteObject({
     post: {},
   }),
+  //public api for run cron job for send event notification
+  '/prathamservice/v1/cronjob': createRouteObject({
+    get: {},
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
@@ -1550,6 +1554,7 @@ export const publicAPI = [
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
+  '/prathamservice/v1/cronjob'
 ];
 
 // api which required academic year
