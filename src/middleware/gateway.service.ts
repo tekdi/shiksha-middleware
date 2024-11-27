@@ -55,6 +55,7 @@ export class GatewayService {
         res.json(error.response.data);
       } else if (error.request) {
         // No response was received
+        res.status(500);
         return {
           result: {},
           params: {
@@ -65,6 +66,7 @@ export class GatewayService {
           responseCode: 500,
         };
       } else {
+        res.status(500);
         // Error occurred in setting up the request
         return error.message;
       }
@@ -84,13 +86,16 @@ export class GatewayService {
         },
       });
       res.locals.responseBody = response.data;
+      res.status(response.status);
       return response.data;
     } catch (error) {
       if (error.response) {
         res.locals.responseBody = error.data;
+        res.status(error.response.status);
         return error.response.data;
       } else if (error.request) {
         // No response was received
+        res.status(500);
         return {
           result: {},
           params: {
