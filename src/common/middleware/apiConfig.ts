@@ -311,7 +311,7 @@ export const apiList = {
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.teacher,
+      ROLE_CHECK: rolesGroup.team_leader_teacher,
     },
   }),
   //AssignTenant
@@ -1565,7 +1565,7 @@ export const publicAPI = [
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
-  '/prathamservice/v1/import-user'
+  '/prathamservice/v1/import-user',
 ];
 
 // api which required academic year
