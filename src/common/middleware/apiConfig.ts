@@ -578,6 +578,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/v1/tracking/content/course/inprogress': createRouteObject({
+    post: {
+      //PRIVILEGE_CHECK: privilegeGroup.tracking.read,
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // todos
   '/todo/create': createRouteObject({
     post: {
