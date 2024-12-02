@@ -89,6 +89,7 @@ export class GatewayService {
       res.status(response.status);
       return response.data;
     } catch (error) {
+      console.log(error);
       if (error.response) {
         res.locals.responseBody = error.data;
         res.status(error.response.status);
