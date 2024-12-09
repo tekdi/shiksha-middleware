@@ -394,6 +394,9 @@ export const apiList = {
   '/user/v1/fields/options/read': createRouteObject({
     post: {},
   }),
+  '/user/v1/fields/options/delete/:identifier': createRouteObject({
+    delete: {},
+  }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {},
   }),
@@ -1566,6 +1569,7 @@ export const publicAPI = [
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/import-user',
+  '/user/v1/fields/options/delete/:identifier',
 ];
 
 // api which required academic year
