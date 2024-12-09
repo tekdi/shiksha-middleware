@@ -542,7 +542,7 @@ export const apiList = {
   '/v1/tracking/content/create': createRouteObject({
     post: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.create,
-      ROLE_CHECK: rolesGroup.student,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/v1/tracking/content/search': createRouteObject({
