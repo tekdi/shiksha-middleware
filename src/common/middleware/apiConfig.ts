@@ -383,6 +383,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
+  '/user/v1/tenant/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
+  '/user/v1/tenant/update/:identifier': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
+  '/user/v1/tenant/delete/:identifier': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
   '/user/v1/academicyears/create': createRouteObject({
     post: {},
   }),
