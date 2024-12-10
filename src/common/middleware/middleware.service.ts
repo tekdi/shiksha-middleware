@@ -26,7 +26,7 @@ import * as FormData from 'form-data';
 // Set up Multer with file size limit (e.g., 2 MB)
 const upload = multer({
   limits: {
-    fileSize: 2 * 1024 * 1024, // 2 MB limit
+    fileSize: 200 * 1024 * 1024, // 200 MB limit
   },
 });
 
