@@ -383,6 +383,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_team_leader,
     },
   }),
+  '/user/v1/tenant/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
+  '/user/v1/tenant/update/:identifier': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
+  '/user/v1/tenant/delete/:identifier': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_mme,
+    },
+  }),
   '/user/v1/academicyears/create': createRouteObject({
     post: {},
   }),
@@ -393,6 +408,9 @@ export const apiList = {
   '/user/v1/form/read': createRouteObject(common_public_get),
   '/user/v1/fields/options/read': createRouteObject({
     post: {},
+  }),
+  '/user/v1/fields/options/delete/:identifier': createRouteObject({
+    delete: {},
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {},
@@ -1566,6 +1584,7 @@ export const publicAPI = [
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/import-user',
+  '/user/v1/fields/options/delete/:identifier',
 ];
 
 // api which required academic year
