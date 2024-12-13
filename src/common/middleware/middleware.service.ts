@@ -317,6 +317,10 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (privilegeOfTenant == undefined || privilegeOfTenant == null) {
+        return reject("User doesn't have appropriate privilege");
+      }
+
       if (privilegeOfTenant.name == 'UnauthorizedException') {
         return reject("User doesn't have appropriate privilege");
       }
@@ -344,6 +348,9 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+      if (rolesOfTenant == undefined || rolesOfTenant == null) {
+        return reject("User doesn't have appropriate privilege");
+      }
       if (rolesOfTenant.name == 'UnauthorizedException') {
         return reject("User doesn't have appropriate privilege");
       }
