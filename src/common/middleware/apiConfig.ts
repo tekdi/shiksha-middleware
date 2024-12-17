@@ -384,19 +384,13 @@ export const apiList = {
     },
   }),
   '/user/v1/tenant/create': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.admin_mme,
-    },
+    post: {},
   }),
-  '/user/v1/tenant/update/:identifier': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.admin_mme,
-    },
+  '/user/v1/tenant/update/:tenantId': createRouteObject({
+    patch: {},
   }),
   '/user/v1/tenant/delete/:identifier': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.admin_mme,
-    },
+    post: {},
   }),
   '/user/v1/academicyears/create': createRouteObject({
     post: {},
@@ -1556,12 +1550,16 @@ export const apiList = {
 };
 export const urlPatterns = Object.keys(apiList);
 
+
 //add public api
 export const publicAPI = [
   '/user/v1/auth',
   '/user/v1/create',
   '/user/v1/fields/options/read',
   '/user/v1/tenant/read',
+  '/user/v1/tenant/create',
+  '/user/v1/tenant/update/:tenantId',
+  '/user/v1/tenant/delete/:identifier',
   '/user/v1/auth/login',
   '/user/v1/auth',
   '/api/question/v2/list',
