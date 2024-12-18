@@ -81,22 +81,17 @@ export class GatewayService {
   ) {    
     try {   
       let response;
-      if(method == 'POST'){
-        response = await axios.post(url, formData, {
-          headers: {
-            ...formData.getHeaders(),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
-      }
-      if(method == 'PATCH'){
-        response = await axios.patch(url, formData, {
-          headers: {
-            ...formData.getHeaders(),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
-      }
+      const headers = { 
+        ...formData.getHeaders(),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}), 
+      };
+      response = await axios({
+        method: method.toLowerCase(), 
+        url, 
+        data: formData, 
+        headers, 
+      });
+
 
       res.locals.responseBody = response.data;
       res.status(response.status);
