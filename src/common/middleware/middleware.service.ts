@@ -231,23 +231,28 @@ export class MiddlewareServices {
   // Prepare FormData for Axios call
   prepareFormData(reqObject: any): FormData {
     const formData = new FormData();
-
+  
+    // Check if there are files to process
     if (reqObject.files && reqObject.files.length > 0) {
-      const file = reqObject.files[0];
-      formData.append('file', file.buffer, {
-        filename: file.originalname,
-        contentType: file.mimetype,
+      reqObject.files.forEach((file: any) => {
+        // Append each file to the formData, using the fieldname and file details
+        formData.append(file.fieldname, file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        });
       });
     }
-
+  
+    // Append other form data (e.g., text fields)
     if (reqObject.data) {
       Object.keys(reqObject.data).forEach((key) => {
         formData.append(key, reqObject.data[key]);
       });
     }
-
+  
     return formData;
   }
+  
 
   getMicroserviceUrl(url: string): string | undefined {
     // Mapping of URL prefixes to their corresponding service configuration keys

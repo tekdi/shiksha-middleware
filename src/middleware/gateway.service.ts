@@ -77,14 +77,15 @@ export class GatewayService {
     url: string,
     formData: any,
     token?: string,
-  ) {
-    try {
-      const response = await axios.post(url, formData, {
+  ) {    
+    try {   
+      const response = await axios.patch(url, formData, {
         headers: {
           ...formData.getHeaders(),
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
+
       res.locals.responseBody = response.data;
       res.status(response.status);
       return response.data;
