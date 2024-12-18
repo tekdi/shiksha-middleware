@@ -160,6 +160,7 @@ export class MiddlewareServices {
         return await this.gatewayService.handleRequestForMultipartData(
           res,
           fullUrl,
+          req.method,
           formData,
           token,
         );

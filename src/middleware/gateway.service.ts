@@ -75,16 +75,28 @@ export class GatewayService {
   async handleRequestForMultipartData(
     res,
     url: string,
+    method,
     formData: any,
     token?: string,
   ) {    
     try {   
-      const response = await axios.patch(url, formData, {
-        headers: {
-          ...formData.getHeaders(),
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+      let response;
+      if(method == 'POST'){
+        response = await axios.post(url, formData, {
+          headers: {
+            ...formData.getHeaders(),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+      }
+      if(method == 'PATCH'){
+        response = await axios.patch(url, formData, {
+          headers: {
+            ...formData.getHeaders(),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+      }
 
       res.locals.responseBody = response.data;
       res.status(response.status);
