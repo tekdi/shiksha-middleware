@@ -216,6 +216,12 @@ export const apiList = {
       // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
+  '/user/v1/password-reset-otp': createRouteObject({
+    post: {
+      // PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
   //need confirmation
   '/user/v1/forgot-password': createRouteObject({
     post: {
@@ -1589,6 +1595,7 @@ export const publicAPI = [
   '/action/questionset/private/v2/read/:identifier',
   '/action/object/category/definition/v1/read',
   '/user/v1/password-reset-link',
+  '/user/v1/password-reset-otp',
   '/user/v1/forgot-password',
   '/user/v1/send-otp',
   '/user/v1/verify-otp',
