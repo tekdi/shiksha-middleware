@@ -619,6 +619,21 @@ export const apiList = {
     },
   }),
 
+  //OTP
+  '/user/v1/send-otp': createRouteObject({
+    post: {
+      // PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+  '/user/v1/verify-otp': createRouteObject({
+    post: {
+      // PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+
+
   //sunbird knowlg and inQuiry service
   //public
 
@@ -1575,6 +1590,8 @@ export const publicAPI = [
   '/action/object/category/definition/v1/read',
   '/user/v1/password-reset-link',
   '/user/v1/forgot-password',
+  '/user/v1/send-otp',
+  '/user/v1/verify-otp',
   '/questionset/v5/private/read/:identifier',
   '/user/v1/form/read',
   '/action/composite/v3/search',
