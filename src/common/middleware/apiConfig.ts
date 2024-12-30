@@ -442,6 +442,11 @@ export const apiList = {
     },
   }),
   //event-attendance
+  '/event-service/attendance/v1/markeventattendance': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
@@ -638,7 +643,6 @@ export const apiList = {
       // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
     },
   }),
-
 
   //sunbird knowlg and inQuiry service
   //public
@@ -1570,7 +1574,6 @@ export const apiList = {
   }),
 };
 export const urlPatterns = Object.keys(apiList);
-
 
 //add public api
 export const publicAPI = [
