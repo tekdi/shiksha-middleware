@@ -147,11 +147,13 @@ export class MiddlewareServices {
       const parsedPayload = JSON.parse(decodedPayload);
       let userId = parsedPayload.sub;
       if (userId) {
+        console.log('in if ', userId);
         fullUrl =
           fullUrl +
           (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
+    console.log('fullUrl', fullUrl);
     // Handle multipart/form-data
     if (req.is('multipart/form-data')) {
       const reqObject = await this.processMultipartForm(req, res);
@@ -232,7 +234,7 @@ export class MiddlewareServices {
   // Prepare FormData for Axios call
   prepareFormData(reqObject: any): FormData {
     const formData = new FormData();
-  
+
     // Check if there are files to process
     if (reqObject.files && reqObject.files.length > 0) {
       reqObject.files.forEach((file: any) => {
@@ -243,17 +245,16 @@ export class MiddlewareServices {
         });
       });
     }
-  
+
     // Append other form data (e.g., text fields)
     if (reqObject.data) {
       Object.keys(reqObject.data).forEach((key) => {
         formData.append(key, reqObject.data[key]);
       });
     }
-  
+
     return formData;
   }
-  
 
   getMicroserviceUrl(url: string): string | undefined {
     // Mapping of URL prefixes to their corresponding service configuration keys
