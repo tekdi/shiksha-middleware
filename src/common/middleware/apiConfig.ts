@@ -159,6 +159,10 @@ export const apiList = {
   '/user/v1/tenant/read': createRouteObject({
     get: {},
   }),
+  //tenant Search API
+  '/user/v1/tenant/search': createRouteObject({
+    post: {},
+  }),
   //public api
   '/user/v1/auth/login': createRouteObject({
     post: {},
@@ -1582,6 +1586,7 @@ export const publicAPI = [
   '/user/v1/fields/options/read',
   '/user/v1/tenant/read',
   '/user/v1/tenant/create',
+  '/user/v1/tenant/search',
   '/user/v1/tenant/update/:tenantId',
   '/user/v1/tenant/delete/:identifier',
   '/user/v1/auth/login',
