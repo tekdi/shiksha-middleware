@@ -240,12 +240,7 @@ export const apiList = {
     },
   }),
   '/user/v1/check': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
-        rolesGroup.student,
-      ),
-    },
+    post: {},
   }),
   '/user/v1/auth/refresh': createRouteObject({
     post: {},
@@ -407,6 +402,9 @@ export const apiList = {
   }),
   '/user/v1/academicyears/list': createRouteObject({
     post: {},
+  }),
+  '/user/v1/form/update/:formId': createRouteObject({
+    patch: {},
   }),
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
   '/user/v1/form/read': createRouteObject(common_public_get),
@@ -1609,12 +1607,14 @@ export const publicAPI = [
   '/user/v1/verify-otp',
   '/questionset/v5/private/read/:identifier',
   '/user/v1/form/read',
+  '/user/v1/form/update/:formId',
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/import-user',
   '/user/v1/fields/options/delete/:identifier',
+  '/user/v1/check',
 ];
 
 // api which required academic year
