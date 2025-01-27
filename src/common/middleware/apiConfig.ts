@@ -240,12 +240,7 @@ export const apiList = {
     },
   }),
   '/user/v1/check': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
-        rolesGroup.student,
-      ),
-    },
+    post: {},
   }),
   '/user/v1/auth/refresh': createRouteObject({
     post: {},
@@ -1619,6 +1614,7 @@ export const publicAPI = [
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/import-user',
   '/user/v1/fields/options/delete/:identifier',
+  '/user/v1/check',
 ];
 
 // api which required academic year
