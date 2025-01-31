@@ -208,9 +208,8 @@ export const apiList = {
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
-        rolesGroup.student,
-      ),
+      ROLE_CHECK:
+        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
     },
   }),
   //need confirmation
@@ -1232,6 +1231,14 @@ export const apiList = {
       },
     },
     '/object/category/definition/v4/update',
+  ),
+  '/api/object/category/definition/v1/update/:identifier': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/update/:identifier',
   ),
   '/api/object/category/definition/v1/read/:identifier': createRouteObject(
     {
