@@ -425,6 +425,9 @@ export const apiList = {
   '/user/v1/fields/search': createRouteObject({
     post: {},
   }),
+  '/user/v1/fields/values/delete': createRouteObject({
+    delete: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
