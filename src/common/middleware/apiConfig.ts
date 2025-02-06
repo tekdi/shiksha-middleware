@@ -496,7 +496,8 @@ export const apiList = {
   //notification-send
   '/notification/send': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK:
+        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
     },
   }),
   '/notification/sendTopicNotification': createRouteObject({
