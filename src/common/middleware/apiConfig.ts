@@ -92,6 +92,7 @@ const privilegeGroup = {
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
   event: createPrivilegeGroup('event'),
+  opportunity: createPrivilegeGroup('opportunity'),
 };
 const common_public_get = { get: {} };
 const common_role_check = { ROLE_CHECK: rolesGroup.admin_center_admin };
@@ -122,6 +123,13 @@ const createRouteObject = (
 };
 
 export const apiList = {
+  //Opportunity Service API
+  '/opporunity-service/opportunities': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.create,
+    },
+  }),
   //tenant api
   '/user/v1/tenant/read': createRouteObject({
     get: {},
@@ -1012,6 +1020,7 @@ export const apiListForAcademicYear = [
   '/user/v1/cohort/create',
   '/user/v1/cohort/search',
   '/user/v1/cohort/mycohorts/:identifier',
+  // '/opporunity-service/opportunities',
 ];
 
 function convertToRegex(pattern) {
