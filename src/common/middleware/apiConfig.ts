@@ -57,53 +57,20 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: [
+  common: ['admin', 'center_admin', 'trainer', 'youth'],
+
+  center_admin: ['center_admin', 'center'],
+  trainer: ['trainer', 'center_admin', 'center'],
+  youth: ['youth'],
+
+  admin_center_admin: ['admin', 'team_leader'],
+  admin_center_admin_trainer: ['admin', 'trainer', 'center_admin'],
+  center_admin_trainer: ['trainer', 'center_admin'],
+  admin_center_admin_trainer_youth: [
     'admin',
-    'team_leader',
-    'teacher',
-    'student',
-    'learner',
-    'state_admin_mme',
-    'central_admin_mme',
-  ],
-  //admin: ['admin'], //state_admin_mme
-  central_admin_ccta: ['central_admin_ccta'],
-  central_admin_mme: ['central_admin_mme'],
-  state_admin_scta: ['state_admin_scta'],
-  state_admin_mme: ['state_admin_mme'],
-  admin_mme: ['state_admin_mme', 'central_admin_mme'],
-  admin_scta_ccta: ['state_admin_scta', 'central_admin_ccta'],
-  team_leader: ['team_leader', 'state_admin_mme', 'central_admin_mme'],
-  teacher: ['teacher', 'state_admin_mme', 'central_admin_mme'],
-  student: ['student', 'learner'],
-  admin_team_leader: [
-    'admin',
-    'team_leader',
-    'state_admin_mme',
-    'central_admin_mme',
-  ],
-  admin_team_leader_teacher: [
-    'admin',
-    'teacher',
-    'team_leader',
-    'state_admin_mme',
-    'central_admin_mme',
-  ],
-  team_leader_teacher: [
-    'teacher',
-    'team_leader',
-    'state_admin_mme',
-    'central_admin_mme',
-  ],
-  admin_team_leader_teacher_student_state_admin_scta_ccta: [
-    'admin',
-    'teacher',
-    'team_leader',
-    'state_admin_mme',
-    'central_admin_mme',
-    'state_admin_scta',
-    'central_admin_ccta',
-    'student',
+    'trainer',
+    'center_admin',
+    'youth',
   ],
 };
 const createPrivilegeGroup = (entity: string) => {
@@ -125,9 +92,10 @@ const privilegeGroup = {
   cohortmembers: createPrivilegeGroup('cohortmembers'),
   attendance: createPrivilegeGroup('attendance'),
   event: createPrivilegeGroup('event'),
+  opportunity: createPrivilegeGroup('opportunity'),
 };
 const common_public_get = { get: {} };
-const common_role_check = { ROLE_CHECK: rolesGroup.admin_team_leader };
+const common_role_check = { ROLE_CHECK: rolesGroup.admin_center_admin };
 const createRouteObject = (
   methods: any,
   redirectUrl: string | null = null,
@@ -155,6 +123,13 @@ const createRouteObject = (
 };
 
 export const apiList = {
+  //Opportunity Service API
+  '/opporunity-service/opportunities': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.create,
+    },
+  }),
   //tenant api
   '/user/v1/tenant/read': createRouteObject({
     get: {},
@@ -187,29 +162,25 @@ export const apiList = {
   '/user/v1/read/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK:
-        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer_youth,
     },
   }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
-        rolesGroup.student,
-      ),
+      ROLE_CHECK: rolesGroup.admin_center_admin.concat(rolesGroup.youth),
     },
   }),
   '/user/v1/delete/:userId': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.users.delete,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK:
-        rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer_youth,
     },
   }),
   //need confirmation
@@ -251,143 +222,143 @@ export const apiList = {
   '/user/v1/cohort/cohortHierarchy/:cohortId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/user/v1/cohort/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.create,
-      ROLE_CHECK: rolesGroup.team_leader,
+      ROLE_CHECK: rolesGroup.center_admin,
     },
   }),
   '/user/v1/cohort/search': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohort/update/:cohortId': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.update,
-      ROLE_CHECK: rolesGroup.team_leader,
+      ROLE_CHECK: rolesGroup.center_admin,
     },
   }),
   '/user/v1/cohort/delete/:cohortId': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.delete,
-      ROLE_CHECK: rolesGroup.team_leader,
+      ROLE_CHECK: rolesGroup.center_admin,
     },
   }),
   '/user/v1/cohort/mycohorts/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.team_leader_teacher.concat(rolesGroup.student),
+      ROLE_CHECK: rolesGroup.center_admin_trainer.concat(rolesGroup.youth),
     },
   }),
   //cohort member
   '/user/v1/cohortmember/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohortmember/read/:cohortId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohortmember/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.delete,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.team_leader_teacher,
+      ROLE_CHECK: rolesGroup.center_admin_trainer,
     },
   }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   //rbac
   '/user/v1/rbac/roles/read/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/roles/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/roles/update/:id': createRouteObject({
     put: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/roles/list/roles': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/roles/delete/:roleId': createRouteObject({
     delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/privileges': createRouteObject({
     get: {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   // add create first
   '/user/v1/rbac/privileges/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/privileges/:privilegeId': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/usersRoles': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/rbac/usersRoles/:userId': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/assignprivilege': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/assignprivilege/:roleId': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/user/v1/tenant/create': createRouteObject({
@@ -432,7 +403,7 @@ export const apiList = {
   //event
   '/event-service/event/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
       PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
@@ -444,32 +415,32 @@ export const apiList = {
   }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
       PRIVILEGE_CHECK: privilegeGroup.event.update,
     },
   }),
   //event-attendance
   '/event-service/attendance/v1/markeventattendance': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/event-service/attendees/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/event-service/attendees/v1': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
 
@@ -477,47 +448,47 @@ export const apiList = {
   //notification templates
   '/notification-templates': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/notification-templates/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/notification-templates/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   //notification-send
   '/notification/send': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/notification/sendTopicNotification': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   //notification-queue
   '/queue': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/queue/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/queue/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
 
@@ -532,7 +503,7 @@ export const apiList = {
   '/v1/tracking/assessment/create': createRouteObject({
     post: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.create,
-      ROLE_CHECK: rolesGroup.student,
+      ROLE_CHECK: rolesGroup.youth,
     },
   }),
   '/v1/tracking/assessment/search': createRouteObject({
@@ -556,7 +527,7 @@ export const apiList = {
   '/v1/tracking/assessment/delete/:assessmentTrackingId': createRouteObject({
     delete: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   //tracking-content
@@ -593,7 +564,7 @@ export const apiList = {
   '/v1/tracking/content/delete/:contentTrackingId': createRouteObject({
     delete: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
-      ROLE_CHECK: rolesGroup.admin_team_leader,
+      ROLE_CHECK: rolesGroup.admin_center_admin,
     },
   }),
   '/v1/tracking/content/course/status': createRouteObject({
@@ -617,7 +588,7 @@ export const apiList = {
   // todos
   '/todo/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/todo/list': createRouteObject({
@@ -630,10 +601,10 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
 
@@ -669,16 +640,7 @@ export const apiList = {
     common_public_get,
     '/questionset/v5/read/:identifier',
   ),
-  // added update one before any identifier
-  '/action/questionset/v2/hierarchy/update': createRouteObject(
-    {
-      patch: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/hierarchy/update',
-  ),
+
   '/action/questionset/v2/hierarchy/:identifier': createRouteObject(
     common_public_get,
     '/questionset/v5/hierarchy/:identifier',
@@ -716,70 +678,7 @@ export const apiList = {
     '/questionset/v5/private/read/:identifier',
   ),
   //secure
-  '/action/questionset/v2/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/create',
-  ),
-  '/action/questionset/v2/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/update/:identifier',
-  ),
-  '/action/questionset/v2/review/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/review/:identifier',
-  ),
-  '/action/questionset/v2/publish/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.publish,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/publish/:identifier',
-  ),
-  '/action/questionset/v2/retire/:identifier': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/retire/:identifier',
-  ),
 
-  '/action/questionset/v2/reject/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/reject/:identifier',
-  ),
-  '/action/questionset/v2/comment/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/comment/update/:identifier',
-  ),
   '/action/composite/v3/search': createRouteObject(
     {
       post: {},
@@ -792,181 +691,7 @@ export const apiList = {
     },
     '/object/category/definition/v4/read',
   ),
-  '/action/asset/v1/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/create',
-  ),
-  '/action/asset/v1/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/update/:identifier',
-  ),
-  '/action/asset/v1/copy/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/copy/:identifier',
-  ),
-  '/action/asset/v1/upload/url/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/upload/url/:identifier',
-  ),
-  '/action/asset/v1/upload/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/upload/:identifier',
-  ),
-  '/action/content/v3/upload/url/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/upload/url/:identifier',
-  ),
-  '/action/content/v3/copy/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/copy/:identifier',
-  ),
-  '/action/content/v3/import': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/import',
-  ),
-  '/action/content/v3/dialcode/link': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/content/v3/dialcode/link',
-  ),
 
-  '/action/content/v3/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/create',
-  ),
-  '/action/content/v3/upload/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/upload/:identifier',
-  ),
-  '/action/content/v3/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/update/:identifier',
-  ),
-  '/action/content/v3/review/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/review/:identifier',
-  ),
-  '/action/content/v3/reject/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/reject/:identifier',
-  ),
-  '/action/content/v3/publish/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.publish,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/publish/:identifier',
-  ),
-  '/action/content/v3/retire/:identifier': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/retire/:identifier',
-  ),
-  '/action/content/v3/hierarchy/add': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/hierarchy/add',
-  ),
-  '/action/content/v3/hierarchy/update': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/hierarchy/update',
-  ),
-  '/action/content/v3/hierarchy/remove': createRouteObject(
-    {
-      delete: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/content/v3/hierarchy/remove',
-  ),
-  '/action/content/v3/hierarchy/:identifier': createRouteObject(
-    {
-      get: {
-        ROLE_CHECK:
-          rolesGroup.admin_team_leader_teacher_student_state_admin_scta_ccta,
-      },
-    },
-    '/content/v3/hierarchy/:identifier',
-  ),
   '/api/course/v1/hierarchy/:identifier': createRouteObject(
     common_public_get,
     '/content/v3/hierarchy/:identifier',
@@ -1004,15 +729,6 @@ export const apiList = {
     '/license/v3/retire/:identifier',
   ),
 
-  '/action/asset/v3/validate': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/asset/v4/validate',
-    true,
-  ),
   //channel API
   '/api/channel/v1/create': createRouteObject(
     {
@@ -1251,342 +967,6 @@ export const apiList = {
     },
     '/object/category/definition/v4/read/:identifier',
   ),
-  '/api/object/category/definition/v1/read': createRouteObject(
-    {
-      post: {
-        ...common_role_check,
-      },
-    },
-    '/object/category/definition/v4/read',
-  ),
-  '/action/question/v2/create': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/create',
-  ),
-  '/action/question/v2/update/:identifier': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/update/:identifier',
-  ),
-  '/action/question/v2/review/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/review/:identifier',
-  ),
-  '/action/question/v2/publish/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.publish,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/publish/:identifier',
-  ),
-  '/action/question/v2/retire/:identifier': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/retire/:identifier',
-  ),
-  '/action/question/v2/copy/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/copy/:identifier',
-  ),
-  '/action/question/v2/reject/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/reject/:identifier',
-  ),
-  '/action/question/v2/system/update/:identifier': createRouteObject(
-    {
-      patch: {
-        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/question/v5/system/update/:identifier',
-  ),
-  '/action/question/v2/import': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/question/v5/import',
-  ),
-  '/action/questionset/v2/import': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/import',
-  ),
-  '/action/questionset/v2/copy/:identifier': createRouteObject(
-    {
-      post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/copy/:identifier',
-  ),
-  '/action/questionset/v2/add': createRouteObject(
-    {
-      patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/add',
-  ),
-  '/action/questionset/v2/remove': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/remove',
-  ),
-  '/action/questionset/v2/system/update/:identifier': createRouteObject(
-    {
-      delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
-      },
-    },
-    '/questionset/v5/system/update/:identifier',
-  ),
-  //collection framework
-  '/action/collection/v1/create': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/create',
-  ),
-  '/action/collection/v1/update/:identifier': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/update/:identifier',
-  ),
-  '/action/collection/v1/read/:identifier': createRouteObject(
-    {
-      get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/read/:identifier',
-  ),
-  '/action/collection/v1/private/read/:identifier': createRouteObject(
-    {
-      get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/private/read/:identifier',
-  ),
-  '/action/collection/v1/hierarchy/add': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/hierarchy/add',
-  ),
-  '/action/collection/v1/hierarchy/remove': createRouteObject(
-    {
-      delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/hierarchy/remove',
-  ),
-  '/action/collection/v1/hierarchy/update': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/hierarchy/update',
-  ),
-  '/action/collection/v1/hierarchy/:identifier': createRouteObject(
-    {
-      get: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/hierarchy/:identifier',
-  ),
-  '/action/collection/v1/flag/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/flag/:identifier',
-  ),
-  '/action/collection/v1/flag/accept/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/flag/accept/:identifier',
-  ),
-  '/action/collection/v1/discard/:identifier': createRouteObject(
-    {
-      delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/discard/:identifier',
-  ),
-  '/action/collection/v1/retire/:identifier': createRouteObject(
-    {
-      delete: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/retire/:identifier',
-  ),
-  '/action/collection/v1/copy/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/copy/:identifier',
-  ),
-  '/action/collection/v1/system/update/:identifier': createRouteObject(
-    {
-      patch: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/system/update/:identifier',
-  ),
-  '/action/collection/v1/reject/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/reject/:identifier',
-  ),
-  '/action/collection/v1/publish/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/publish/:identifier',
-  ),
-  '/action/collection/v1/unlisted/publish/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/unlisted/publish/:identifier',
-  ),
-  '/action/collection/v1/import/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/import/:identifier',
-  ),
-  '/action/collection/v1/export/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/export/:identifier',
-  ),
-  '/action/collection/v1/review/:identifier': createRouteObject(
-    {
-      post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
-      },
-    },
-    '/collection/v4/review/:identifier',
-  ),
-
-  '/api/content/v1/bundle': createRouteObject(
-    {
-      post: {},
-    },
-    '/content/v3/bundle',
-  ),
-
-  //attendance service
-  '/api/v1/attendance': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.attendance.create,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-      DATA_TENANT: [],
-      DATA_CONTEXT: [],
-      DATA_TENANT_CONTEXT: [],
-    },
-  }),
-  '/api/v1/attendance/list': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.attendance.read,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher.concat(
-        rolesGroup.student,
-      ),
-    },
-  }),
-  '/api/v1/attendance/bulkAttendance': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.attendance.create,
-      ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
-      DATA_TENANT: [],
-      DATA_CONTEXT: [],
-      DATA_TENANT_CONTEXT: [],
-    },
-  }),
-  // Pratham Speicfic Mico-service
-  '/prathamservice/v1/course-planner/upload': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.admin_scta_ccta,
-    },
-  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1640,6 +1020,7 @@ export const apiListForAcademicYear = [
   '/user/v1/cohort/create',
   '/user/v1/cohort/search',
   '/user/v1/cohort/mycohorts/:identifier',
+  // '/opporunity-service/opportunities',
 ];
 
 function convertToRegex(pattern) {
