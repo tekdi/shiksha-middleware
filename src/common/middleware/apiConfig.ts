@@ -793,6 +793,7 @@ export const apiList = {
     },
     '/object/category/definition/v4/read',
   ),
+
   '/action/asset/v1/create': createRouteObject(
     {
       post: {
