@@ -793,6 +793,7 @@ export const apiList = {
     },
     '/object/category/definition/v4/read',
   ),
+
   '/action/asset/v1/create': createRouteObject(
     {
       post: {
@@ -1228,14 +1229,6 @@ export const apiList = {
     },
     '/object/category/definition/v4/create',
   ),
-  '/api/object/category/definition/v1/update': createRouteObject(
-    {
-      patch: {
-        ...common_role_check,
-      },
-    },
-    '/object/category/definition/v4/update',
-  ),
   '/api/object/category/definition/v1/update/:identifier': createRouteObject(
     {
       patch: {
@@ -1244,6 +1237,15 @@ export const apiList = {
     },
     '/object/category/definition/v4/update/:identifier',
   ),
+  '/api/object/category/definition/v1/update': createRouteObject(
+    {
+      patch: {
+        ...common_role_check,
+      },
+    },
+    '/object/category/definition/v4/update',
+  ),
+
   '/api/object/category/definition/v1/read/:identifier': createRouteObject(
     {
       get: {
@@ -1644,7 +1646,7 @@ export const apiListForAcademicYear = [
 ];
 
 function convertToRegex(pattern) {
-  const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');
+  const regexString = pattern.replace(/:[^\s/]+/g, '([\\w:-]+)');
   return new RegExp(`^${regexString}$`);
 }
 

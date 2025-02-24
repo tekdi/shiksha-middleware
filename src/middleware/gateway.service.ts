@@ -78,20 +78,19 @@ export class GatewayService {
     method,
     formData: any,
     token?: string,
-  ) {    
-    try {   
+  ) {
+    try {
       let response;
-      const headers = { 
+      const headers = {
         ...formData.getHeaders(),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}), 
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
       response = await axios({
-        method: method.toLowerCase(), 
-        url, 
-        data: formData, 
-        headers, 
+        method: method.toLowerCase(),
+        url,
+        data: formData,
+        headers,
       });
-
 
       res.locals.responseBody = response.data;
       res.status(response.status);
