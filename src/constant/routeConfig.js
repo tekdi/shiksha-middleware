@@ -989,19 +989,6 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/api/object/category/definition/v1/update",
-			"type": "PATCH",
-			"priority": "MUST_HAVE",
-			"inSequence": false,
-			"orchestrated": false,
-			"targetPackages": [
-				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
-				}
-			]
-		},
-		{
 			"sourceRoute": "/interface/v1/api/object/category/definition/v1/update/:identifier",
 			"type": "PATCH",
 			"priority": "MUST_HAVE",
@@ -1014,6 +1001,20 @@
 				}
 			]
 		},
+		{
+			"sourceRoute": "/interface/v1/api/object/category/definition/v1/update",
+			"type": "PATCH",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		
 		{
 			"sourceRoute": "/interface/v1/api/object/category/definition/v1/read/:identifier",
 			"type": "GET",
