@@ -268,7 +268,7 @@ export class MiddlewareServices {
       '/v1/tracking': 'TRACKING_SERVICE',
       '/api/v1/attendance': 'ATTENDANCE_SERVICE',
       '/prathamservice/v1': 'PRATHAM_SERVICE',
-      '/opporunity-service': 'OPPORTUNITY_SERVICE',
+      '/opportunity-service': 'OPPORTUNITY_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
@@ -325,6 +325,7 @@ export class MiddlewareServices {
           req.userId,
           req.headers['tenantid'],
         );
+
       if (privilegeOfTenant == undefined || privilegeOfTenant == null) {
         return reject("User doesn't have appropriate privilege");
       }
