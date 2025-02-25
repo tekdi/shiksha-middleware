@@ -675,7 +675,7 @@ export const apiList = {
     {
       patch: {
         //PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/hierarchy/update',
@@ -720,8 +720,8 @@ export const apiList = {
   '/action/questionset/v2/create': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/create',
@@ -729,8 +729,8 @@ export const apiList = {
   '/action/questionset/v2/update/:identifier': createRouteObject(
     {
       patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.update,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/update/:identifier',
@@ -738,8 +738,8 @@ export const apiList = {
   '/action/questionset/v2/review/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.review,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.review,
+        ///OLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/review/:identifier',
@@ -747,8 +747,8 @@ export const apiList = {
   '/action/questionset/v2/publish/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.publish,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.publish,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/publish/:identifier',
@@ -756,8 +756,8 @@ export const apiList = {
   '/action/questionset/v2/retire/:identifier': createRouteObject(
     {
       delete: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/retire/:identifier',
@@ -766,8 +766,8 @@ export const apiList = {
   '/action/questionset/v2/reject/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.delete,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.delete,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/reject/:identifier',
@@ -775,8 +775,8 @@ export const apiList = {
   '/action/questionset/v2/comment/update/:identifier': createRouteObject(
     {
       patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.update,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/questionset/v5/comment/update/:identifier',
@@ -797,8 +797,8 @@ export const apiList = {
   '/action/asset/v1/create': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/create',
@@ -806,8 +806,8 @@ export const apiList = {
   '/action/asset/v1/update/:identifier': createRouteObject(
     {
       patch: {
-        PRIVILEGE_CHECK: privilegeGroup.content.update,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.update,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/update/:identifier',
@@ -815,8 +815,8 @@ export const apiList = {
   '/action/asset/v1/copy/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/copy/:identifier',
@@ -824,8 +824,8 @@ export const apiList = {
   '/action/asset/v1/upload/url/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/upload/url/:identifier',
@@ -833,8 +833,8 @@ export const apiList = {
   '/action/asset/v1/upload/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //PRIVILEGE_CHECK: privilegeGroup.content.create,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/asset/v4/upload/:identifier',
@@ -842,8 +842,8 @@ export const apiList = {
   '/action/content/v3/upload/url/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        // PRIVILEGE_CHECK: privilegeGroup.content.create,
+        // ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/upload/url/:identifier',
@@ -851,7 +851,7 @@ export const apiList = {
   '/action/content/v3/copy/:identifier': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/copy/:identifier',
@@ -859,7 +859,7 @@ export const apiList = {
   '/action/content/v3/import': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        //ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/import',
@@ -867,7 +867,7 @@ export const apiList = {
   '/action/content/v3/dialcode/link': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        //ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/content/v3/dialcode/link',
@@ -885,8 +885,8 @@ export const apiList = {
   '/action/content/v3/upload/:identifier': createRouteObject(
     {
       post: {
-        PRIVILEGE_CHECK: privilegeGroup.content.create,
-        ROLE_CHECK: rolesGroup.admin_scta_ccta,
+        // PRIVILEGE_CHECK: privilegeGroup.content.create,
+        // ROLE_CHECK: rolesGroup.admin_scta_ccta,
       },
     },
     '/content/v3/upload/:identifier',
