@@ -1646,7 +1646,7 @@ export const apiListForAcademicYear = [
 ];
 
 function convertToRegex(pattern) {
-  const regexString = pattern.replace(/:[^\s/]+/g, '([\\w:-]+)');
+  const regexString = pattern.replace(/:[^\s/]+/g, '([\\w:-_]+)');
   return new RegExp(`^${regexString}$`);
 }
 
