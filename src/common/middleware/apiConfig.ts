@@ -1635,6 +1635,7 @@ export const publicAPI = [
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
   '/user/v1/suggestUsername',
+  '/prathamservice/v1/webhook/update'
 ];
 
 // api which required academic year
