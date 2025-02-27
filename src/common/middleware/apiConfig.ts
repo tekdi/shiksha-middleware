@@ -1590,6 +1590,9 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
+  '/prathamservice/v1/webhook/update': createRouteObject({
+    post: {},
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
