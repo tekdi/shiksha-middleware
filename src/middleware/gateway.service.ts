@@ -24,6 +24,9 @@ export class GatewayService {
     if (oheaders['x-channel-id']) {
       newheaders['x-channel-id'] = oheaders['x-channel-id'];
     }
+    if (oheaders['x-signature']) {
+      newheaders['x-signature'] = oheaders['x-signature'];
+    }
     try {
       const response = await axios({
         method,
