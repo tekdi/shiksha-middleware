@@ -1590,6 +1590,9 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
+  '/role-permission/create': createRouteObject({
+    post: {},
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1632,6 +1635,7 @@ export const publicAPI = [
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
   '/user/v1/suggestUsername',
+  '/role-permission/create',
 ];
 
 // api which required academic year

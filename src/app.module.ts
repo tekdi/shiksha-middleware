@@ -1,6 +1,6 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { MemoryStore } from 'cache-manager-memory-store';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HttpModule } from '@nestjs/axios';
@@ -19,6 +19,8 @@ import { DataValidationService } from './common/service/dataValidation.service';
 import { CohortMembers } from './common/entities/CohortMembers.entity';
 import { Cohort } from './common/entities/Cohort.entity';
 import { LoggingMiddleware } from './common/loggers/logging.middleware';
+import { PermissionMiddleware } from './common/middleware/permission.middleware';
+import { RolePermissionModule } from './module/permissionRbac/rolePermissionMapping/role-permission.module';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { LoggingMiddleware } from './common/loggers/logging.middleware';
     DatabaseModule,
     JwtModule,
     MiddlewareLoggerModule,
+    RolePermissionModule,
   ],
   controllers: [AppController],
   providers: [
@@ -50,6 +53,14 @@ export class AppModule {
     consumer
       .apply(LoggingMiddleware) // Apply LoggerMiddleware
       .forRoutes('*') // Apply globally to all routes
+      .apply(PermissionMiddleware)
+      .exclude(
+        { path: 'role-permission/create', method: RequestMethod.POST }, // Exclude POST /auth/login
+        { path: 'role-permission/get', method: RequestMethod.POST }, // Exclude POST /auth/login
+        { path: 'role-permission/update', method: RequestMethod.POST }, // Exclude POST /auth/login
+        // Exclude GET /health
+      )
+      .forRoutes('*')
       .apply(MiddlewareServices)
       .forRoutes('*');
   }
