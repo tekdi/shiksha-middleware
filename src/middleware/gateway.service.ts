@@ -24,6 +24,9 @@ export class GatewayService {
     if (oheaders['x-channel-id']) {
       newheaders['x-channel-id'] = oheaders['x-channel-id'];
     }
+    if (oheaders['x-signature']) {
+      newheaders['x-signature'] = oheaders['x-signature'];
+    }
     try {
       const response = await axios({
         method,
@@ -78,20 +81,19 @@ export class GatewayService {
     method,
     formData: any,
     token?: string,
-  ) {    
-    try {   
+  ) {
+    try {
       let response;
-      const headers = { 
+      const headers = {
         ...formData.getHeaders(),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}), 
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
       response = await axios({
-        method: method.toLowerCase(), 
-        url, 
-        data: formData, 
-        headers, 
+        method: method.toLowerCase(),
+        url,
+        data: formData,
+        headers,
       });
-
 
       res.locals.responseBody = response.data;
       res.status(response.status);

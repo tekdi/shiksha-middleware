@@ -33,43 +33,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(request: any, payload: any) {
     let userPrivileges;
-    const ttl = this.configService.get('TTL');
-    //try {
-    const tenantId = request.headers['tenantid'];
-    if (!tenantId?.trim()) {
-      throw new BadRequestException('Tenant id not found');
-    }
-    request.userId = payload.sub;
-    const requiredPermissions = request.requiredPermissions;
-
-    const cachedData: UserPrivilegeRoleDto = await this.cacheService.get(
-      payload.sub,
-    );
-    if (!cachedData) {
-      const userPrivilegesAndRoles: any =
-        await this.permissionService.getUserPrivilegesAndRoles(
-          payload.sub,
-          tenantId,
-        );
-      if (userPrivilegesAndRoles.length == 0) {
-        throw new UnauthorizedException(
-          'User does not have any privileges in the Tenant',
-        );
-      }
-      userPrivileges = userPrivilegesAndRoles['privileges'][tenantId]
-        ? userPrivilegesAndRoles['privileges'][tenantId]
-        : [];
-      this.cacheService.set(payload.sub, userPrivilegesAndRoles, ttl);
-    } else {
-      userPrivileges = cachedData.privileges[tenantId]
-        ? cachedData.privileges[tenantId]
-        : [];
-    }
-    if (!userPrivileges && userPrivileges.length == 0) {
-      throw new UnauthorizedException(
-        'User does not have any privileges in the Tenant',
-      );
-    }
     this.middlewareLogger.log(
       `user : ${payload.sub - payload.username} userPrivileges: ${userPrivileges}`,
     );

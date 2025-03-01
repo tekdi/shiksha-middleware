@@ -82,22 +82,22 @@ export class MiddlewareServices {
         // Iterate for checks defined for API and push to array
         apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
           (CHECK) => {
-            checksToExecute.push(
-              new Promise((res, rej) => {
-                if (
-                  apiList[reqUrl][req.method.toLowerCase()][CHECK] &&
-                  typeof this.urlChecks[CHECK] === 'function'
-                ) {
-                  this.urlChecks[CHECK](
-                    res,
-                    rej,
-                    req,
-                    apiList[reqUrl][req.method.toLowerCase()][CHECK],
-                    reqUrl,
-                  );
-                }
-              }),
-            );
+            // checksToExecute.push(
+            //   new Promise((res, rej) => {
+            //     if (
+            //       apiList[reqUrl][req.method.toLowerCase()][CHECK] &&
+            //       typeof this.urlChecks[CHECK] === 'function'
+            //     ) {
+            //       this.urlChecks[CHECK](
+            //         res,
+            //         rej,
+            //         req,
+            //         apiList[reqUrl][req.method.toLowerCase()][CHECK],
+            //         reqUrl,
+            //       );
+            //     }
+            //   }),
+            // );
           },
         );
 
@@ -154,6 +154,11 @@ export class MiddlewareServices {
       }
     }
     console.log('fullUrl', fullUrl);
+    //console.log('req: ', req);
+    console.log(
+      "req.is('multipart/form-data'): ",
+      req.is('multipart/form-data'),
+    );
     // Handle multipart/form-data
     if (req.is('multipart/form-data')) {
       const reqObject = await this.processMultipartForm(req, res);
