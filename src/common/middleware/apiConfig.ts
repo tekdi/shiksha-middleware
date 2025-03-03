@@ -1596,7 +1596,13 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
+  '/role-permission/create': createRouteObject({
+    post: {},
+  }),
   '/prathamservice/v1/webhook/update': createRouteObject({
+    post: {},
+  }),
+  '/prathamservice/v1/save-user-salesforce': createRouteObject({
     post: {},
   }),
 };
@@ -1642,7 +1648,9 @@ export const publicAPI = [
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
   '/user/v1/suggestUsername',
-  '/prathamservice/v1/webhook/update'
+  '/role-permission/create',
+  '/prathamservice/v1/webhook/update',
+  '/prathamservice/v1/save-user-salesforce',
 ];
 
 // api which required academic year
