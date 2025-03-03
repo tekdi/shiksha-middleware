@@ -53,14 +53,14 @@ export class AppModule {
     consumer
       .apply(LoggingMiddleware) // Apply LoggerMiddleware
       .forRoutes('*') // Apply globally to all routes
-      .apply(PermissionMiddleware)
-      .exclude(
-        { path: 'role-permission/create', method: RequestMethod.POST }, // Exclude POST /auth/login
-        { path: 'role-permission/get', method: RequestMethod.POST }, // Exclude POST /auth/login
-        { path: 'role-permission/update', method: RequestMethod.POST }, // Exclude POST /auth/login
-        // Exclude GET /health
-      )
-      .forRoutes('*')
+      // .apply(PermissionMiddleware)
+      // .exclude(
+      //   { path: 'role-permission/create', method: RequestMethod.POST }, // Exclude POST /auth/login
+      //   { path: 'role-permission/get', method: RequestMethod.POST }, // Exclude POST /auth/login
+      //   { path: 'role-permission/update', method: RequestMethod.POST }, // Exclude POST /auth/login
+      //   // Exclude GET /health
+      // )
+      // .forRoutes('*')
       .apply(MiddlewareServices)
       .forRoutes('*');
   }

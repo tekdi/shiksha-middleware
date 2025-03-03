@@ -1650,6 +1650,7 @@ export const publicAPI = [
   '/user/v1/suggestUsername',
   '/role-permission/create',
   '/prathamservice/v1/webhook/update',
+  '/prathamservice/v1/save-user-salesforce',
 ];
 
 // api which required academic year
