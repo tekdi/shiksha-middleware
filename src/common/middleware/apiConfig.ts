@@ -175,6 +175,9 @@ export const apiList = {
   '/prathamservice/v1/cronjob': createRouteObject({
     get: {},
   }),
+  '/prathamservice/v1/cronjob/markautoattendance': createRouteObject({
+    get: {},
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
@@ -403,6 +406,9 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/academicyears/list': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/form/create': createRouteObject({
     post: {},
   }),
   '/user/v1/form/update/:formId': createRouteObject({
@@ -1593,6 +1599,9 @@ export const apiList = {
   '/role-permission/create': createRouteObject({
     post: {},
   }),
+  '/prathamservice/v1/webhook/update': createRouteObject({
+    post: {},
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1631,11 +1640,13 @@ export const publicAPI = [
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
+  '/prathamservice/v1/cronjob/markautoattendance',
   '/prathamservice/v1/import-user',
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
   '/user/v1/suggestUsername',
   '/role-permission/create',
+  '/prathamservice/v1/webhook/update'
 ];
 
 // api which required academic year
