@@ -148,11 +148,10 @@ export class MiddlewareServices {
       let userId = parsedPayload.sub;
       if (userId) {
         console.log('in if ', userId);
-        //fullUrl .= ""
+
         fullUrl =
           fullUrl +
-          'http://10.0.11.180:3000/user/v1/auth/login?userId=502c6a8c-1ff9-4a47-b1c6-6d0942e8d67c';
-        //   (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
+          (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
     console.log('fullUrl', fullUrl);
