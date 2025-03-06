@@ -1605,6 +1605,9 @@ export const apiList = {
   '/prathamservice/v1/save-user-salesforce': createRouteObject({
     post: {},
   }),
+  '/user/v1/presigned-url': createRouteObject({
+    get: {},
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1651,6 +1654,8 @@ export const publicAPI = [
   '/role-permission/create',
   '/prathamservice/v1/webhook/update',
   '/prathamservice/v1/save-user-salesforce',
+  '/api/channel/v1/create',
+  '/user/v1/presigned-url',
 ];
 
 // api which required academic year
