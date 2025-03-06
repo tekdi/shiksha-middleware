@@ -297,7 +297,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
-
   '/opportunity-service/opportunity-applications/:id/archive':
     createRouteObject({
       patch: {
@@ -305,6 +304,16 @@ export const apiList = {
         PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
       },
     }),
+  '/opportunity-service/application-statuses': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
+    },
+  }),
   //tenant api
   '/user/v1/tenant/read': createRouteObject({
     get: {},
