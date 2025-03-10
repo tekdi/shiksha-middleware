@@ -145,6 +145,7 @@ export class MiddlewareServices {
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
       const decodedPayload = atob(payload); // Decode the base64 payload
       const parsedPayload = JSON.parse(decodedPayload);
+      console.log('sss', parsedPayload.sub);
       let userId = parsedPayload.sub;
       if (userId) {
         console.log('in if ', userId);
