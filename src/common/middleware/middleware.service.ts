@@ -266,6 +266,8 @@ export class MiddlewareServices {
 
   getMicroserviceUrl(url: string): string | undefined {
     // Mapping of URL prefixes to their corresponding service configuration keys
+    console.log('inmiddleware', url);
+
     const serviceMapping: { [key: string]: string } = {
       '/user': 'USER_SERVICE',
       '/event-service': 'EVENT_SERVICE',
