@@ -26,3 +26,6 @@ jobs:
             echo '${{ secrets.DEVPYM_ENV }}"' > .env
             ls -ltra
             ./deploy.sh ${{ env.BRANCH_NAME }}
+
+
+#Testing
