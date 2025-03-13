@@ -2,7 +2,7 @@ name: DEVPYM-Deployment Pratham-OU Mumbai Region
 on:
   push:
     branches:
-      - youth-management
+      - east-africa-ym
 jobs:
   DEVPYM-DEPLOYMENT:
     runs-on: ubuntu-latest
@@ -26,3 +26,6 @@ jobs:
             echo '${{ secrets.DEVPYM_ENV }}"' > .env
             ls -ltra
             ./deploy.sh ${{ env.BRANCH_NAME }}
+
+
+#Testing
