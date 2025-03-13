@@ -131,8 +131,6 @@ export class MiddlewareServices {
   }
 
   async forwardRequest(req: Request, res: Response) {
-    console.log('in forword request');
-
     const microserviceUrl = this.getMicroserviceUrl(req.originalUrl);
     const originalUrl = req.originalUrl.split('?');
     const reqUrl = this.matchUrl(originalUrl[0]) || originalUrl[0];
@@ -143,15 +141,10 @@ export class MiddlewareServices {
       ? req.headers['authorization'].replace('Bearer ', '').trim()
       : '';
     //get userId
-    console.log('before user id');
-
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
-      console.log('insed user id');
-
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
       const decodedPayload = atob(payload); // Decode the base64 payload
       const parsedPayload = JSON.parse(decodedPayload);
-      console.log('sss', parsedPayload.sub);
       let userId = parsedPayload.sub;
       if (userId) {
         console.log('in if ', userId);
@@ -460,8 +453,6 @@ export class MiddlewareServices {
   executeChecks = async (req, res, next, checksToExecute) => {
     try {
       if (checksToExecute.length == 0) {
-        console.log('executeChecks');
-
         const response = await this.forwardRequest(req, res);
         return res.json(response);
       }
@@ -484,8 +475,6 @@ export class MiddlewareServices {
                 HttpStatus.FORBIDDEN,
               );
             } else {
-              console.log('executeChecks else condition');
-
               const response = await this.forwardRequest(req, res);
               return res.json(response);
             }
