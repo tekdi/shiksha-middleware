@@ -352,7 +352,9 @@ export const apiList = {
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
-      ROLE_CHECK: rolesGroup.admin_center_admin.concat(rolesGroup.youth),
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer.concat(
+        rolesGroup.youth,
+      ),
     },
   }),
   '/user/v1/delete/:userId': createRouteObject({
