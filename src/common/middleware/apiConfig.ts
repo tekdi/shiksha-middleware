@@ -1556,6 +1556,37 @@ export const apiList = {
     '/collection/v4/review/:identifier',
   ),
 
+  '/action/assessment/v3/items/create': createRouteObject(
+    {
+      post: {},
+    },
+    '/itemset/v3/create',
+  ),
+  '/action/assessment/v3/items/read/:identifier': createRouteObject(
+    {
+      get: {},
+    },
+    '/itemset/v3/read/:identifier',
+  ),
+  '/action/assessment/v3/items/update/:identifier': createRouteObject(
+    {
+      patch: {},
+    },
+    '/itemset/v3/update/:identifier',
+  ),
+  '/action/assessment/v3/items/review/:identifier': createRouteObject(
+    {
+      post: {},
+    },
+    '/itemset/v3/retire/:identifier',
+  ),
+  '/action/assessment/v3/items/retire/:identifier': createRouteObject(
+    {
+      delete: {},
+    },
+    '/itemset/v3/retire/:identifier',
+  ),
+
   '/api/content/v1/bundle': createRouteObject(
     {
       post: {},
@@ -1656,6 +1687,7 @@ export const publicAPI = [
   '/prathamservice/v1/save-user-salesforce',
   '/api/channel/v1/create',
   '/user/v1/presigned-url',
+  '/action/assessment/v3/items/read/:identifier',
 ];
 
 // api which required academic year
