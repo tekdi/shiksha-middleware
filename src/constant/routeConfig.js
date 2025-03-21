@@ -1560,6 +1560,6 @@
 					"packageName": "shiksha-cms"
 				}
 			]
-		},
+		}
 	]
 }

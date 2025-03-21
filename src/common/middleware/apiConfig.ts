@@ -1685,7 +1685,6 @@ export const publicAPI = [
   '/role-permission/create',
   '/prathamservice/v1/webhook/update',
   '/prathamservice/v1/save-user-salesforce',
-  '/api/channel/v1/create',
   '/user/v1/presigned-url',
   '/action/assessment/v3/items/read/:identifier',
 ];
