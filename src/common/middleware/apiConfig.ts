@@ -1687,6 +1687,7 @@ export const publicAPI = [
   '/prathamservice/v1/save-user-salesforce',
   '/user/v1/presigned-url',
   '/action/assessment/v3/items/read/:identifier',
+  '/action/content/v3/read/:identifier',
 ];
 
 // api which required academic year
