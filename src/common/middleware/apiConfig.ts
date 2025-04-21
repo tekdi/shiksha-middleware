@@ -1556,6 +1556,37 @@ export const apiList = {
     '/collection/v4/review/:identifier',
   ),
 
+  '/action/assessment/v3/items/create': createRouteObject(
+    {
+      post: {},
+    },
+    '/itemset/v3/create',
+  ),
+  '/action/assessment/v3/items/read/:identifier': createRouteObject(
+    {
+      get: {},
+    },
+    '/itemset/v3/read/:identifier',
+  ),
+  '/action/assessment/v3/items/update/:identifier': createRouteObject(
+    {
+      patch: {},
+    },
+    '/itemset/v3/update/:identifier',
+  ),
+  '/action/assessment/v3/items/review/:identifier': createRouteObject(
+    {
+      post: {},
+    },
+    '/itemset/v3/retire/:identifier',
+  ),
+  '/action/assessment/v3/items/retire/:identifier': createRouteObject(
+    {
+      delete: {},
+    },
+    '/itemset/v3/retire/:identifier',
+  ),
+
   '/api/content/v1/bundle': createRouteObject(
     {
       post: {},
@@ -1605,6 +1636,9 @@ export const apiList = {
   '/prathamservice/v1/save-user-salesforce': createRouteObject({
     post: {},
   }),
+  '/user/v1/presigned-url': createRouteObject({
+    get: {},
+  }),
 };
 export const urlPatterns = Object.keys(apiList);
 
@@ -1651,6 +1685,9 @@ export const publicAPI = [
   '/role-permission/create',
   '/prathamservice/v1/webhook/update',
   '/prathamservice/v1/save-user-salesforce',
+  '/user/v1/presigned-url',
+  '/action/assessment/v3/items/read/:identifier',
+  '/action/content/v3/read/:identifier',
 ];
 
 // api which required academic year
