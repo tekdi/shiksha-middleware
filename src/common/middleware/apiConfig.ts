@@ -421,7 +421,7 @@ export const apiList = {
   '/user/v1/cohort/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.create,
-      ROLE_CHECK: rolesGroup.admin_center_admin,
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
     },
   }),
   '/user/v1/cohort/search': createRouteObject({
