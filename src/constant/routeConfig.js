@@ -1497,7 +1497,7 @@
 			]
 		},
 		{
-			"sourceRoute": "https://saas-learning-dev.tekdinext.com/learning-service/assessment/v3/items/create",
+			"sourceRoute": "/interface/v1/action/assessment/v3/items/create",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1510,7 +1510,7 @@
 			]
 		},
 		{
-			"sourceRoute": "https://saas-learning-dev.tekdinext.com/learning-service/assessment/v3/items/read/:identifier",
+			"sourceRoute": "/interface/v1/action/assessment/v3/items/read/:identifier",
 			"type": "GET",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1523,7 +1523,7 @@
 			]
 		},
 		{
-			"sourceRoute": "https://saas-learning-dev.tekdinext.com/learning-service/assessment/v3/items/update/:identifier",
+			"sourceRoute": "/interface/v1/action/assessment/v3/items/update/:identifier",
 			"type": "PATCH",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1536,7 +1536,7 @@
 			]
 		},
 		{
-			"sourceRoute": "https://saas-learning-dev.tekdinext.com/learning-service/assessment/v3/items/review/:identifier",
+			"sourceRoute": "/interface/v1/action/assessment/v3/items/review/:identifier",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1549,7 +1549,72 @@
 			]
 		},
 		{
-			"sourceRoute": "https://saas-learning-dev.tekdinext.com/learning-service/assessment/v3/items/retire/:identifier",
+			"sourceRoute": "/interface/v1/action/assessment/v3/items/retire/:identifier",
+			"type": "DELETE",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+			{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/create",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/read/:identifier",
+			"type": "GET",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/update/:identifier",
+			"type": "PATCH",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/review/:identifier",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/retire/:identifier",
 			"type": "DELETE",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
