@@ -1562,7 +1562,7 @@
 			]
 		},
 			{
-			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/create",
+			"sourceRoute": "/learning-service/assessment/v3/items/create",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1575,7 +1575,7 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/read/:identifier",
+			"sourceRoute": "/learning-service/assessment/v3/items/read/:identifier",
 			"type": "GET",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1588,7 +1588,7 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/update/:identifier",
+			"sourceRoute": "/learning-service/assessment/v3/items/update/:identifier",
 			"type": "PATCH",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1601,7 +1601,7 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/review/:identifier",
+			"sourceRoute": "/learning-service/assessment/v3/items/review/:identifier",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
@@ -1614,7 +1614,7 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/retire/:identifier",
+			"sourceRoute": "/learning-service/assessment/v3/items/retire/:identifier",
 			"type": "DELETE",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
