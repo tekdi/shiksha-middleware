@@ -1590,32 +1590,32 @@ export const apiList = {
     {
       post: {},
     },
-    '/itemset/v3/create',
+    '/learning-service/assessment/itemset/v3/create',
   ),
 
   '/learning-service/assessment/v3/items/read/:identifier': createRouteObject(
     {
       get: {},
     },
-    '/itemset/v3/read/:identifier',
+    '/learning-service/assessment/itemset/v3/read/:identifier',
   ),
   '/learning-service/assessment/v3/items/update/:identifier': createRouteObject(
     {
       patch: {},
     },
-    '/itemset/v3/update/:identifier',
+    '/learning-service/assessment/itemset/v3/update/:identifier',
   ),
   '/learning-service/assessment/v3/items/review/:identifier': createRouteObject(
     {
       post: {},
     },
-    '/itemset/v3/review/:identifier',
+    '/learning-service/assessment/itemset/v3/review/:identifier',
   ),
   '/learning-service/assessment/v3/items/retire/:identifier': createRouteObject(
     {
       delete: {},
     },
-    '/itemset/v3/retire/:identifier',
+    '/learning-service/assessment/itemset/v3/retire/:identifier',
   ),
   '/api/content/v1/bundle': createRouteObject(
     {
