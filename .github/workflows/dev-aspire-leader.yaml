@@ -4,7 +4,7 @@ on:
     branches:
       - aspire-leaders
 jobs:
-  deploy_to_server1:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -16,5 +16,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_AL }}
           port: ${{ secrets.PORT_AL }}
           script: |
-            cd /home/ubuntu/Aspire-leader/MIDDLEWARE
+            cd /home/ubuntu/Aspire-leader/MICROSERVICES/MIDDLEWARE
             ./deploy.sh
