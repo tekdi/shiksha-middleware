@@ -574,13 +574,18 @@ export const apiList = {
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
   '/user/v1/form/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.admin_regional_admin,
+    },
+  }),
+  '/user/v1/form/update/:formId': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.admin_regional_admin,
     },
   }),
   '/user/v1/form/read': createRouteObject(common_public_get),
   '/user/v1/fields/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.admin_regional_admin,
     },
   }),
   '/user/v1/fields/options/read': createRouteObject({
@@ -588,12 +593,12 @@ export const apiList = {
   }),
   '/user/v1/fields/options/delete/:identifier': createRouteObject({
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.admin_regional_admin,
     },
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.admin_regional_admin,
     },
   }),
   '/user/v1/fields/formfields': createRouteObject({
@@ -1206,7 +1211,6 @@ export const publicAPI = [
   '/user/v1/verify-otp',
   '/questionset/v5/private/read/:identifier',
   '/user/v1/form/read',
-  '/user/v1/form/update/:formId',
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
