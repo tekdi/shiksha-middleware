@@ -57,21 +57,13 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'regional_admin', 'trainer', 'student'],
-
-  regional_admin: ['regional_admin', 'center'],
-  trainer: ['trainer', 'regional_admin', 'center'],
+  common: ['admin', 'regional_admin', 'student'],
+  regional_admin: ['regional_admin'],
   student: ['student'],
-
-  admin_regional_admin: ['admin', 'regional_admin'],
-  admin_regional_admin_trainer: ['admin', 'trainer', 'regional_admin'],
-  regional_admin_trainer: ['trainer', 'regional_admin'],
-  admin_regional_admin_trainer_student: [
-    'admin',
-    'trainer',
-    'regional_admin',
-    'student',
-  ],
+  superadmin: ['admin'],
+  superadmin_regional_admin: ['admin', 'regional_admin'],
+  student_regional_admin: ['student', 'regional_admin'],
+  superadmin_regional_admin_student: ['admin', 'regional_admin', 'student'],
 };
 const createPrivilegeGroup = (entity: string) => {
   return {
@@ -95,7 +87,9 @@ const privilegeGroup = {
   opportunity: createPrivilegeGroup('opportunity'),
 };
 const common_public_get = { get: {} };
-const common_role_check = { ROLE_CHECK: rolesGroup.admin_regional_admin };
+const common_role_check = {
+  ROLE_CHECK: rolesGroup.superadmin,
+};
 const createRouteObject = (
   methods: any,
   redirectUrl: string | null = null,
@@ -126,198 +120,198 @@ export const apiList = {
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.create,
     },
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/opportunities/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     put: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/opportunities/:id/archive': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
 
   '/opportunity-service/skills': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/skills/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/categories': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/categories/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/organizations': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/organizations/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/locations': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/benefits': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/benefits/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/locations/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/locations/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/opportunity-applications/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     put: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/opportunity-applications': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
   '/opportunity-service/opportunity-applications/opportunity/list':
     createRouteObject({
       get: {
-        ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+        ROLE_CHECK: rolesGroup.superadmin,
         PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
       },
     }),
   '/opportunity-service/opportunity-applications/:id/archive':
     createRouteObject({
       patch: {
-        ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+        ROLE_CHECK: rolesGroup.superadmin,
         PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
       },
     }),
   '/opportunity-service/application-statuses': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
     },
   }),
@@ -353,27 +347,25 @@ export const apiList = {
   '/user/v1/read/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer_student,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer.concat(
-        rolesGroup.student,
-      ),
+      ROLE_CHECK: rolesGroup.superadmin.concat(rolesGroup.student),
     },
   }),
   '/user/v1/delete/:userId': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.users.delete,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer_student,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   //need confirmation
@@ -415,145 +407,143 @@ export const apiList = {
   '/user/v1/cohort/cohortHierarchy/:cohortId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.create,
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/search': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/update/:cohortId': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.update,
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/delete/:cohortId': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.delete,
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/mycohorts/:userId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer.concat(
-        rolesGroup.student,
-      ),
+      ROLE_CHECK: rolesGroup.superadmin.concat(rolesGroup.student),
     },
   }),
   //cohort member
   '/user/v1/cohortmember/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohortmember/read/:cohortId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohortmember/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
     delete: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.delete,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //rbac
   '/user/v1/rbac/roles/read/:id': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/roles/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/roles/update/:id': createRouteObject({
     put: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/roles/list/roles': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/roles/delete/:roleId': createRouteObject({
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/privileges': createRouteObject({
     get: {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   // add create first
   '/user/v1/rbac/privileges/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/privileges/:privilegeId': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/usersRoles': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/rbac/usersRoles/:userId': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/assignprivilege': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/assignprivilege/:roleId': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/tenant/create': createRouteObject({
@@ -571,19 +561,35 @@ export const apiList = {
   '/user/v1/academicyears/list': createRouteObject({
     post: {},
   }),
-  '/user/v1/form/update/:formId': createRouteObject({
-    patch: {},
-  }),
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
+  '/user/v1/form/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/form/update/:formId': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/user/v1/form/read': createRouteObject(common_public_get),
+  '/user/v1/fields/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/user/v1/fields/options/read': createRouteObject({
     post: {},
   }),
   '/user/v1/fields/options/delete/:identifier': createRouteObject({
-    delete: {},
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
-    patch: {},
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
   }),
   '/user/v1/fields/formfields': createRouteObject({
     get: {},
@@ -598,7 +604,7 @@ export const apiList = {
   //event
   '/event-service/event/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
@@ -610,32 +616,32 @@ export const apiList = {
   }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       PRIVILEGE_CHECK: privilegeGroup.event.update,
     },
   }),
   //event-attendance
   '/event-service/attendance/v1/markeventattendance': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/event-service/attendees/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/event-service/attendees/v1': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
 
@@ -643,47 +649,47 @@ export const apiList = {
   //notification templates
   '/notification-templates': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/notification-templates/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/notification-templates/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //notification-send
   '/notification/send': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/notification/sendTopicNotification': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //notification-queue
   '/queue': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/queue/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/queue/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
 
@@ -722,7 +728,7 @@ export const apiList = {
   '/v1/tracking/assessment/delete/:assessmentTrackingId': createRouteObject({
     delete: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //tracking-content
@@ -759,7 +765,7 @@ export const apiList = {
   '/v1/tracking/content/delete/:contentTrackingId': createRouteObject({
     delete: {
       //PRIVILEGE_CHECK: privilegeGroup.tracking.delete,
-      ROLE_CHECK: rolesGroup.admin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/v1/tracking/content/course/status': createRouteObject({
@@ -783,7 +789,7 @@ export const apiList = {
   // todos
   '/todo/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/todo/list': createRouteObject({
@@ -796,10 +802,10 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
 
@@ -1195,7 +1201,6 @@ export const publicAPI = [
   '/user/v1/verify-otp',
   '/questionset/v5/private/read/:identifier',
   '/user/v1/form/read',
-  '/user/v1/form/update/:formId',
   '/action/composite/v3/search',
   '/api/content/v1/read/:identifier',
   '/api/course/v1/hierarchy/:identifier',
