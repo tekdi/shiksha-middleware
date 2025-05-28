@@ -571,19 +571,30 @@ export const apiList = {
   '/user/v1/academicyears/list': createRouteObject({
     post: {},
   }),
-  '/user/v1/form/update/:formId': createRouteObject({
-    patch: {},
-  }),
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
+  '/user/v1/form/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+    },
+  }),
   '/user/v1/form/read': createRouteObject(common_public_get),
+  '/user/v1/fields/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+    },
+  }),
   '/user/v1/fields/options/read': createRouteObject({
     post: {},
   }),
   '/user/v1/fields/options/delete/:identifier': createRouteObject({
-    delete: {},
+    delete: {
+      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+    },
   }),
   '/user/v1/fields/update/:identifier': createRouteObject({
-    patch: {},
+    patch: {
+      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
+    },
   }),
   '/user/v1/fields/formfields': createRouteObject({
     get: {},
