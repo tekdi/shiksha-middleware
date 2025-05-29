@@ -333,6 +333,9 @@ export const apiList = {
   '/user/v1/auth/login': createRouteObject({
     post: {},
   }),
+  '/user/v1/cohort/search': createRouteObject({
+    post: {},
+  }),
   //public api
   '/prathamservice/v1/import-user': createRouteObject({
     post: {},
@@ -424,12 +427,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.admin_regional_admin,
     },
   }),
-  '/user/v1/cohort/search': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohort.read,
-      ROLE_CHECK: rolesGroup.admin_regional_admin_trainer,
-    },
-  }),
+
   '/user/v1/cohort/update/:cohortId': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohort.update,
@@ -1204,6 +1202,7 @@ export const publicAPI = [
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
   '/user/v1/suggestUsername',
+  '/user/v1/cohort/search',
 ];
 
 // api which required academic year
