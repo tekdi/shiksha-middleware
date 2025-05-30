@@ -124,7 +124,9 @@ export const apiList = {
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
+    }
+  }),
+  '/lms-service/courses/search': createRouteObject({   
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
@@ -192,7 +194,7 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
     get: {
-      ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
@@ -236,7 +238,7 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
     get: {
-      ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
