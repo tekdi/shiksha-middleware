@@ -120,7 +120,7 @@ const createRouteObject = (
 export const apiList = {
 
   //LMS Service API
-  '/lms-service/v1courses': createRouteObject({
+  '/lms-service/v1/courses': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
@@ -128,7 +128,7 @@ export const apiList = {
   }),
   '/lms-service/v1/courses/search': createRouteObject({   
     get: {
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
