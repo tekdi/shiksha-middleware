@@ -81,7 +81,7 @@ export class GatewayService {
     token?: string,
   ) {    
     try {   
-      let response;      
+      let response;
       const headers = { 
         ...formData.getHeaders(),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
