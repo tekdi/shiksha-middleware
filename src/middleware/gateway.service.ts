@@ -77,14 +77,17 @@ export class GatewayService {
     url: string,
     method,
     formData: any,
+    oheaders: any,
     token?: string,
   ) {    
     try {   
-      let response;
+      let response;      
       const headers = { 
         ...formData.getHeaders(),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}), 
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
+      if (oheaders?.tenantid) headers.tenantid = oheaders.tenantid;
+      if (oheaders?.organisationid) headers.organisationid = oheaders.organisationid;
       response = await axios({
         method: method.toLowerCase(), 
         url, 
