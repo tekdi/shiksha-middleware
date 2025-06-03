@@ -165,7 +165,8 @@ export class MiddlewareServices {
           fullUrl,
           req.method,
           formData,
-          token,
+          req.headers,
+          token,         
         );
       }
     } else {
