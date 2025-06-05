@@ -118,15 +118,14 @@ const createRouteObject = (
 };
 
 export const apiList = {
-
   //LMS Service API
   '/lms-service/v1/courses': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    }
+    },
   }),
-  '/lms-service/v1/courses/search': createRouteObject({   
+  '/lms-service/v1/courses/search': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
@@ -218,12 +217,13 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/lessons/course/:courseId/module/:moduleId': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
-  }),
+  '/lms-service/v1/lessons/course/:courseId/module/:moduleId':
+    createRouteObject({
+      post: {
+        ROLE_CHECK: rolesGroup.superadmin,
+        PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      },
+    }),
   '/lms-service/v1/lessons/module/:moduleId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -540,7 +540,7 @@ export const apiList = {
     },
   }),
   '/user/v1/sso-synch': createRouteObject({
-    get: {
+    post: {
       PRIVILEGE_CHECK: privilegeGroup.users.create,
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -771,6 +771,11 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/fields/options/delete/:identifier': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/fields/delete': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
