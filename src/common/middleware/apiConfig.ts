@@ -353,6 +353,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
+  '/user/v1/sso-synch': createRouteObject({
+    get: {
+      PRIVILEGE_CHECK: privilegeGroup.users.create,
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
