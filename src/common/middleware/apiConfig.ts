@@ -540,10 +540,7 @@ export const apiList = {
     },
   }),
   '/user/v1/sso-synch': createRouteObject({
-    post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.create,
-      ROLE_CHECK: rolesGroup.superadmin,
-    },
+    post: {},
   }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
@@ -1404,6 +1401,7 @@ export const publicAPI = [
   '/user/v1/check',
   '/user/v1/suggestUsername',
   '/user/v1/cohort/search',
+  '/user/v1/sso-synch',
 ];
 
 // api which required academic year
