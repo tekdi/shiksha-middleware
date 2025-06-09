@@ -766,7 +766,7 @@ export const apiList = {
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
-    patch: {
+    put: {
       ROLE_CHECK: rolesGroup.superadmin_student,
     },
     delete: {
