@@ -262,13 +262,13 @@ export const apiList = {
   }), 
   '/lms-service/v1/media': createRouteObject({    
     get: {
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }), 
   '/lms-service/v1/media/:mediaId': createRouteObject({    
     get: {
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
     delete: {
