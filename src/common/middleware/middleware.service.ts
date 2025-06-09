@@ -165,7 +165,8 @@ export class MiddlewareServices {
           fullUrl,
           req.method,
           formData,
-          token,
+          req.headers,
+          token,         
         );
       }
     } else {
@@ -270,6 +271,7 @@ export class MiddlewareServices {
       '/api/v1/attendance': 'ATTENDANCE_SERVICE',
       '/prathamservice/v1': 'PRATHAM_SERVICE',
       '/opportunity-service': 'OPPORTUNITY_SERVICE',
+      '/lms-service/v1': 'LMS_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
