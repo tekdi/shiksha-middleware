@@ -67,6 +67,7 @@ const rolesGroup = {
   superadmin_regional_admin: ['admin', 'regional_admin'],
   student_regional_admin: ['student', 'regional_admin'],
   superadmin_regional_admin_student: ['admin', 'regional_admin', 'student'],
+  superadmin_student: ['admin', 'student'],
 };
 const createPrivilegeGroup = (entity: string) => {
   return {
@@ -799,6 +800,30 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/academicyears/:identifier': createRouteObject(common_public_get),
+  '/user/v1/forms/submissions': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_student,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/forms/submissions/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/forms/submissions/:identifier': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin_student,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/form/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
