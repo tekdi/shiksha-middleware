@@ -317,14 +317,14 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/tracking/attempts/:attemptId/:userId': createRouteObject({
-    get: {
+  '/lms-service/v1/tracking/attempts/progress/:attemptId': createRouteObject({
+    patch: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
   }),
-  '/lms-service/v1/tracking/attempts/:attemptId/progress': createRouteObject({
-    patch: {
+  '/lms-service/v1/tracking/attempts/:attemptId/:userId': createRouteObject({
+    get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
