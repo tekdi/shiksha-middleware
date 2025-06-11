@@ -1,4 +1,7 @@
 'use strict';
+
+import { Patch } from "@nestjs/common";
+
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
@@ -202,7 +205,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
-    put: {
+    patch: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
@@ -325,6 +328,30 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+
+  //storage presign url
+  '/lms-service/v1/storage/presign-url': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+
+  // Tenant level config for lms
+  '/lms-service/v1/config': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/config/sync/:tenantId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  
+  
   
 
   //Opportunity Service API
