@@ -173,7 +173,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
-    put: {
+    patch: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
