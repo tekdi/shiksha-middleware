@@ -682,19 +682,19 @@ export const apiList = {
   '/user/v1/cohortmember/create': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   '/user/v1/cohortmember/read/:cohortId': createRouteObject({
     get: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   '/user/v1/cohortmember/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
