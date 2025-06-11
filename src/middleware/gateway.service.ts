@@ -24,6 +24,10 @@ export class GatewayService {
     if (oheaders['x-channel-id']) {
       newheaders['x-channel-id'] = oheaders['x-channel-id'];
     }
+    if (oheaders['organisationid']) {
+      newheaders['organisationid'] = oheaders['organisationid'];
+    }
+   
     try {
       const response = await axios({
         method,
