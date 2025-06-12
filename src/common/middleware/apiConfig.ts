@@ -591,7 +591,7 @@ export const apiList = {
   '/user/v1/sso-synch': createRouteObject({
     post: {},
   }),
-  '/user/v1/callback': createRouteObject({
+  '/user/v1/sso-callback': createRouteObject({
     get: {},
   }),
   '/user/v1/update/:userId': createRouteObject({
@@ -1478,7 +1478,7 @@ export const publicAPI = [
   '/user/v1/suggestUsername',
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
-  '/user/v1/callback',
+  '/user/v1/sso-callback',
 ];
 
 // api which required academic year
