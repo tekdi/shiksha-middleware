@@ -1,7 +1,5 @@
 'use strict';
 
-import { Patch } from '@nestjs/common';
-
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
