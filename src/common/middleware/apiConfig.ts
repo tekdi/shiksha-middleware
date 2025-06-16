@@ -345,12 +345,19 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  '/lms-service/v1/config/sync/:tenantId': createRouteObject({
+  '/lms-service/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  '/lms-service/v1/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  
   
   
   
