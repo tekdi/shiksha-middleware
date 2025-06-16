@@ -700,7 +700,7 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_student,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
