@@ -1,6 +1,6 @@
 'use strict';
 
-import { Patch } from "@nestjs/common";
+import { Patch } from '@nestjs/common';
 
 /**
  * @file - Sourcing Portal Backend API(s) list
@@ -155,12 +155,13 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
-    },
-  }),
+  '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
 
   // Modules API
   '/lms-service/v1/modules': createRouteObject({
@@ -263,14 +264,14 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
-  }), 
-  '/lms-service/v1/media': createRouteObject({    
+  }),
+  '/lms-service/v1/media': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
-  }), 
-  '/lms-service/v1/media/:mediaId': createRouteObject({    
+  }),
+  '/lms-service/v1/media/:mediaId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
@@ -279,7 +280,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
-  }), 
+  }),
 
   '/lms-service/v1/media/:mediaId/associate/:lessonId': createRouteObject({
     post: {
@@ -290,7 +291,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
-  }), 
+  }),
 
   // Tracking API
   '/lms-service/v1/tracking/course/:courseId/:userId': createRouteObject({
@@ -305,12 +306,13 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/tracking/lesson/attempt/:lessonId/:userId': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
-    },
-  }),
+  '/lms-service/v1/tracking/lesson/attempt/:lessonId/:userId':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
   '/lms-service/v1/tracking/:lessonId/users/:userId/status': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -351,9 +353,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  
-  
-  
 
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
@@ -700,7 +699,7 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_student,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
