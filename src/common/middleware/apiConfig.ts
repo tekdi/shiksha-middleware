@@ -1,7 +1,5 @@
 'use strict';
 
-import { Patch } from '@nestjs/common';
-
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
@@ -592,6 +590,9 @@ export const apiList = {
   }),
   '/user/v1/sso-synch': createRouteObject({
     post: {},
+  }),
+  '/user/v1/sso-callback': createRouteObject({
+    get: {},
   }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
@@ -1477,6 +1478,7 @@ export const publicAPI = [
   '/user/v1/suggestUsername',
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
+  '/user/v1/sso-callback',
 ];
 
 // api which required academic year
