@@ -1,7 +1,5 @@
 'use strict';
 
-import { Patch } from "@nestjs/common";
-
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
@@ -155,12 +153,13 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
-    },
-  }),
+  '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
 
   // Modules API
   '/lms-service/v1/modules': createRouteObject({
@@ -263,14 +262,14 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
-  }), 
-  '/lms-service/v1/media': createRouteObject({    
+  }),
+  '/lms-service/v1/media': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
-  }), 
-  '/lms-service/v1/media/:mediaId': createRouteObject({    
+  }),
+  '/lms-service/v1/media/:mediaId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
@@ -279,7 +278,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
-  }), 
+  }),
 
   '/lms-service/v1/media/:mediaId/associate/:lessonId': createRouteObject({
     post: {
@@ -290,7 +289,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
-  }), 
+  }),
 
   // Tracking API
   '/lms-service/v1/tracking/course/:courseId/:userId': createRouteObject({
@@ -305,12 +304,13 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/lms-service/v1/tracking/lesson/attempt/:lessonId/:userId': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
-    },
-  }),
+  '/lms-service/v1/tracking/lesson/attempt/:lessonId/:userId':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
   '/lms-service/v1/tracking/:lessonId/users/:userId/status': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -601,6 +601,9 @@ export const apiList = {
   '/user/v1/sso-synch': createRouteObject({
     post: {},
   }),
+  '/user/v1/sso-callback': createRouteObject({
+    get: {},
+  }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
       PRIVILEGE_CHECK: privilegeGroup.users.update,
@@ -707,7 +710,7 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_student,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
@@ -1485,6 +1488,7 @@ export const publicAPI = [
   '/user/v1/suggestUsername',
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
+  '/user/v1/sso-callback',
 ];
 
 // api which required academic year
