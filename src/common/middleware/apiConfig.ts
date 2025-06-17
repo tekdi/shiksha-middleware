@@ -339,8 +339,8 @@ export const apiList = {
   }),
 
   // Tenant level config for lms
-  '/lms-service/v1/config': createRouteObject({
-    post: {
+  '/lms-service/v1/config/:entityType': createRouteObject({
+    get: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
