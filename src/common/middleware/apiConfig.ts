@@ -330,27 +330,20 @@ export const apiList = {
     },
   }),
 
-  //storage presign url
-  '/lms-service/v1/storage/presign-url': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
-  }),
-
   // Tenant level config for lms
-  '/lms-service/v1/config/:entityType': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
-  }),
   '/lms-service/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  '/lms-service/v1/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  //storage presign url
   '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
@@ -358,7 +351,36 @@ export const apiList = {
     },
   }),
   
-  
+  '/credential-schema-service': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
+  '/credentials-service': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
+  '/identity-service': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
   
   
 
