@@ -877,6 +877,21 @@ export const apiList = {
   '/user/v1/fields/values/delete': createRouteObject({
     delete: {},
   }),
+  '/user/v1/fields/upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/presigned-url/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/verify-upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/upload-complete/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/delete-file/:id': createRouteObject({
+    delete: {},
+  }),
   //event-service
   //event
   '/event-service/event/v1/create': createRouteObject({
@@ -1489,6 +1504,11 @@ export const publicAPI = [
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
   '/user/v1/sso-callback',
+  '/user/v1/fields/upload/:id',
+  '/user/v1/fields/presigned-url/:id',
+  '/user/v1/fields/verify-upload/:id',
+  '/user/v1/fields/upload-complete/:id',
+  '/user/v1/fields/delete-file/:id',
 ];
 
 // api which required academic year
