@@ -357,10 +357,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  
-  
-  
-  
 
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
@@ -710,7 +706,7 @@ export const apiList = {
   '/user/v1/cohortmember/list-application': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
