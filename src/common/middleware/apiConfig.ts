@@ -339,18 +339,28 @@ export const apiList = {
   }),
 
   // Tenant level config for lms
-  '/lms-service/v1/config': createRouteObject({
+  '/lms-service/v1/config/:entityType': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  '/lms-service/v1/config/sync/:tenantId': createRouteObject({
+  '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  
+  
+  
+  
 
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
@@ -706,7 +716,7 @@ export const apiList = {
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
-      ROLE_CHECK: rolesGroup.superadmin,
+      ROLE_CHECK: rolesGroup.superadmin_student,
     },
   }),
   '/user/v1/cohortmember/delete/:id': createRouteObject({
@@ -871,6 +881,21 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/fields/values/delete': createRouteObject({
+    delete: {},
+  }),
+  '/user/v1/fields/upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/presigned-url/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/verify-upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/upload-complete/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/delete-file/:id': createRouteObject({
     delete: {},
   }),
   //event-service
@@ -1485,6 +1510,11 @@ export const publicAPI = [
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
   '/user/v1/sso-callback',
+  '/user/v1/fields/upload/:id',
+  '/user/v1/fields/presigned-url/:id',
+  '/user/v1/fields/verify-upload/:id',
+  '/user/v1/fields/upload-complete/:id',
+  '/user/v1/fields/delete-file/:id',
 ];
 
 // api which required academic year
