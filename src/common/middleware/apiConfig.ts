@@ -357,7 +357,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-
+  //elasticsearch API
+  '/user/v1/elasticsearch/users/search': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
     post: {
