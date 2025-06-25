@@ -357,7 +357,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-
+  //elasticsearch API
+  '/user/v1/elasticsearch/users/search': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
     post: {
@@ -701,6 +706,12 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/cohortmember/list-application': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
@@ -1514,6 +1525,7 @@ export const publicAPI = [
 // api which required academic year
 export const apiListForAcademicYear = [
   '/user/v1/cohortmember/list',
+  '/user/v1/cohortmember/list-application',
   '/user/v1/cohortmember/bulkCreate',
   '/user/v1/cohortmember/create',
   '/user/v1/cohortmember/read/:identifier',
