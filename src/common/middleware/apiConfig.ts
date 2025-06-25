@@ -357,10 +357,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  
-  
-  
-  
 
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
@@ -891,6 +887,9 @@ export const apiList = {
   }),
   '/user/v1/fields/delete-file/:id': createRouteObject({
     delete: {},
+  }),
+  '/user/v1/fields/download-file/:id': createRouteObject({
+    get: {},
   }),
   //event-service
   //event
@@ -1509,6 +1508,7 @@ export const publicAPI = [
   '/user/v1/fields/verify-upload/:id',
   '/user/v1/fields/upload-complete/:id',
   '/user/v1/fields/delete-file/:id',
+  '/user/v1/fields/download-file/:id',
 ];
 
 // api which required academic year
