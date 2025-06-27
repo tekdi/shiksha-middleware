@@ -359,7 +359,7 @@ export const apiList = {
   }),
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
-    get: {
+    post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
