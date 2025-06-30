@@ -584,6 +584,10 @@ export const apiList = {
   '/prathamservice/v1/cronjob': createRouteObject({
     get: {},
   }),
+  // Public api for run cron job for evaluate shortlisting for student - Aspire Leaders
+  '/user/v1/cohortmember/cron/evaluate-shortlisting-status': createRouteObject({
+    post: {},
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
@@ -1520,6 +1524,7 @@ export const publicAPI = [
   '/user/v1/fields/upload-complete/:id',
   '/user/v1/fields/delete-file/:id',
   '/user/v1/fields/download-file/:id',
+  '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
 ];
 
 // api which required academic year
