@@ -383,9 +383,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-  
-  
-
+  //elasticsearch API
+  '/user/v1/elasticsearch/users/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Opportunity Service API
   '/opportunity-service/opportunities': createRouteObject({
     post: {
@@ -607,6 +610,10 @@ export const apiList = {
   '/prathamservice/v1/cronjob': createRouteObject({
     get: {},
   }),
+  // Public api for run cron job for evaluate shortlisting for student - Aspire Leaders
+  '/user/v1/cohortmember/cron/evaluate-shortlisting-status': createRouteObject({
+    post: {},
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
@@ -729,6 +736,12 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/cohortmember/list-application': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
@@ -900,6 +913,24 @@ export const apiList = {
   }),
   '/user/v1/fields/values/delete': createRouteObject({
     delete: {},
+  }),
+  '/user/v1/fields/upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/presigned-url/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/verify-upload/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/upload-complete/:id': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/fields/delete-file/:id': createRouteObject({
+    delete: {},
+  }),
+  '/user/v1/fields/download-file/:id': createRouteObject({
+    get: {},
   }),
   //event-service
   //event
@@ -1513,11 +1544,19 @@ export const publicAPI = [
   '/user/v1/cohort/search',
   '/user/v1/sso-synch',
   '/user/v1/sso-callback',
+  '/user/v1/fields/upload/:id',
+  '/user/v1/fields/presigned-url/:id',
+  '/user/v1/fields/verify-upload/:id',
+  '/user/v1/fields/upload-complete/:id',
+  '/user/v1/fields/delete-file/:id',
+  '/user/v1/fields/download-file/:id',
+  '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
 ];
 
 // api which required academic year
 export const apiListForAcademicYear = [
   '/user/v1/cohortmember/list',
+  '/user/v1/cohortmember/list-application',
   '/user/v1/cohortmember/bulkCreate',
   '/user/v1/cohortmember/create',
   '/user/v1/cohortmember/read/:identifier',
