@@ -160,6 +160,18 @@ export const apiList = {
         PRIVILEGE_CHECK: privilegeGroup.lms.read,
       },
     }),
+  '/lms-service/v1/courses/:courseId/structure': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+    },
+  }),
+  '/lms-service/v1/courses/clone/:courseId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
 
   // Modules API
   '/lms-service/v1/modules': createRouteObject({
@@ -334,15 +346,16 @@ export const apiList = {
   '/lms-service/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
   '/lms-service/v1/config': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
+    }
   }),
+  
   //storage presign url
   '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
@@ -351,34 +364,23 @@ export const apiList = {
     },
   }),
   
-  '/credential-schema-service': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
+
+  //Tenant-Level Configuration
+  '/user/v1/tenant/:tenantId/configs': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
-  '/credentials-service': createRouteObject({
+  '/user/v1/tenant/:tenantId/configs/:context': createRouteObject({
+    get: {},
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
-    get: {
+    delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
-  }),
-  '/identity-service': createRouteObject({
-    get: {
+    patch: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
-    },
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
   
