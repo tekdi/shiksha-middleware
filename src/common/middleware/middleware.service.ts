@@ -272,6 +272,7 @@ export class MiddlewareServices {
       '/prathamservice/v1': 'PRATHAM_SERVICE',
       '/opportunity-service': 'OPPORTUNITY_SERVICE',
       '/lms-service/v1': 'LMS_SERVICE',
+      '/assessment/v1': 'SHIKSHA_ASSESSMENT_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',

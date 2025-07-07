@@ -383,6 +383,140 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+
+  //Assessment Service API
+  // Health Module
+  '/assessment/v1/health': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Questions Module
+  '/assessment/v1/questions': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/questions/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
+  // Attempts Module
+  '/assessment/v1/attempts/start/:testId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/answers': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/submit': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/review': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/resume': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/result': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Tests Module
+  '/assessment/v1/tests': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:id/hierarchy': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:id/questions': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:id/questions/bulk': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:testId/users/:userId/status': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:testId/users/:userId/result': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Sections Module
+  '/assessment/v1/sections': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/sections/test/:testId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/sections/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
