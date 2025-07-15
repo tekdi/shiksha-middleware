@@ -160,6 +160,18 @@ export const apiList = {
         PRIVILEGE_CHECK: privilegeGroup.lms.read,
       },
     }),
+  '/lms-service/v1/courses/:courseId/structure': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+    },
+  }),
+  '/lms-service/v1/courses/clone/:courseId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
 
   // Modules API
   '/lms-service/v1/modules': createRouteObject({
@@ -330,33 +342,181 @@ export const apiList = {
     },
   }),
 
-  //storage presign url
-  '/lms-service/v1/storage/presign-url': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
-  }),
-
   // Tenant level config for lms
-  '/lms-service/v1/config/:entityType': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    },
-  }),
   '/lms-service/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+  '/lms-service/v1/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    }
+  }),
+  
+  //storage presign url
   '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  
+
+  //Tenant-Level Configuration
+  '/user/v1/tenant/:tenantId/configs': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/tenant/:tenantId/configs/:context': createRouteObject({
+    get: {},
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
+  //Assessment Service API
+  // Health Module
+  '/assessment/v1/health': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Questions Module
+  '/assessment/v1/questions': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/questions/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
+  // Attempts Module
+  '/assessment/v1/attempts/start/:testId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/answers': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/submit': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/review': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/resume': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/attempts/:attemptId/result': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Tests Module
+  '/assessment/v1/tests': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:id/hierarchy': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:id/questions': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:id/questions/bulk': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/tests/:testId/users/:userId/status': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:testId/users/:userId/result': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  // Sections Module
+  '/assessment/v1/sections': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/sections/test/:testId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/sections/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
@@ -586,6 +746,10 @@ export const apiList = {
   }),
   // Public api for run cron job for evaluate shortlisting for student - Aspire Leaders
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status': createRouteObject({
+    post: {},
+  }),
+  // Public api for run cron job for evaluate shortlisting for student - Aspire Leaders
+  '/user/v1/cohortmember/cron/send-rejection-emails': createRouteObject({
     post: {},
   }),
   //user-service
@@ -1525,6 +1689,7 @@ export const publicAPI = [
   '/user/v1/fields/delete-file/:id',
   '/user/v1/fields/download-file/:id',
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
+  '/user/v1/cohortmember/cron/send-rejection-emails',
 ];
 
 // api which required academic year
