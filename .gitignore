@@ -1,8 +1,10 @@
 # compiled output
 /dist
 /node_modules
-/.env
-
+/package-lock.json
+.env
+.github
+.cursor
 # Logs
 logs
 *.log
