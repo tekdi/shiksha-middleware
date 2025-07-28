@@ -353,9 +353,9 @@ export const apiList = {
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
-    }
+    },
   }),
-  
+
   //storage presign url
   '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
@@ -363,7 +363,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
-  
 
   //Tenant-Level Configuration
   '/user/v1/tenant/:tenantId/configs': createRouteObject({
@@ -517,6 +516,24 @@ export const apiList = {
     },
   }),
 
+  //Bulk import and kafka API
+  '/importuserspecific/import-users/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/import-users/import-jobs/:import_job_id':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      },
+    }),
+  '/importuserspecific/import-users/import-jobs/:import_job_id/failures':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      },
+    }),
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
