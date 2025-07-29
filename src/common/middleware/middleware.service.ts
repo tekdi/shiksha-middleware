@@ -166,7 +166,7 @@ export class MiddlewareServices {
           req.method,
           formData,
           req.headers,
-          token,         
+          token,
         );
       }
     } else {
@@ -273,6 +273,7 @@ export class MiddlewareServices {
       '/opportunity-service': 'OPPORTUNITY_SERVICE',
       '/lms-service/v1': 'LMS_SERVICE',
       '/assessment/v1': 'SHIKSHA_ASSESSMENT_SERVICE',
+      '/importuserspecific': 'IMPORT',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
