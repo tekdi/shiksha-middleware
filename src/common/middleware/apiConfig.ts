@@ -434,12 +434,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/assessment/v1/attempts/:attemptId/resume': createRouteObject({
+  '/assessment/v1/attempts/:attemptId/resume/:userId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/assessment/v1/attempts/:attemptId/answersheet': createRouteObject({
+  '/assessment/v1/attempts/:attemptId/answersheet/:userId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
     },
