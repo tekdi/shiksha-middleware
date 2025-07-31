@@ -256,6 +256,10 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+    },
   }),
   '/lms-service/v1/enrollments/:enrollmentId': createRouteObject({
     get: {
