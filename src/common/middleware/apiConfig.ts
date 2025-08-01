@@ -245,6 +245,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+  '/lms-service/v1/lessons/test/:testId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
 
   // Enrollments API
   '/lms-service/v1/enrollments': createRouteObject({
