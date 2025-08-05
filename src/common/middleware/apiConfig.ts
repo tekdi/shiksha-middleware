@@ -499,6 +499,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/assessment/v1/tests/:testId/structure': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
 
   // Sections Module
   '/assessment/v1/sections': createRouteObject({
