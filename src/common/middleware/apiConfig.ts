@@ -172,6 +172,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  '/lms-service/v1/course/report': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
 
   // Modules API
   '/lms-service/v1/modules': createRouteObject({
