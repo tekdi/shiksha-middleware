@@ -500,7 +500,7 @@ export const apiList = {
     },
   }),
   '/assessment/v1/tests/:testId/structure': createRouteObject({
-    get: {
+    put: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
