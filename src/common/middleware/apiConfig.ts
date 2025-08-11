@@ -166,7 +166,19 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
   }),
-  '/lms-service/v1/courses/clone/:courseId': createRouteObject({
+  '/lms-service/v1/courses/:courseId/clone': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/modules/:moduleId/clone': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/lessons/:lessonId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
@@ -510,7 +522,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-
+  '/assessment/v1/tests/:testId/clone': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   // Sections Module
   '/assessment/v1/sections': createRouteObject({
     post: {
@@ -533,6 +549,24 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  //storage presign url
+  '/assessment/v1/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
+   // Tenant level config for assessment
+   '/assessment/v1/config/sync': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/config': createRouteObject({
+    get: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
