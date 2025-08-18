@@ -27,7 +27,7 @@ export class GatewayService {
     if (oheaders['organisationid']) {
       newheaders['organisationid'] = oheaders['organisationid'];
     }
-   
+
     try {
       const response = await axios({
         method,
@@ -83,22 +83,24 @@ export class GatewayService {
     formData: any,
     oheaders: any,
     token?: string,
-  ) {    
-    try {   
+  ) {
+    try {
       let response;
-      const headers = { 
+      const headers = {
         ...formData.getHeaders(),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
       if (oheaders?.tenantid) headers.tenantid = oheaders.tenantid;
-      if (oheaders?.organisationid) headers.organisationid = oheaders.organisationid;
+      if (oheaders?.academicyearid)
+        headers.academicyearid = oheaders.academicyearid;
+      if (oheaders?.organisationid)
+        headers.organisationid = oheaders.organisationid;
       response = await axios({
-        method: method.toLowerCase(), 
-        url, 
-        data: formData, 
-        headers, 
+        method: method.toLowerCase(),
+        url,
+        data: formData,
+        headers,
       });
-
 
       res.locals.responseBody = response.data;
       res.status(response.status);
