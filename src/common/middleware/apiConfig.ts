@@ -570,8 +570,8 @@ export const apiList = {
     },
   }),
 
-   // Tenant level config for assessment
-   '/assessment/v1/config/sync': createRouteObject({
+  // Tenant level config for assessment
+  '/assessment/v1/config/sync': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -583,6 +583,11 @@ export const apiList = {
   }),
 
   //Bulk import and kafka API
+  '/user/v1/bulk-import/xlsx-template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/importuserspecific/import-users/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
