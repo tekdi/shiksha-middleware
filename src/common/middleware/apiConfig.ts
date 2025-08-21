@@ -154,7 +154,7 @@ export const apiList = {
     },
   }),
   '/lms-service/v1/courses/next-id': createRouteObject({
-    get: {
+    post: {
       ROLE_CHECK: rolesGroup.common,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
