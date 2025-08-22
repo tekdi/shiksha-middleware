@@ -195,6 +195,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
+    '/lms-service/v1/modules/search': createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
   }),
 
   // Modules API
