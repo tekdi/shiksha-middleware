@@ -153,6 +153,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+  '/lms-service/v1/courses/next-id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
   '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId':
     createRouteObject({
       get: {
@@ -189,6 +195,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
+    '/lms-service/v1/modules/search': createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.common,
+        PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      },
+    }),
   }),
 
   // Modules API
@@ -495,6 +507,11 @@ export const apiList = {
   '/assessment/v1/tests/:id/hierarchy': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/tests/:id/test-hierarchy': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/assessment/v1/tests/:id/questions': createRouteObject({
