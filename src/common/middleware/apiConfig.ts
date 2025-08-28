@@ -609,6 +609,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/importuserspecific/certificate/schema': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
 
   //Bulk import and kafka API
   '/user/v1/bulk-import/xlsx-template': createRouteObject({
