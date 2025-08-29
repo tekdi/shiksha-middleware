@@ -157,7 +157,15 @@ export class MiddlewareServices {
     console.log('fullUrl', fullUrl);
     
     // Check if this is a PDF request
-    const isPDFRequest = reqUrl === '/importuserspecific/certificate/render-PDF';
+    const pdfEndpointConfig = this.configService.get<string>('PDF_ENDPOINT') || '/importuserspecific/certificate/render-PDF';
+    const pdfEndpoints = pdfEndpointConfig.split(',').map(endpoint => endpoint.trim());
+    const isPDFRequest = pdfEndpoints.includes(reqUrl);
+    
+    // Log PDF endpoint configuration for debugging
+    if (isPDFRequest) {
+      this.middlewareLogger.log(`PDF request detected for endpoint: ${reqUrl}`);
+      this.middlewareLogger.log(`Configured PDF endpoints: ${pdfEndpoints.join(', ')}`);
+    }
     
     // Handle PDF requests
     if (isPDFRequest) {
