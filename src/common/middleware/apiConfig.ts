@@ -606,12 +606,12 @@ export const apiList = {
   }),
   '/importuserspecific/certificate/render-PDF': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/importuserspecific/certificate/render': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/importuserspecific/certificate/schema': createRouteObject({

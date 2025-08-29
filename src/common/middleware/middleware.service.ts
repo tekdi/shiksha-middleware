@@ -155,34 +155,42 @@ export class MiddlewareServices {
       }
     }
     console.log('fullUrl', fullUrl);
-    
-    // Check if this is a PDF request
-    const pdfEndpointConfig = this.configService.get<string>('PDF_ENDPOINT') || '/importuserspecific/certificate/render-PDF';
-    const pdfEndpoints = pdfEndpointConfig.split(',').map(endpoint => endpoint.trim());
-    const isPDFRequest = pdfEndpoints.includes(reqUrl);
-    
-    // Log PDF endpoint configuration for debugging
-    if (isPDFRequest) {
-      this.middlewareLogger.log(`PDF request detected for endpoint: ${reqUrl}`);
-      this.middlewareLogger.log(`Configured PDF endpoints: ${pdfEndpoints.join(', ')}`);
-    }
-    
-    // Handle PDF requests
-    if (isPDFRequest) {
-      return await this.gatewayService.handlePDFRequest(
-        req.method,
-        fullUrl,
-        req.body,
-        req.headers,
-        res,
+
+    // Check if this is a file request
+    const fileType = this.detectFileType(reqUrl);
+
+    // Log file request detection for debugging
+    if (fileType) {
+      this.middlewareLogger.log(
+        `File request detected: ${fileType} for endpoint: ${reqUrl}`,
       );
     }
-    
-    // Handle multipart/form-data
+
+    // Handle multipart/form-data first (file uploads)
     if (req.is('multipart/form-data')) {
+      this.middlewareLogger.log(
+        `Multipart request detected for endpoint: ${reqUrl}`,
+      );
       const reqObject = await this.processMultipartForm(req, res);
       if (reqObject) {
         const formData = this.prepareFormData(reqObject);
+
+        // If this endpoint also returns a file, use file handler
+        if (fileType) {
+          this.middlewareLogger.log(
+            `Multipart + File response detected: ${fileType} for endpoint: ${reqUrl}`,
+          );
+          return await this.gatewayService.handleFileRequestWithMultipart(
+            req.method,
+            fullUrl,
+            formData,
+            req.headers,
+            res,
+            fileType,
+          );
+        }
+
+        // Otherwise use regular multipart handler
         return await this.gatewayService.handleRequestForMultipartData(
           res,
           fullUrl,
@@ -192,16 +200,29 @@ export class MiddlewareServices {
           token,
         );
       }
-    } else {
-      return await this.gatewayService.handleRequest(
+    }
+
+    // Handle file requests (non-multipart)
+    if (fileType) {
+      return await this.gatewayService.handleFileRequest(
         req.method,
         fullUrl,
         req.body,
         req.headers,
-        apiList[reqUrl].changeResponse,
         res,
+        fileType,
       );
     }
+
+    // Handle regular JSON requests
+    return await this.gatewayService.handleRequest(
+      req.method,
+      fullUrl,
+      req.body,
+      req.headers,
+      apiList[reqUrl].changeResponse,
+      res,
+    );
   }
 
   // Construct forward URL based on redirect or original URL
@@ -279,6 +300,30 @@ export class MiddlewareServices {
     }
 
     return formData;
+  }
+
+  // Detect file type based on endpoint configuration
+  private detectFileType(reqUrl: string): string | null {
+    const endpointConfig =
+      this.configService.get<string>('FILE_TYPE_ENDPOINTS') || '';
+    const endpointMap = this.parseEndpointConfig(endpointConfig);
+
+    return endpointMap[reqUrl] || null;
+  }
+
+  // Parse endpoint configuration string
+  private parseEndpointConfig(configString: string) {
+    const endpoints = {};
+    if (!configString.trim()) return endpoints;
+
+    configString.split(',').forEach((mapping) => {
+      const parts = mapping.split(':');
+      if (parts.length >= 2) {
+        const [type, endpoint] = parts;
+        endpoints[endpoint.trim()] = type.trim();
+      }
+    });
+    return endpoints;
   }
 
   getMicroserviceUrl(url: string): string | undefined {
