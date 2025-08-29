@@ -128,4 +128,97 @@ export class GatewayService {
       }
     }
   }
+  // For handling PDF responses
+  async handlePDFRequest(
+    method: string,
+    url: string,
+    body: Object,
+    oheaders: any,
+    res: Response,
+  ) {
+    let newheaders = {
+      tenantId: oheaders['tenantid'],
+      academicyearid: oheaders['academicyearid'],
+      'content-type': 'application/json',
+      authorization: oheaders['authorization'],
+    };
+    if (oheaders['x-channel-id']) {
+      newheaders['x-channel-id'] = oheaders['x-channel-id'];
+    }
+    if (oheaders['organisationid']) {
+      newheaders['organisationid'] = oheaders['organisationid'];
+    }
+
+    try {
+      const response = await axios({
+        method,
+        url,
+        data: body,
+        headers: newheaders,
+        responseType: 'arraybuffer', // Handle binary responses
+      });
+
+      res.status(response.status);
+
+      // Set PDF-specific headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        response.headers['content-disposition'] ||
+          'attachment; filename="certificate.pdf"',
+      );
+      res.setHeader('Content-Length', response.data.length);
+
+      // Send the PDF buffer directly
+      res.end(response.data);
+    } catch (error) {
+      this.middlewareLogger.error('PDF request error:', error);
+
+      if (error.response) {
+        res.status(error.response.status);
+
+        // If the error response is also a PDF, handle it
+        if (
+          error.response.headers['content-type']?.includes('application/pdf')
+        ) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader(
+            'Content-Disposition',
+            error.response.headers['content-disposition'] ||
+              'attachment; filename="error-certificate.pdf"',
+          );
+          res.setHeader('Content-Length', error.response.data.length);
+          res.end(error.response.data);
+        } else {
+          // Handle JSON error responses
+          res.locals.responseBody = error.response.data;
+          res.json(error.response.data);
+        }
+      } else if (error.request) {
+        // No response was received
+        res.status(500);
+        res.json({
+          result: {},
+          params: {
+            err: 'Internal server error',
+            errmsg: 'Internal server error',
+            status: 'failed',
+          },
+          responseCode: 500,
+        });
+      } else {
+        // Error occurred in setting up the request
+        res.status(500);
+        res.json({
+          result: {},
+          params: {
+            err: 'Request setup error',
+            errmsg: error.message,
+            status: 'failed',
+          },
+          responseCode: 500,
+        });
+      }
+    }
+  }
 }

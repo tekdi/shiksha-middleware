@@ -155,6 +155,21 @@ export class MiddlewareServices {
       }
     }
     console.log('fullUrl', fullUrl);
+    
+    // Check if this is a PDF request
+    const isPDFRequest = reqUrl === '/importuserspecific/certificate/render-PDF';
+    
+    // Handle PDF requests
+    if (isPDFRequest) {
+      return await this.gatewayService.handlePDFRequest(
+        req.method,
+        fullUrl,
+        req.body,
+        req.headers,
+        res,
+      );
+    }
+    
     // Handle multipart/form-data
     if (req.is('multipart/form-data')) {
       const reqObject = await this.processMultipartForm(req, res);

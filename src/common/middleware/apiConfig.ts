@@ -609,6 +609,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/importuserspecific/certificate/render': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/importuserspecific/certificate/schema': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -638,6 +643,11 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
+  '/importuserspecific/import-users/import-jobs/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
