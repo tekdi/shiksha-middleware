@@ -594,6 +594,33 @@ export const apiList = {
     },
   }),
 
+  //Certificate Genration API
+  '/importuserspecific/certificate/template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/generateDid': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/issue': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/render-PDF': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/schema': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+
   //Bulk import and kafka API
   '/user/v1/bulk-import/xlsx-template': createRouteObject({
     post: {
