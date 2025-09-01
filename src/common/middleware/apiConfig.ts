@@ -196,6 +196,25 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
     },
   }),
+  '/lms-service/v1/storage/files/copy': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+    },
+  }),
+  '/assessment/v1/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+    },
+  }),
+  '/lms-service/v1/storage/files/delete': createRouteObject({
   '/lms-service/v1/course/report': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
