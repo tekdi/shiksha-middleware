@@ -214,7 +214,6 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
   }),
-  '/lms-service/v1/storage/files/delete': createRouteObject({
   '/lms-service/v1/course/report': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
