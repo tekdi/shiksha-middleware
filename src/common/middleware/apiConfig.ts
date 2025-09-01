@@ -631,12 +631,22 @@ export const apiList = {
   }),
   '/importuserspecific/certificate/render-PDF': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/importuserspecific/certificate/render': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/importuserspecific/certificate/schema': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/user-certificates': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
 
@@ -651,18 +661,35 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/importuserspecific/import-users/import-jobs/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/importuserspecific/import-users/import-jobs/:import_job_id':
     createRouteObject({
       get: {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
+  '/importuserspecific/import-users/import-jobs': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/importuserspecific/import-users/import-jobs/:import_job_id/failures':
     createRouteObject({
       get: {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
+  '/importuserspecific/import-users/import-jobs/:import_job_id/failure-analysis':
+    createRouteObject({
+      get: {
+        ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      },
+    }),
+
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
