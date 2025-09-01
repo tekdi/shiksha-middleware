@@ -528,6 +528,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/assessment/v1/tests/:testId/question/:questionId': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/assessment/v1/tests/:id/hierarchy': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
