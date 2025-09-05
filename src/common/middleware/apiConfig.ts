@@ -124,6 +124,16 @@ const createRouteObject = (
 
 export const apiList = {
   //Opportunity Service API
+  '/opportunity-service/opportunity-applications/report': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.create,
+    },
+    get: {
+      ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
+      PRIVILEGE_CHECK: privilegeGroup.opportunity.read,
+    },
+  }),
   '/opportunity-service/opportunities': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_center_admin_trainer,
