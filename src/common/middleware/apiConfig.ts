@@ -637,12 +637,6 @@ export const apiList = {
   },
 }),
 
-'/event-service/event/v1/event/:eventId': createRouteObject({
-  patch: {
-    ROLE_CHECK: rolesGroup.superadmin,
-  },
-}),
-
 '/event-service/event/v1/:eventId': createRouteObject({
   get: {
     ROLE_CHECK: rolesGroup.common,
