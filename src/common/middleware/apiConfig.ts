@@ -619,23 +619,6 @@ export const apiList = {
 
   //EVENT MICROSERVICE API
 
-  '/event-service/event/v1/create': createRouteObject({
-  post: {
-    ROLE_CHECK: rolesGroup.superadmin,
-  },
-}),
-
-'/event-service/event/v1/list': createRouteObject({
-  post: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/event/v1/:id': createRouteObject({
-  patch: {
-    ROLE_CHECK: rolesGroup.superadmin,
-  },
-}),
 
 '/event-service/event/v1/:eventId': createRouteObject({
   get: {
@@ -645,17 +628,6 @@ export const apiList = {
 
 '/event-service/event/v1/repetition/:repetitionId': createRouteObject({
   get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-'/event-service/attendees/v1/create': createRouteObject({
-  post: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/attendees/v1/list': createRouteObject({
-  post: {
     ROLE_CHECK: rolesGroup.common,
   },
 }),
@@ -671,11 +643,6 @@ export const apiList = {
 
 '/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
   get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-'/event-service/attendance/v1/markeventattendance': createRouteObject({
-  post: {
     ROLE_CHECK: rolesGroup.common,
   },
 }),
@@ -1316,7 +1283,7 @@ export const apiList = {
   //event
   '/event-service/event/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
@@ -1328,32 +1295,32 @@ export const apiList = {
   }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.event.update,
     },
   }),
   //event-attendance
   '/event-service/attendance/v1/markeventattendance': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
 
