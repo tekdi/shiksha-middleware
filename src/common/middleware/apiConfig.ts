@@ -617,6 +617,77 @@ export const apiList = {
     },
   }),
 
+  //EVENT MICROSERVICE API
+
+  '/event-service/event/v1/create': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.superadmin,
+  },
+}),
+
+'/event-service/event/v1/list': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/event/v1/:id': createRouteObject({
+  patch: {
+    ROLE_CHECK: rolesGroup.superadmin,
+  },
+}),
+
+'/event-service/event/v1/event/:eventId': createRouteObject({
+  patch: {
+    ROLE_CHECK: rolesGroup.superadmin,
+  },
+}),
+
+'/event-service/event/v1/:eventId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/event/v1/repetition/:repetitionId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+'/event-service/attendees/v1/create': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/list': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/enroll': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+  delete: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+'/event-service/attendance/v1/markeventattendance': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+  //END EVENT MICROSERVICE API
+
   //Certificate Genration API
   '/importuserspecific/certificate/template': createRouteObject({
     post: {
