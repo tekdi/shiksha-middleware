@@ -617,37 +617,7 @@ export const apiList = {
     },
   }),
 
-  //EVENT MICROSERVICE API
-
-
-'/event-service/event/v1/:eventId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/event/v1/repetition/:repetitionId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/attendees/v1/enroll': createRouteObject({
-  post: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-  delete: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-  //END EVENT MICROSERVICE API
+  
 
   //Certificate Genration API
   '/importuserspecific/certificate/template': createRouteObject({
@@ -1284,19 +1254,16 @@ export const apiList = {
   '/event-service/event/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.event.create,
     },
   }),
   '/event-service/event/v1/list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.event.read,
     },
   }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.event.update,
     },
   }),
   //event-attendance
@@ -1323,6 +1290,38 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+
+  //EVENT MICROSERVICE API
+
+
+'/event-service/event/v1/:eventId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/event/v1/repetition/:repetitionId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/enroll': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+  delete: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+  //END EVENT MICROSERVICE API
 
   //notification-service
   //notification templates
