@@ -617,10 +617,28 @@ export const apiList = {
     },
   }),
 
-  
-
   //Certificate Genration API
   '/importuserspecific/certificate/template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/templates-list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/course-template/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/edit-template': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/importuserspecific/certificate/get-template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1298,33 +1316,32 @@ export const apiList = {
 
   //EVENT MICROSERVICE API
 
+  '/event-service/event/v1/:eventId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
 
-'/event-service/event/v1/:eventId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
+  '/event-service/event/v1/repetition/:repetitionId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
 
-'/event-service/event/v1/repetition/:repetitionId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
+  '/event-service/attendees/v1/enroll': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
 
-'/event-service/attendees/v1/enroll': createRouteObject({
-  post: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-  delete: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
-
-'/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
-  get: {
-    ROLE_CHECK: rolesGroup.common,
-  },
-}),
+  '/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
 
   //END EVENT MICROSERVICE API
 
