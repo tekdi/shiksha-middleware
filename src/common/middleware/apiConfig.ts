@@ -625,6 +625,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/importuserspecific/certificate/course-template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/importuserspecific/certificate/generateDid': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
