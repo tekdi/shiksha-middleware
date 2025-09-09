@@ -159,6 +159,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+  '/lms-service/v1/enrollments/users-courses': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+    },
+  }),
   '/lms-service/v1/courses/:courseId/hierarchy/tracking/:userId':
     createRouteObject({
       get: {
@@ -188,6 +194,24 @@ export const apiList = {
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/storage/files/copy': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
+  '/lms-service/v1/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+    },
+  }),
+  '/assessment/v1/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
   }),
   '/lms-service/v1/course/report': createRouteObject({
@@ -504,6 +528,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/assessment/v1/tests/:testId/question/:questionId': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/assessment/v1/tests/:id/hierarchy': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -587,6 +616,8 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+
+  
 
   //Certificate Genration API
   '/importuserspecific/certificate/template': createRouteObject({
@@ -1227,46 +1258,75 @@ export const apiList = {
   //event
   '/event-service/event/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-      PRIVILEGE_CHECK: privilegeGroup.event.create,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/event/v1/list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.event.read,
     },
   }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-      PRIVILEGE_CHECK: privilegeGroup.event.update,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   //event-attendance
   '/event-service/attendance/v1/markeventattendance': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendees/v1': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+
+  //EVENT MICROSERVICE API
+
+
+'/event-service/event/v1/:eventId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/event/v1/repetition/:repetitionId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/enroll': createRouteObject({
+  post: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+  delete: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+'/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
+  get: {
+    ROLE_CHECK: rolesGroup.common,
+  },
+}),
+
+  //END EVENT MICROSERVICE API
 
   //notification-service
   //notification templates
