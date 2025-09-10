@@ -341,7 +341,7 @@ export class MiddlewareServices {
       '/opportunity-service': 'OPPORTUNITY_SERVICE',
       '/lms-service/v1': 'LMS_SERVICE',
       '/assessment/v1': 'SHIKSHA_ASSESSMENT_SERVICE',
-      '/importuserspecific': 'USER_SPECIFIC_SERVICE',
+      '/aspirespecific': 'USER_SPECIFIC_SERVICE',
 
       //sunbird knowlg and inquiry
       '/api/question': 'ASSESSMENT_SERVICE',
