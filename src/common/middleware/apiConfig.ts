@@ -618,62 +618,62 @@ export const apiList = {
   }),
 
   //Certificate Genration API
-  '/importuserspecific/certificate/template': createRouteObject({
+  '/aspirespecific/certificate/template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/templates-list': createRouteObject({
+  '/aspirespecific/certificate/templates-list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/course-template/list': createRouteObject({
+  '/aspirespecific/certificate/course-template/list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/edit-template': createRouteObject({
+  '/aspirespecific/certificate/edit-template': createRouteObject({
     put: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/get-template': createRouteObject({
+  '/aspirespecific/certificate/get-template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/course-template': createRouteObject({
+  '/aspirespecific/certificate/course-template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/generateDid': createRouteObject({
+  '/aspirespecific/certificate/generateDid': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/issue': createRouteObject({
+  '/aspirespecific/certificate/issue': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/render-PDF': createRouteObject({
+  '/aspirespecific/certificate/render-PDF': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/importuserspecific/certificate/render': createRouteObject({
+  '/aspirespecific/certificate/render': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/importuserspecific/certificate/schema': createRouteObject({
+  '/aspirespecific/certificate/schema': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/certificate/user-certificates': createRouteObject({
+  '/aspirespecific/certificate/user-certificates': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
@@ -685,34 +685,33 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/import-users/upload': createRouteObject({
+  '/aspirespecific/import-users/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/import-users/import-jobs/search': createRouteObject({
+  '/aspirespecific/import-users/import-jobs/search': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/import-users/import-jobs/:import_job_id':
-    createRouteObject({
-      get: {
-        ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-      },
-    }),
-  '/importuserspecific/import-users/import-jobs': createRouteObject({
+  '/aspirespecific/import-users/import-jobs/:import_job_id': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/importuserspecific/import-users/import-jobs/:import_job_id/failures':
+  '/aspirespecific/import-users/import-jobs': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/import-users/import-jobs/:import_job_id/failures':
     createRouteObject({
       get: {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
-  '/importuserspecific/import-users/import-jobs/:import_job_id/failure-analysis':
+  '/aspirespecific/import-users/import-jobs/:import_job_id/failure-analysis':
     createRouteObject({
       get: {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
