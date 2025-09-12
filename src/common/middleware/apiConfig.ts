@@ -1356,6 +1356,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/notification-templates/action/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/notification-templates/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
