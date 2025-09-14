@@ -1283,6 +1283,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/event-service/event/v1/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   '/event-service/event/v1/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
