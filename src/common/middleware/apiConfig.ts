@@ -1,5 +1,7 @@
 'use strict';
 
+import path from "path";
+
 /**
  * @file - Sourcing Portal Backend API(s) list
  * @description - Whitelisted URL(s)
@@ -1288,11 +1290,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/event-service/event/v1/:id': createRouteObject({
+  '/event-service/event/v1/event/:eventId': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+
   //event-attendance
   '/event-service/attendance/v1/markeventattendance': createRouteObject({
     post: {
@@ -1323,6 +1326,9 @@ export const apiList = {
   '/event-service/event/v1/:eventId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
 
