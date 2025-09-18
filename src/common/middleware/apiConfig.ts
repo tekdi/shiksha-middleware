@@ -1,6 +1,6 @@
 'use strict';
 
-import path from "path";
+import path from 'path';
 
 /**
  * @file - Sourcing Portal Backend API(s) list
@@ -1369,6 +1369,9 @@ export const apiList = {
   }),
   '/notification-templates/action/:id': createRouteObject({
     patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+    get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
