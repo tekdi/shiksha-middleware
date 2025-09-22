@@ -1330,6 +1330,9 @@ export const apiList = {
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
   }),
 
   '/event-service/event/v1/repetition/:repetitionId': createRouteObject({
