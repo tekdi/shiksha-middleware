@@ -620,6 +620,11 @@ export const apiList = {
   }),
 
   //Certificate Genration API
+  '/aspirespecific/certificate/cron/trigger': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/certificate/template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -683,6 +688,12 @@ export const apiList = {
 
   //Bulk import and kafka API
   '/user/v1/bulk-import/xlsx-template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  //bulk discord upload
+  '/aspirespecific/import-users/discord/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
