@@ -143,7 +143,7 @@ export class MiddlewareServices {
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
       const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
-      const decodedPayload = atob(payload); // Decode the base64 payload
+      const decodedPayload = Buffer.from(payload, 'base64').toString('utf-8'); // Decode the base64 payload with proper Unicode support
       const parsedPayload = JSON.parse(decodedPayload);
       let userId = parsedPayload.sub;
       if (userId) {
