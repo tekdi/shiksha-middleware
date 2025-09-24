@@ -1356,6 +1356,12 @@ export const apiList = {
     },
   }),
 
+  '/event-service/attendance/v1/mark-attendance': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
   //END EVENT MICROSERVICE API
 
   //notification-service
