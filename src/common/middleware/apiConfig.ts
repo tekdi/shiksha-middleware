@@ -504,7 +504,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/assessment/v1/attempts/:attemptId/answersheet/:userId': createRouteObject({
+  '/assessment/v1/attempts/:attemptId/answersheet': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
     },
@@ -1346,6 +1346,9 @@ export const apiList = {
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
   }),
 
   '/event-service/event/v1/repetition/:repetitionId': createRouteObject({
@@ -1366,6 +1369,12 @@ export const apiList = {
   '/event-service/attendees/v1/:eventRepetitionId/:userId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+
+  '/event-service/attendance/v1/mark-attendance': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
 
