@@ -693,7 +693,7 @@ export const apiList = {
   }),
   '/aspirespecific/import-users/discord/get-link': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   //Bulk import and kafka API
