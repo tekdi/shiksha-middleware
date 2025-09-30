@@ -685,19 +685,24 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-
-  //Bulk import and kafka API
-  '/user/v1/bulk-import/xlsx-template': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-    },
-  }),
   //bulk discord upload
   '/aspirespecific/import-users/discord/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/aspirespecific/import-users/discord/get-link': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  //Bulk import and kafka API
+  '/user/v1/bulk-import/xlsx-template': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+
   '/aspirespecific/import-users/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
