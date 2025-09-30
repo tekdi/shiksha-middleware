@@ -735,6 +735,13 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
+    
+    '/aspirespecific/import-users/assessment/upload':
+    createRouteObject({
+      post: {
+        ROLE_CHECK: rolesGroup.superadmin,
+      },
+    }),
 
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
