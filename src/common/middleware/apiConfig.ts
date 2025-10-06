@@ -435,6 +435,13 @@ export const apiList = {
     },
   }),
 
+  '/lms-service/v1/course/tracking/update_test_progress': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+    },
+  }),
+
   //Tenant-Level Configuration
   '/user/v1/tenant/:tenantId/configs': createRouteObject({
     get: {
