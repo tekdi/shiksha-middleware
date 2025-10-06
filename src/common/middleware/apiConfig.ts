@@ -580,6 +580,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/assessment/v1/questions/associate-option': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/questions/disassociate-option': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/questions/:id/child-questions': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // Sections Module
   '/assessment/v1/sections': createRouteObject({
     post: {
@@ -738,6 +753,13 @@ export const apiList = {
     createRouteObject({
       get: {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      },
+    }),
+    
+    '/aspirespecific/import-users/assessment/upload':
+    createRouteObject({
+      post: {
+        ROLE_CHECK: rolesGroup.superadmin,
       },
     }),
 
@@ -1231,6 +1253,11 @@ export const apiList = {
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/form/copy': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/form/create': createRouteObject({
