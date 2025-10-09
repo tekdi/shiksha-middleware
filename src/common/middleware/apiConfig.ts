@@ -478,6 +478,16 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/assessment/v1/questions/associate-option': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/assessment/v1/questions/disassociate-option': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/assessment/v1/questions/:id': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -583,16 +593,6 @@ export const apiList = {
     },
   }),
   '/assessment/v1/tests/:testId/clone': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin,
-    },
-  }),
-  '/assessment/v1/questions/associate-option': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.superadmin,
-    },
-  }),
-  '/assessment/v1/questions/disassociate-option': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
