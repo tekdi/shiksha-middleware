@@ -762,13 +762,12 @@ export const apiList = {
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
-    
-    '/aspirespecific/import-users/assessment/upload':
-    createRouteObject({
-      post: {
-        ROLE_CHECK: rolesGroup.superadmin,
-      },
-    }),
+
+  '/aspirespecific/import-users/assessment/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
 
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
@@ -984,6 +983,9 @@ export const apiList = {
   }),
   //public api
   '/user/v1/auth/login': createRouteObject({
+    post: {},
+  }),
+  '/user/v1/auth/logout': createRouteObject({
     post: {},
   }),
   '/user/v1/cohort/search': createRouteObject({
