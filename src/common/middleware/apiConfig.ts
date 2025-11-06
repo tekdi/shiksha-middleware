@@ -180,6 +180,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
   }),
+  'lms-service/v1/courses/structure': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+    },
+  }),
   '/lms-service/v1/courses/:courseId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
@@ -766,6 +772,26 @@ export const apiList = {
   '/aspirespecific/import-users/assessment/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/aspirespecific/export/course': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/assessment': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/content': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/jobs': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
 
