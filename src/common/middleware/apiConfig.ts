@@ -180,7 +180,7 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
     },
   }),
-  'lms-service/v1/courses/structure': createRouteObject({
+  '/lms-service/v1/courses/structure': createRouteObject({
     put: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: privilegeGroup.lms.update,
