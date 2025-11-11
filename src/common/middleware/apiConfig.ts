@@ -1358,6 +1358,11 @@ export const apiList = {
   }),
   //event-service
   //event
+  '/event-service/attendance/v1/mark-attendance-by-userId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/event-service/event/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
@@ -1385,6 +1390,13 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/event-service/attendance/v1/mark-attendance-by-username': createRouteObject(
+    {
+      post: {
+        ROLE_CHECK: rolesGroup.superadmin,
+      },
+    },
+  ),
   '/event-service/attendees/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
