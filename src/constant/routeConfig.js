@@ -1432,6 +1432,19 @@
 			]
 		},
 		{
+			"sourceRoute": "/interface/v1/action/collection/v4/unlisted/publish/:identifier",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "cms",
+					"packageName": "shiksha-cms"
+				}
+			]
+		},
+		{
 			"sourceRoute": "/interface/v1/action/collection/v1/import/:identifier",
 			"type": "POST",
 			"priority": "MUST_HAVE",
