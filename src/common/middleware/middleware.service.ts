@@ -265,6 +265,7 @@ export class MiddlewareServices {
       '/api/content': 'CONTENT_SERVICE',
       '/action/license': 'CONTENT_SERVICE',
       '/action/collection': 'CONTENT_SERVICE',
+      '/collection': 'CONTENT_SERVICE',
       '/api/course/': 'CONTENT_SERVICE',
       '/action/assessment': 'ASSESSMENT_SERVICE',
     };

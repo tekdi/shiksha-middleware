@@ -1523,10 +1523,10 @@ export const apiList = {
     },
     '/collection/v4/publish/:identifier',
   ),
-  '/action/collection/v4/unlisted/publish/:identifier': createRouteObject(
+  '/collection/v4/unlisted/publish/:identifier': createRouteObject(
     {
       post: {
-        ROLE_CHECK: rolesGroup.admin_team_leader,
+        // ROLE_CHECK: rolesGroup.admin_team_leader,
       },
     },
     '/collection/v4/unlisted/publish/:identifier',
@@ -1688,6 +1688,7 @@ export const publicAPI = [
   '/user/v1/presigned-url',
   '/action/assessment/v3/items/read/:identifier',
   '/action/content/v3/read/:identifier',
+  '/collection/v4/unlisted/publish/:identifier',
 ];
 
 // api which required academic year
