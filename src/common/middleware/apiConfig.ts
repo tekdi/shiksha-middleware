@@ -1523,7 +1523,7 @@ export const apiList = {
     },
     '/collection/v4/publish/:identifier',
   ),
-  '/action/collection/v1/unlisted/publish/:identifier': createRouteObject(
+  '/collection/v4/unlisted/publish/:identifier': createRouteObject(
     {
       post: {
         ROLE_CHECK: rolesGroup.admin_team_leader,
