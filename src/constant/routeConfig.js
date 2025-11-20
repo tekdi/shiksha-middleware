@@ -1432,7 +1432,7 @@
 			]
 		},
 		{
-			"sourceRoute": "/interface/v1/action/collection/v4/unlisted/publish/:identifier",
+			"sourceRoute": "/interface/v1/collection/v4/unlisted/publish/:identifier",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
