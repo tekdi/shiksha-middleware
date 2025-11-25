@@ -512,6 +512,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/assessment/v1/attempts/import/resultstatus': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   '/assessment/v1/attempts/:attemptId/answers': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
@@ -534,11 +539,6 @@ export const apiList = {
   }),
   '/assessment/v1/attempts/:attemptId/answersheet': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.common,
-    },
-  }),
-  '/assessment/v1/attempts/import/resultstatus': createRouteObject({
-    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
