@@ -537,7 +537,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-
+  '/assessment/v1/attempts/check-result-imported': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // Tests Module
   '/assessment/v1/tests': createRouteObject({
     post: {
