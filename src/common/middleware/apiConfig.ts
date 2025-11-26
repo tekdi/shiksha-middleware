@@ -1294,6 +1294,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/user/v1/forms/submissions/elasticsearch/sync/:userId': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
   '/user/v1/form/copy': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
