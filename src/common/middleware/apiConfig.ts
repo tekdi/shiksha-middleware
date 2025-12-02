@@ -722,6 +722,9 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/aspirespecific/certificate/url': createRouteObject({
+    post: {},
+  }),
   //bulk discord upload
   '/aspirespecific/import-users/discord/upload': createRouteObject({
     post: {
@@ -2045,6 +2048,7 @@ export const publicAPI = [
   '/user/v1/fields/download-file/:id',
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
   '/user/v1/cohortmember/cron/send-rejection-emails',
+  '/aspirespecific/certificate/url',
 ];
 
 // api which required academic year
