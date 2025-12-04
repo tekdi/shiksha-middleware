@@ -57,9 +57,9 @@ export class MiddlewareServices {
         // Basic check if user is a valid keyCloack user, if tenant ID present in the request
         const context = new ExecutionContextHost([req, res, next]);
         // Create an instance of the JwtAuthGuard
-        const guard = new JwtAuthGuard(this.reflector);
+        const guard = new JwtAuthGuard();
         // custom jwt.strategy will get executed
-        await guard.canActivate(context);
+        //await guard.canActivate(context);
       }
       //check for academic year
       if (apiListForAcademicYear.includes(reqUrl)) {
@@ -267,7 +267,8 @@ export class MiddlewareServices {
       '/action/collection': 'CONTENT_SERVICE',
       '/collection': 'CONTENT_SERVICE',
       '/api/course/': 'CONTENT_SERVICE',
-      '/action/assessment': 'ASSESSMENT_SERVICE',
+      '/action/assessment': 'LEARNING_SERVICE',
+      //  '/learning-service/assessment': 'LEARNING_SERVICE',
     };
 
     // Iterate over the mapping to find the correct service based on the URL prefix

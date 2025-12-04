@@ -1557,36 +1557,67 @@ export const apiList = {
   ),
 
   '/action/assessment/v3/items/create': createRouteObject(
+    // make similar changes for others
     {
       post: {},
     },
-    '/itemset/v3/create',
+    '/learning-service/assessment/v3/items/create',
   ),
   '/action/assessment/v3/items/read/:identifier': createRouteObject(
     {
       get: {},
     },
-    '/itemset/v3/read/:identifier',
+    '/learning-service/assessment/v3/items/read/:identifier',
   ),
   '/action/assessment/v3/items/update/:identifier': createRouteObject(
     {
       patch: {},
     },
-    '/itemset/v3/update/:identifier',
+    '/learning-service/assessment/v3/items/update/:identifier',
   ),
   '/action/assessment/v3/items/review/:identifier': createRouteObject(
     {
       post: {},
     },
-    '/itemset/v3/retire/:identifier',
+    '/learning-service/assessment/v3/items/review/:identifier',
   ),
   '/action/assessment/v3/items/retire/:identifier': createRouteObject(
     {
       delete: {},
     },
-    '/itemset/v3/retire/:identifier',
+    '/learning-service/assessment/v3/items/retire/:identifier',
+  ),
+  '/learning-service/assessment/v3/items/create': createRouteObject(
+    {
+      post: {},
+    },
+    '/learning-service/assessment/itemset/v3/create',
   ),
 
+  '/learning-service/assessment/v3/items/read/:identifier': createRouteObject(
+    {
+      get: {},
+    },
+    '/learning-service/assessment/itemset/v3/read/:identifier',
+  ),
+  '/learning-service/assessment/v3/items/update/:identifier': createRouteObject(
+    {
+      patch: {},
+    },
+    '/learning-service/assessment/itemset/v3/update/:identifier',
+  ),
+  '/learning-service/assessment/v3/items/review/:identifier': createRouteObject(
+    {
+      post: {},
+    },
+    '/learning-service/assessment/itemset/v3/review/:identifier',
+  ),
+  '/learning-service/assessment/v3/items/retire/:identifier': createRouteObject(
+    {
+      delete: {},
+    },
+    '/learning-service/assessment/itemset/v3/retire/:identifier',
+  ),
   '/api/content/v1/bundle': createRouteObject(
     {
       post: {},
