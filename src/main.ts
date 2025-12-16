@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
 import { ForbiddenException } from '@nestjs/common';
+import { json } from 'express';
 
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
@@ -47,7 +48,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger-docs', app, document);
-
+  app.use(json({ limit: '50mb' }));
+  
   app.enableCors(corsOptions);
   app.use(helmet());
 
