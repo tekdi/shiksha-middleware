@@ -381,6 +381,11 @@ export const apiList = {
   }),
 
   // Tracking API
+  '/lms-service/v1/tracking/recalculate-progress': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/lms-service/v1/tracking/course/:courseId/:userId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
