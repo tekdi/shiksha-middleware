@@ -19,6 +19,10 @@ import { DataValidationService } from './common/service/dataValidation.service';
 import { CohortMembers } from './common/entities/CohortMembers.entity';
 import { Cohort } from './common/entities/Cohort.entity';
 import { LoggingMiddleware } from './common/loggers/logging.middleware';
+import { MetricsModule } from './common/metrics/metrics.module';
+import { MetricsMiddleware } from './common/metrics/metrics.middleware';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -34,8 +38,10 @@ import { LoggingMiddleware } from './common/loggers/logging.middleware';
     DatabaseModule,
     JwtModule,
     MiddlewareLoggerModule,
+    MetricsModule,
+    TerminusModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [
     AppService,
     MiddlewareServices,
@@ -47,10 +53,13 @@ import { LoggingMiddleware } from './common/loggers/logging.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggingMiddleware) // Apply LoggerMiddleware
-      .forRoutes('*') // Apply globally to all routes
-      .apply(MiddlewareServices)
-      .forRoutes('*');
+    // Apply LoggingMiddleware globally
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+    
+    // Apply MetricsMiddleware globally for Prometheus metrics
+    consumer.apply(MetricsMiddleware).forRoutes('*');
+    
+    // Apply MiddlewareServices globally
+    consumer.apply(MiddlewareServices).forRoutes('*');
   }
 }

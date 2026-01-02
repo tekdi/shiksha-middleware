@@ -1,0 +1,53 @@
+# Prometheus Configuration for Shiksha Middleware
+# This file configures Prometheus to scrape metrics from the middleware service
+
+global:
+  scrape_interval: 15s # Scrape targets every 15 seconds
+  evaluation_interval: 15s # Evaluate rules every 15 seconds
+  external_labels:
+    cluster: 'shiksha-middleware'
+    environment: 'development'
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           # - alertmanager:9093
+
+# Load rules once and periodically evaluate them (optional)
+# rule_files:
+#   - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Scrape metrics from the middleware service
+  - job_name: 'shiksha-middleware'
+    scrape_interval: 10s # Scrape every 10 seconds for more granular metrics
+    metrics_path: '/metrics' # The endpoint exposed by the application
+    static_configs:
+      # For Docker on Mac/Windows: host.docker.internal:4000 works automatically
+      # For Docker on Linux: host.docker.internal:4000 works with extra_hosts in docker-compose
+      # Alternative for Linux: use 172.17.0.1:4000 (Docker bridge gateway IP)
+      # If middleware is in Docker on same network: use container name, e.g., middleware:4000
+      # For local development (non-Docker): use localhost:4000
+      - targets: ['host.docker.internal:4000'] # Works with extra_hosts in docker-compose
+        labels:
+          service: 'middleware'
+          instance: 'middleware-1'
+      # Alternative target for Linux (uncomment if host.docker.internal doesn't work):
+      # - targets: ['172.17.0.1:4000']
+      #   labels:
+      #     service: 'middleware'
+      #     instance: 'middleware-1'
+    
+    # Optional: Add basic authentication if needed
+    # basic_auth:
+    #   username: 'prometheus'
+    #   password: 'password'
+
+  # Optional: Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+

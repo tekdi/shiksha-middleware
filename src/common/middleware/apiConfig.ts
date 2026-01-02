@@ -2013,6 +2013,10 @@ export const urlPatterns = Object.keys(apiList);
 
 //add public api
 export const publicAPI = [
+  '/metrics', // Prometheus metrics endpoint - must be public for scraping
+  '/health', // Health check endpoint - must be public for monitoring
+  '/health/live', // Liveness probe - must be public for Kubernetes
+  '/health/ready', // Readiness probe - must be public for Kubernetes
   '/user/v1/auth',
   '/user/v1/create',
   '/user/v1/fields/options/read',
