@@ -23,16 +23,27 @@ export class HealthService {
     const startTime = Date.now();
     try {
       if (!this.dataSource) {
-        return { name: 'database', status: 'down', message: 'DataSource not available' };
+        return {
+          name: 'database',
+          status: 'down',
+          message: 'DataSource not available',
+        };
       }
 
       if (!this.dataSource.isInitialized) {
-        return { name: 'database', status: 'down', message: 'Database connection not initialized' };
+        return {
+          name: 'database',
+          status: 'down',
+          message: 'Database connection not initialized',
+        };
       }
 
       const queryPromise = this.dataSource.query('SELECT 1');
       const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Database query timeout after 5 seconds')), 5000),
+        setTimeout(
+          () => reject(new Error('Database query timeout after 5 seconds')),
+          5000,
+        ),
       );
 
       await Promise.race([queryPromise, timeoutPromise]);
@@ -43,17 +54,25 @@ export class HealthService {
       return {
         name: 'database',
         status: 'down',
-        message: error instanceof Error ? error.message : 'Database connection failed',
+        message:
+          error instanceof Error ? error.message : 'Database connection failed',
         responseTime,
       };
     }
   }
 
-  async checkExternalService(serviceName: string, serviceUrl: string | undefined): Promise<ServiceHealth> {
+  async checkExternalService(
+    serviceName: string,
+    serviceUrl: string | undefined,
+  ): Promise<ServiceHealth> {
     const startTime = Date.now();
-    
+
     if (!serviceUrl) {
-      return { name: serviceName, status: 'down', message: 'Service URL not configured' };
+      return {
+        name: serviceName,
+        status: 'down',
+        message: 'Service URL not configured',
+      };
     }
 
     try {
@@ -78,12 +97,16 @@ export class HealthService {
         } catch {
           // If health endpoints don't exist, try base URL connectivity
           await axios.get(serviceUrl, { timeout, validateStatus: () => true });
-          return { name: serviceName, status: 'up', responseTime: Date.now() - startTime };
+          return {
+            name: serviceName,
+            status: 'up',
+            responseTime: Date.now() - startTime,
+          };
         }
       }
 
       const responseTime = Date.now() - startTime;
-      
+
       if (response.status === 200 || response.status === 503) {
         // 200 = healthy, 503 = unhealthy but service is reachable
         return {
@@ -100,14 +123,23 @@ export class HealthService {
       const responseTime = Date.now() - startTime;
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
-        if (axiosError.code === 'ECONNREFUSED' || axiosError.code === 'ETIMEDOUT') {
-          return { name: serviceName, status: 'down', message: 'Service unreachable', responseTime };
+        if (
+          axiosError.code === 'ECONNREFUSED' ||
+          axiosError.code === 'ETIMEDOUT'
+        ) {
+          return {
+            name: serviceName,
+            status: 'down',
+            message: 'Service unreachable',
+            responseTime,
+          };
         }
       }
       return {
         name: serviceName,
         status: 'down',
-        message: error instanceof Error ? error.message : 'Service check failed',
+        message:
+          error instanceof Error ? error.message : 'Service check failed',
         responseTime,
       };
     }
@@ -115,18 +147,37 @@ export class HealthService {
 
   async checkAllServices(): Promise<ServiceHealth[]> {
     const services: Array<{ name: string; url: string | undefined }> = [
-      { name: 'user-service', url: this.configService.get<string>('USER_SERVICE') },
-      { name: 'lms-service', url: this.configService.get<string>('LMS_SERVICE') },
-      { name: 'assessment-service', url: this.configService.get<string>('SHIKSHA_ASSESSMENT_SERVICE') },
-      { name: 'tracking-service', url: this.configService.get<string>('TRACKING_SERVICE') },
-      { name: 'notification-service', url: this.configService.get<string>('NOTIFICATION_SERVICE') },
-      { name: 'event-service', url: this.configService.get<string>('EVENT_SERVICE') },
-      { name: 'attendance-service', url: this.configService.get<string>('ATTENDANCE_SERVICE') },
+      {
+        name: 'user-service',
+        url: this.configService.get<string>('USER_SERVICE'),
+      },
+      {
+        name: 'lms-service',
+        url: this.configService.get<string>('LMS_SERVICE'),
+      },
+      {
+        name: 'assessment-service',
+        url: this.configService.get<string>('SHIKSHA_ASSESSMENT_SERVICE'),
+      },
+      {
+        name: 'aspire-specific-service',
+        url: this.configService.get<string>('USER_SPECIFIC_SERVICE'),
+      },
+      {
+        name: 'notification-service',
+        url: this.configService.get<string>('NOTIFICATION_SERVICE'),
+      },
+      {
+        name: 'event-service',
+        url: this.configService.get<string>('EVENT_SERVICE'),
+      },
     ];
 
     // Check all services in parallel
     const serviceChecks = await Promise.allSettled(
-      services.map((service) => this.checkExternalService(service.name, service.url))
+      services.map((service) =>
+        this.checkExternalService(service.name, service.url),
+      ),
     );
 
     return serviceChecks.map((result, index) => {
@@ -148,7 +199,7 @@ export class HealthService {
   }> {
     const dbHealth = await this.checkDatabase();
     const externalServices = await this.checkAllServices();
-    
+
     const allServices = [dbHealth, ...externalServices];
     const allHealthy = allServices.every((service) => service.status === 'up');
 
@@ -159,4 +210,3 @@ export class HealthService {
     };
   }
 }
-
