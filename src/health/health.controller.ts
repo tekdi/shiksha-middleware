@@ -29,7 +29,7 @@ export class HealthController {
     
     if (healthStatus.status === 'error') {
       // Return 503 status with error details
-      const downServices = healthStatus.services.filter((s) => s.status === 'down'));
+      const downServices = healthStatus.services.filter((s: { status: string }) => s.status === 'down');
       throw new HttpException(
         {
           status: 'error',
