@@ -90,19 +90,24 @@ export class MetricsService {
     // Remove query parameters
     const path = route.split('?')[0];
 
+    // Helper to use replaceAll() with regex (ES2021 feature)
+    // TypeScript types may not fully support replaceAll with RegExp, but it works at runtime
+    const replaceAllRegex = (str: string, pattern: RegExp, replacement: string): string => {
+      return (str as any).replaceAll(pattern, replacement);
+    };
+
     // Normalize common patterns
     // Replace UUIDs (8-4-4-4-12 format)
-    // Note: Using replace() with global flag instead of replaceAll() for regex compatibility
-    let normalized = path.replace(
-      /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
-      '/:id',
-    );
+    const uuidPattern = /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+    let normalized = replaceAllRegex(path, uuidPattern, '/:id');
 
     // Replace numeric IDs
-    normalized = normalized.replace(/\/\d+/g, '/:id');
+    const numericIdPattern = /\/\d+/g;
+    normalized = replaceAllRegex(normalized, numericIdPattern, '/:id');
 
-    // Replace common ID patterns
-    normalized = normalized.replace(/\/[a-z0-9]{24}/gi, '/:id'); // MongoDB ObjectId
+    // Replace common ID patterns (MongoDB ObjectId)
+    const objectIdPattern = /\/[a-z0-9]{24}/gi;
+    normalized = replaceAllRegex(normalized, objectIdPattern, '/:id');
 
     // Limit route length to avoid cardinality issues
     if (normalized.length > 100) {
