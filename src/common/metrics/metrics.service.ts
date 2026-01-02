@@ -92,6 +92,7 @@ export class MetricsService {
 
     // Normalize common patterns
     // Replace UUIDs (8-4-4-4-12 format)
+    // Note: Using replace() with global flag instead of replaceAll() for regex compatibility
     let normalized = path.replace(
       /\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
       '/:id',

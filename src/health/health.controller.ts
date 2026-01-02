@@ -8,7 +8,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 export class HealthController {
   constructor(
     @InjectDataSource()
-    private dataSource: DataSource,
+    private readonly dataSource: DataSource,
   ) {}
 
   @Get()
