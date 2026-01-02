@@ -17,6 +17,12 @@ export class MetricsMiddleware implements NestMiddleware {
   constructor(private readonly metricsService: MetricsService) {}
 
   use(req: Request, res: Response, next: NextFunction): void {
+    // Skip metrics collection for /metrics endpoint to avoid self-scraping pollution
+    // This prevents Prometheus scrapes from being counted as regular requests
+    if (req.path === '/metrics' || req.originalUrl === '/metrics' || req.url === '/metrics') {
+      return next();
+    }
+
     // Record start time for duration measurement
     const startTime = Date.now();
 

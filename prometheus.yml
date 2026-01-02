@@ -15,9 +15,9 @@ global:
 #         - targets:
 #           # - alertmanager:9093
 
-# Load rules once and periodically evaluate them (optional)
-# rule_files:
-#   - "alert_rules.yml"
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alerts.yml"
 
 # Scrape configurations
 scrape_configs:

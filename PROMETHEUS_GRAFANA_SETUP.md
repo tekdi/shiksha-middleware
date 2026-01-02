@@ -571,6 +571,43 @@ This implementation provides:
 ✅ **Production-ready** with best practices (low cardinality, normalized routes)  
 ✅ **Easy setup** with Docker Compose  
 ✅ **Comprehensive documentation** for testing and troubleshooting  
+✅ **Production PromQL queries** document with 100+ ready-to-use queries  
+✅ **Prometheus alert rules** configuration file  
 
 The metrics are now available for monitoring, alerting, and performance analysis of the Shiksha Middleware service.
+
+## Additional Resources
+
+### Production PromQL Queries
+
+See `PRODUCTION_PROMQL_QUERIES.md` for:
+- 100+ production-ready PromQL queries
+- Queries organized by category (HTTP, system, errors, latency)
+- Grafana dashboard panel recommendations
+- Alert query examples
+- Complete Prometheus alert rules configuration
+
+### Prometheus Alert Rules
+
+The `alerts.yml` file contains pre-configured alert rules for:
+- High error rates (4xx, 5xx)
+- High latency (P95, P99, P99.9)
+- High memory/CPU usage
+- Event loop lag
+- Service availability
+- File descriptor exhaustion
+- GC frequency and duration
+
+To enable alerts:
+1. The `alerts.yml` file is already configured in `prometheus.yml`
+2. Restart Prometheus to load the alert rules
+3. Configure Alertmanager (optional) to send notifications
+
+### Quick Reference
+
+- **Metrics Endpoint:** `http://localhost:4000/metrics`
+- **Prometheus UI:** `http://localhost:9090`
+- **Grafana UI:** `http://localhost:7000` (admin/admin)
+- **PromQL Queries:** See `PRODUCTION_PROMQL_QUERIES.md`
+- **Alert Rules:** See `alerts.yml`
 
