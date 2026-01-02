@@ -67,6 +67,13 @@ export class MiddlewareServices {
           throw new BadRequestException('Academic year id not found');
         }
       }
+      // Skip whitelist check for local endpoints like /metrics
+      const localEndpoints = ['/metrics', '/api/swagger-docs', '/health', '/health/live', '/health/ready'];
+      if (localEndpoints.includes(reqUrl)) {
+        // Allow local endpoints to proceed without forwarding
+        return next();
+      }
+
       if (apiList[reqUrl]) {
         // check API is whitelisted
         if (!apiList[reqUrl][req.method.toLowerCase()]) {

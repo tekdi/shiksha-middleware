@@ -1,0 +1,166 @@
+groups:
+  - name: shiksha_middleware_alerts
+    interval: 30s
+    rules:
+      - alert: HighErrorRate
+        expr: (sum(rate(shiksha_middleware_http_errors_total[5m])) / sum(rate(shiksha_middleware_http_requests_total[5m]))) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value }}% (threshold: 5%)"
+
+      - alert: High5xxErrorRate
+        expr: (sum(rate(shiksha_middleware_http_errors_total{error_type="server_error"}[5m])) / sum(rate(shiksha_middleware_http_requests_total[5m]))) * 100 > 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High 5xx error rate"
+          description: "5xx error rate is {{ $value }}% (threshold: 1%)"
+
+      - alert: High4xxErrorRate
+        expr: (sum(rate(shiksha_middleware_http_errors_total{error_type="client_error"}[5m])) / sum(rate(shiksha_middleware_http_requests_total[5m]))) * 100 > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 4xx error rate"
+          description: "4xx error rate is {{ $value }}% (threshold: 10%)"
+
+      - alert: HighLatencyP95
+        expr: histogram_quantile(0.95, sum by (le) (rate(shiksha_middleware_http_request_duration_seconds_bucket[5m]))) > 2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High P95 latency"
+          description: "P95 latency is {{ $value }}s (threshold: 2s)"
+
+      - alert: HighLatencyP99
+        expr: histogram_quantile(0.99, sum by (le) (rate(shiksha_middleware_http_request_duration_seconds_bucket[5m]))) > 5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High P99 latency"
+          description: "P99 latency is {{ $value }}s (threshold: 5s)"
+
+      - alert: CriticalLatencyP999
+        expr: histogram_quantile(0.999, sum by (le) (rate(shiksha_middleware_http_request_duration_seconds_bucket[5m]))) > 10
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical P99.9 latency"
+          description: "P99.9 latency is {{ $value }}s (threshold: 10s)"
+
+      - alert: HighMemoryUsage
+        expr: (shiksha_middleware_nodejs_heap_size_used_bytes / shiksha_middleware_nodejs_heap_size_total_bytes) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Heap memory usage is {{ $value }}% (threshold: 90%)"
+
+      - alert: CriticalMemoryUsage
+        expr: (shiksha_middleware_nodejs_heap_size_used_bytes / shiksha_middleware_nodejs_heap_size_total_bytes) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical memory usage"
+          description: "Heap memory usage is {{ $value }}% (threshold: 95%)"
+
+      - alert: HighEventLoopLag
+        expr: shiksha_middleware_nodejs_eventloop_lag_seconds > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High event loop lag"
+          description: "Event loop lag is {{ $value }}s (threshold: 100ms)"
+
+      - alert: CriticalEventLoopLag
+        expr: shiksha_middleware_nodejs_eventloop_lag_seconds > 0.5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical event loop lag"
+          description: "Event loop lag is {{ $value }}s (threshold: 500ms)"
+
+      - alert: HighCPUUsage
+        expr: (rate(shiksha_middleware_process_cpu_user_seconds_total[5m]) + rate(shiksha_middleware_process_cpu_system_seconds_total[5m])) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% (threshold: 80%)"
+
+      - alert: CriticalCPUUsage
+        expr: (rate(shiksha_middleware_process_cpu_user_seconds_total[5m]) + rate(shiksha_middleware_process_cpu_system_seconds_total[5m])) * 100 > 95
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical CPU usage"
+          description: "CPU usage is {{ $value }}% (threshold: 95%)"
+
+      - alert: ServiceDown
+        expr: up{job="shiksha-middleware"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down"
+          description: "Shiksha middleware service is not responding to Prometheus scrapes"
+
+      - alert: HighRequestRate
+        expr: sum(rate(shiksha_middleware_http_requests_total[5m])) > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request rate"
+          description: "Request rate is {{ $value }} req/s (threshold: 1000 req/s)"
+
+      - alert: FileDescriptorExhaustion
+        expr: (shiksha_middleware_process_open_fds / shiksha_middleware_process_max_fds) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High file descriptor usage"
+          description: "File descriptor usage is {{ $value }}% (threshold: 80%)"
+
+      - alert: CriticalFileDescriptorExhaustion
+        expr: (shiksha_middleware_process_open_fds / shiksha_middleware_process_max_fds) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical file descriptor usage"
+          description: "File descriptor usage is {{ $value }}% (threshold: 95%)"
+
+      - alert: HighGCFrequency
+        expr: sum(rate(shiksha_middleware_nodejs_gc_duration_seconds_count[5m])) * 60 > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High GC frequency"
+          description: "GC frequency is {{ $value }} GCs/min (threshold: 100 GCs/min)"
+
+      - alert: HighGCDuration
+        expr: sum(rate(shiksha_middleware_nodejs_gc_duration_seconds_sum[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High GC duration"
+          description: "Total GC duration is {{ $value }}s/sec (threshold: 0.1s/sec)"
+
