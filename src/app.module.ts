@@ -23,6 +23,7 @@ import { MetricsModule } from './common/metrics/metrics.module';
 import { MetricsMiddleware } from './common/metrics/metrics.middleware';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health/health.controller';
+import { HealthService } from './health/health.service';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { HealthController } from './health/health.controller';
     PermissionsService,
     GatewayService,
     DataValidationService,
+    HealthService,
   ],
 })
 export class AppModule {

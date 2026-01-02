@@ -2,6 +2,7 @@ import { Controller, Get, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { HealthService } from './health.service';
 
 @ApiTags('Health')
 @Controller('health')
@@ -9,6 +10,7 @@ export class HealthController {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
+    private readonly healthService: HealthService,
   ) {}
 
   @Get()
@@ -22,74 +24,56 @@ export class HealthController {
     description: 'Service is unhealthy or database is not connected',
   })
   async check() {
-    // Check database connection directly
-    const dbStatus = await this.checkDatabaseDirectly();
+    // Check all services (database + external services)
+    const healthStatus = await this.healthService.getOverallHealth();
     
-    if (!dbStatus.connected) {
+    if (healthStatus.status === 'error') {
       // Return 503 status with error details
+      const downServices = healthStatus.services.filter((s) => s.status === 'down'));
       throw new HttpException(
         {
           status: 'error',
           info: {},
-          error: {
-            database: {
+          error: downServices.reduce((acc, service) => {
+            acc[service.name] = {
               status: 'down',
-              message: dbStatus.message || 'Database connection failed',
-            },
-          },
-          details: {
-            database: {
-              status: 'down',
-              message: dbStatus.message || 'Database connection failed',
-            },
-          },
+              message: service.message || 'Service unavailable',
+            };
+            return acc;
+          }, {} as Record<string, { status: string; message?: string }>),
+          details: healthStatus.services.reduce((acc, service) => {
+            acc[service.name] = {
+              status: service.status,
+              message: service.message,
+              responseTime: service.responseTime ? `${service.responseTime}ms` : undefined,
+            };
+            return acc;
+          }, {} as Record<string, any>),
         },
         HttpStatus.SERVICE_UNAVAILABLE,
       );
     }
 
-    // If database is connected, return healthy status
+    // All services are healthy
     return {
       status: 'ok',
-      info: {
-        database: {
+      info: healthStatus.services.reduce((acc, service) => {
+        acc[service.name] = {
           status: 'up',
-        },
-      },
+          responseTime: service.responseTime ? `${service.responseTime}ms` : undefined,
+        };
+        return acc;
+      }, {} as Record<string, any>),
       error: {},
-      details: {
-        database: {
-          status: 'up',
-        },
-      },
+      details: healthStatus.services.reduce((acc, service) => {
+        acc[service.name] = {
+          status: service.status,
+          message: service.message,
+          responseTime: service.responseTime ? `${service.responseTime}ms` : undefined,
+        };
+        return acc;
+      }, {} as Record<string, any>),
     };
-  }
-
-  private async checkDatabaseDirectly(): Promise<{ connected: boolean; message?: string }> {
-    try {
-      // Check if DataSource exists and is initialized
-      if (!this.dataSource) {
-        return { connected: false, message: 'DataSource not available' };
-      }
-
-      if (!this.dataSource.isInitialized) {
-        return { connected: false, message: 'Database connection not initialized' };
-      }
-
-      // Execute a simple query with timeout (5 seconds)
-      const queryPromise = this.dataSource.query('SELECT 1');
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Database query timeout after 5 seconds')), 5000),
-      );
-
-      await Promise.race([queryPromise, timeoutPromise]);
-      return { connected: true };
-    } catch (error) {
-      return {
-        connected: false,
-        message: error instanceof Error ? error.message : 'Database connection failed',
-      };
-    }
   }
 
   @Get('live')
@@ -119,9 +103,47 @@ export class HealthController {
     description: 'Service is not ready (database not connected)',
   })
   async readiness() {
-    // Readiness probe - same as main health check
-    // This ensures service is ready to accept traffic
-    return this.check();
+    // Readiness probe - check database and critical services only
+    const dbHealth = await this.healthService.checkDatabase();
+    
+    if (dbHealth.status === 'down') {
+      throw new HttpException(
+        {
+          status: 'error',
+          info: {},
+          error: {
+            database: {
+              status: 'down',
+              message: dbHealth.message || 'Database connection failed',
+            },
+          },
+          details: {
+            database: {
+              status: 'down',
+              message: dbHealth.message || 'Database connection failed',
+            },
+          },
+        },
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+
+    return {
+      status: 'ok',
+      info: {
+        database: {
+          status: 'up',
+          responseTime: dbHealth.responseTime ? `${dbHealth.responseTime}ms` : undefined,
+        },
+      },
+      error: {},
+      details: {
+        database: {
+          status: 'up',
+          responseTime: dbHealth.responseTime ? `${dbHealth.responseTime}ms` : undefined,
+        },
+      },
+    };
   }
 }
 
