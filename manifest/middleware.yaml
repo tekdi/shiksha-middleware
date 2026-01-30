@@ -27,34 +27,7 @@ spec:
         envFrom:
         - configMapRef:
             name: middleware-service-config
-        # Liveness probe - checks if container is alive
-        livenessProbe:
-          httpGet:
-            path: /health/live
-            port: 4000
-          initialDelaySeconds: 30  # Wait 30s after container starts
-          periodSeconds: 10         # Check every 10s
-          timeoutSeconds: 5         # 5s timeout
-          failureThreshold: 3       # Restart after 3 failures
-        # Readiness probe - checks if service is ready (DB connected)
-        readinessProbe:
-          httpGet:
-            path: /health/ready
-            port: 4000
-          initialDelaySeconds: 10   # Wait 10s after container starts
-          periodSeconds: 5          # Check every 5s
-          timeoutSeconds: 5          # 5s timeout
-          failureThreshold: 3       # Mark not ready after 3 failures
-        # Startup probe - gives more time for initial startup
-        startupProbe:
-          httpGet:
-            path: /health/ready
-            port: 4000
-          initialDelaySeconds: 0    # Start immediately
-          periodSeconds: 5           # Check every 5s
-          timeoutSeconds: 5         # 5s timeout
-          failureThreshold: 12      # Allow up to 60s for startup (12 * 5s)
-        resources:
+      resources:
           requests:
             cpu: "1000m"
             memory: "1500Mi"
