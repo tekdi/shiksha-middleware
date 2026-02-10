@@ -135,6 +135,11 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.read,
     },
   }),
+  '/lms-service/v1/course/aggregate-content': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    }
+  }),
   '/lms-service/v1/courses/:courseId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
