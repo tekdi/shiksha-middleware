@@ -1210,6 +1210,45 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  //Create Interest
+  '/user/v1/interest/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  //Update Interest
+  '/user/v1/interest/update/:id': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  //Delete Interest
+  '/user/v1/interest/delete/:id': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  //List Interest
+  '/user/v1/interest/list/:pathwayId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/interest/pathway/saveuserinterests': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/pathway/assign': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/pathway/active/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
