@@ -91,13 +91,6 @@ const privilegeGroup = {
   opportunity: createPrivilegeGroup('opportunity'),
   lms: createPrivilegeGroup('lms'),
 };
-// Reusable method objects to reduce duplication (proof-of-concept)
-const GET_COMMON_LMS_READ = {
-  get: { ROLE_CHECK: rolesGroup.common, PRIVILEGE_CHECK: privilegeGroup.lms.read },
-};
-const POST_SUPERADMIN_LMS_CREATE = {
-  post: { ROLE_CHECK: rolesGroup.superadmin, PRIVILEGE_CHECK: privilegeGroup.lms.create },
-};
 
 const common_public_get = { get: {} };
 const common_role_check = {
@@ -145,7 +138,7 @@ export const apiList = {
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     }
   }),
   '/lms-service/v1/courses/:courseId': createRouteObject({
@@ -1221,19 +1214,22 @@ export const apiList = {
   //Create Interest
   '/user/v1/interest/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.common,
+       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
     },
   }),
   //Update Interest
   '/user/v1/interest/update/:id': createRouteObject({
     put: {
-      ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
     },
   }),
   //Delete Interest
   '/user/v1/interest/delete/:id': createRouteObject({
     delete: {
-     ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
     },
   }),
   //List Interest
