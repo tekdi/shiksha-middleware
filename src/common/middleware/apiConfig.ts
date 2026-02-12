@@ -1249,6 +1249,18 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  //Switch Pathway
+  '/user/v1/pathway/switch': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  //get interset of the users by  PathuserPathwayHistoryIdwayhistory id 
+  '/user/v1/pathway/interests/:userPathwayHistoryId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
