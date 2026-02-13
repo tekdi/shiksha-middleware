@@ -138,7 +138,7 @@ export const apiList = {
   '/lms-service/v1/course/aggregate-content': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-    }
+    },
   }),
   '/lms-service/v1/courses/:courseId': createRouteObject({
     get: {
@@ -1041,6 +1041,9 @@ export const apiList = {
   '/user/v1/auth/logout': createRouteObject({
     post: {},
   }),
+  '/user/v1/payments/webhook/stripe': createRouteObject({
+    post: {},
+  }),
   '/user/v1/cohort/search': createRouteObject({
     post: {},
   }),
@@ -1389,6 +1392,16 @@ export const apiList = {
   }),
   '/user/v1/fields/download-file/:id': createRouteObject({
     get: {},
+  }),
+  '/user/v1/payments/initiate': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/payments/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
   }),
   //event-service
   //event
@@ -2080,6 +2093,7 @@ export const publicAPI = [
   '/user/v1/fields/download-file/:id',
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
   '/user/v1/cohortmember/cron/send-rejection-emails',
+  '/user/v1/payments/webhook/stripe',
   '/aspirespecific/certificate/url',
 ];
 
