@@ -91,7 +91,6 @@ const privilegeGroup = {
   opportunity: createPrivilegeGroup('opportunity'),
   lms: createPrivilegeGroup('lms'),
 };
-
 const common_public_get = { get: {} };
 const common_role_check = {
   ROLE_CHECK: rolesGroup.superadmin,
@@ -1220,7 +1219,7 @@ export const apiList = {
   }),
   //Update Interest
   '/user/v1/interest/update/:id': createRouteObject({
-    put: {
+    patch: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
 
     },
