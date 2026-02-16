@@ -1232,8 +1232,8 @@ export const apiList = {
     },
   }),
   //List Interest
-  '/user/v1/interest/list/:pathwayId': createRouteObject({
-    get: {
+  '/user/v1/interest/list': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1275,6 +1275,11 @@ export const apiList = {
   }),
   '/user/v1/pathway/update/:id': createRouteObject({
     patch: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+   '/user/v1/pathway/order/structure': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
