@@ -1252,12 +1252,6 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  //Switch Pathway
-  '/user/v1/pathway/switch': createRouteObject({
-    post: {
-     ROLE_CHECK: rolesGroup.common,
-    },
-  }),
   //get interset of the users by  PathuserPathwayHistoryIdwayhistory id 
   '/user/v1/pathway/interests/:userPathwayHistoryId': createRouteObject({
     get: {
