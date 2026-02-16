@@ -1213,6 +1213,100 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  //Create Interest
+  '/user/v1/interest/create': createRouteObject({
+    post: {
+       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
+    },
+  }),
+  //Update Interest
+  '/user/v1/interest/update/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
+    },
+  }),
+  //Delete Interest
+  '/user/v1/interest/delete/:id': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+
+    },
+  }),
+  //List Interest
+  '/user/v1/interest/list/:pathwayId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/interest/pathway/saveuserinterests': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/assign': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/active/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  //get interset of the users by  PathuserPathwayHistoryIdwayhistory id 
+  '/user/v1/pathway/interests/:userPathwayHistoryId': createRouteObject({
+    get: {
+     ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/update/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  // Tag endpoints
+  '/user/v1/tag/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/tag/update/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/tag/delete/:id': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/tag/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/tag/fetch/:id': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
