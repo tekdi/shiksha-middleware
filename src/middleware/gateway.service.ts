@@ -36,17 +36,14 @@ export class GatewayService {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
 
-    // For webhook endpoints with raw body (Buffer), send it as-is to preserve exact formatting
+    // For webhook endpoints with raw body (Buffer), axios will send it as-is to preserve exact formatting
     // This is critical for signature verification (e.g., Stripe webhooks)
-    const requestData = isWebhookEndpoint && Buffer.isBuffer(body) 
-      ? body 
-      : body;
-
+    // For other endpoints, axios will automatically JSON.stringify objects
     try {
       const response = await axios({
         method,
         url,
-        data: requestData,
+        data: body,
         headers: newheaders,
       });
       res.status(response.status);
