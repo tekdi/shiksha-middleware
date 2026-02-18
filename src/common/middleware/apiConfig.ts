@@ -1507,12 +1507,12 @@ export const apiList = {
   '/user/v1/fields/download-file/:id': createRouteObject({
     get: {},
   }),
-  '/user/v1/payments/session/initiate': createRouteObject({
+  '/user/v1/payments/initiate': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/user/v1/payments/session/:id/status': createRouteObject({
+  '/user/v1/payments/:id/status': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
     },
