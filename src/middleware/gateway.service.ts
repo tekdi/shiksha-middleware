@@ -18,7 +18,6 @@ export class GatewayService {
     oheaders: any,
     changeResponse: boolean,
     res: Response,
-    isWebhookEndpoint: boolean = false,
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
@@ -36,9 +35,6 @@ export class GatewayService {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
 
-    // For webhook endpoints with raw body (Buffer), axios will send it as-is to preserve exact formatting
-    // This is critical for signature verification (e.g., Stripe webhooks)
-    // For other endpoints, axios will automatically JSON.stringify objects
     try {
       const response = await axios({
         method,

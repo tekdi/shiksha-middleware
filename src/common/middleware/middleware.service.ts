@@ -238,7 +238,6 @@ export class MiddlewareServices {
       req.headers,
       apiList[reqUrl].changeResponse,
       res,
-      isWebhookEndpoint, // Pass flag to indicate webhook endpoint
     );
   }
 
