@@ -14,10 +14,11 @@ export class GatewayService {
   async handleRequest(
     method: string,
     url: string,
-    body: Object,
+    body: Object | Buffer,
     oheaders: any,
     changeResponse: boolean,
     res: Response,
+    isWebhookEndpoint: boolean = false,
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
@@ -35,11 +36,17 @@ export class GatewayService {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
 
+    // For webhook endpoints with raw body (Buffer), send it as-is to preserve exact formatting
+    // This is critical for signature verification (e.g., Stripe webhooks)
+    const requestData = isWebhookEndpoint && Buffer.isBuffer(body) 
+      ? body 
+      : body;
+
     try {
       const response = await axios({
         method,
         url,
-        data: body,
+        data: requestData,
         headers: newheaders,
       });
       res.status(response.status);
