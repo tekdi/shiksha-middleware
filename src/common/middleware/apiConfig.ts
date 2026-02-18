@@ -1286,6 +1286,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/pathway/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // Tag endpoints
   '/user/v1/tag/create': createRouteObject({
     post: {
