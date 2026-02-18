@@ -2223,6 +2223,12 @@ export const apiListForAcademicYear = [
   '/user/v1/cohort/mycohorts/:identifier',
 ];
 
+// Webhook endpoints that require raw body preservation for signature verification
+// These endpoints need the exact request body (including formatting) to be preserved
+export const webhookEndpoints = [
+  '/user/v1/payments/webhook/stripe',
+];
+
 function convertToRegex(pattern) {
   const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');
   return new RegExp(`^${regexString}$`);

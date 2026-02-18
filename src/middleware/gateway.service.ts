@@ -14,7 +14,7 @@ export class GatewayService {
   async handleRequest(
     method: string,
     url: string,
-    body: Object,
+    body: Object | Buffer,
     oheaders: any,
     changeResponse: boolean,
     res: Response,
