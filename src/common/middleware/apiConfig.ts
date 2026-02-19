@@ -1247,8 +1247,8 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  '/user/v1/pathway/active/:userId': createRouteObject({
-    get: {
+  '/user/v1/pathway/active': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
