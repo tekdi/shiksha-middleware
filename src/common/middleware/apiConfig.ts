@@ -138,7 +138,7 @@ export const apiList = {
   '/lms-service/v1/course/aggregate-content': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-    }
+    },
   }),
   '/lms-service/v1/courses/:courseId': createRouteObject({
     get: {
