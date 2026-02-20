@@ -14,7 +14,7 @@ export class GatewayService {
   async handleRequest(
     method: string,
     url: string,
-    body: Object,
+    body: Object | Buffer,
     oheaders: any,
     changeResponse: boolean,
     res: Response,
@@ -30,6 +30,9 @@ export class GatewayService {
     }
     if (oheaders['organisationid']) {
       newheaders['organisationid'] = oheaders['organisationid'];
+    }
+    if (oheaders['stripe-signature']) {
+      newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
 
     try {
@@ -99,6 +102,8 @@ export class GatewayService {
         headers.academicyearid = oheaders.academicyearid;
       if (oheaders?.organisationid)
         headers.organisationid = oheaders.organisationid;
+      if (oheaders['stripe-signature'])
+        headers['stripe-signature'] = oheaders['stripe-signature'];
       response = await axios({
         method: method.toLowerCase(),
         url,
@@ -152,6 +157,9 @@ export class GatewayService {
     }
     if (oheaders['organisationid']) {
       newheaders['organisationid'] = oheaders['organisationid'];
+    }
+    if (oheaders['stripe-signature']) {
+      newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
 
     try {
@@ -294,6 +302,8 @@ export class GatewayService {
         headers.organisationid = oheaders.organisationid;
       if (oheaders['x-channel-id'])
         headers['x-channel-id'] = oheaders['x-channel-id'];
+      if (oheaders['stripe-signature'])
+        headers['stripe-signature'] = oheaders['stripe-signature'];
 
       response = await axios({
         method: method.toLowerCase(),

@@ -11,6 +11,7 @@ import {
   urlPatterns,
   publicAPI,
   apiListForAcademicYear,
+  webhookEndpoints,
 } from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -221,11 +222,19 @@ export class MiddlewareServices {
       );
     }
 
+    // Check if this is a webhook endpoint that needs raw body preservation
+    const isWebhookEndpoint = webhookEndpoints.includes(reqUrl);
+    
+    // For webhook endpoints, use raw body if available to preserve exact formatting
+    const bodyToForward = isWebhookEndpoint && (req as any).rawBody 
+      ? (req as any).rawBody 
+      : req.body;
+
     // Handle regular JSON requests
     return await this.gatewayService.handleRequest(
       req.method,
       fullUrl,
-      req.body,
+      bodyToForward,
       req.headers,
       apiList[reqUrl].changeResponse,
       res,

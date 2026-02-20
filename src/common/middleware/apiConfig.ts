@@ -1041,6 +1041,9 @@ export const apiList = {
   '/user/v1/auth/logout': createRouteObject({
     post: {},
   }),
+  '/user/v1/payments/webhook/stripe': createRouteObject({
+    post: {},
+  }),
   '/user/v1/cohort/search': createRouteObject({
     post: {},
   }),
@@ -1283,6 +1286,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/pathway/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // Tag endpoints
   '/user/v1/tag/create': createRouteObject({
     post: {
@@ -1488,6 +1506,16 @@ export const apiList = {
   }),
   '/user/v1/fields/download-file/:id': createRouteObject({
     get: {},
+  }),
+  '/user/v1/payments/initiate': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/payments/:id/status': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
   }),
   //event-service
   //event
@@ -2179,6 +2207,7 @@ export const publicAPI = [
   '/user/v1/fields/download-file/:id',
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
   '/user/v1/cohortmember/cron/send-rejection-emails',
+  '/user/v1/payments/webhook/stripe',
   '/aspirespecific/certificate/url',
 ];
 
@@ -2192,6 +2221,12 @@ export const apiListForAcademicYear = [
   '/user/v1/cohort/create',
   '/user/v1/cohort/search',
   '/user/v1/cohort/mycohorts/:identifier',
+];
+
+// Webhook endpoints that require raw body preservation for signature verification
+// These endpoints need the exact request body (including formatting) to be preserved
+export const webhookEndpoints = [
+  '/user/v1/payments/webhook/stripe',
 ];
 
 function convertToRegex(pattern) {
