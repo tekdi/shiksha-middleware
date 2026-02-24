@@ -1,5 +1,6 @@
 'use strict';
 
+import { Delete } from '@nestjs/common';
 import path from 'path';
 
 /**
@@ -1571,6 +1572,11 @@ export const apiList = {
   }),
     '/event-service/storage/presigned-url': createRouteObject({
     post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+    '/event-service/storage/files': createRouteObject({
+    delete: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
