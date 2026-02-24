@@ -136,7 +136,7 @@ export const apiList = {
     },
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({
-    get: {
+    post: {
       ROLE_CHECK: rolesGroup.common
     },
   }),
@@ -1327,6 +1327,23 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  //Content
+  '/user/v1/content/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/content/update/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+   '/user/v1/content/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+
   //AssignTenant
   '/user/v1/assign-tenant': createRouteObject({
     post: {
