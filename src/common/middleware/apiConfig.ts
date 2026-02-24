@@ -1519,6 +1519,16 @@ export const apiList = {
   }),
   //event-service
   //event
+    '/event-service/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+    '/event-service/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/event-service/attendance/v1/mark-attendance-by-userId': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
