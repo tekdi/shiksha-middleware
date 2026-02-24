@@ -1216,22 +1216,19 @@ export const apiList = {
   //Create Interest
   '/user/v1/interest/create': createRouteObject({
     post: {
-       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //Update Interest
   '/user/v1/interest/update/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-
     },
   }),
   //Delete Interest
   '/user/v1/interest/delete/:id': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-
     },
   }),
   //List Interest
@@ -1255,10 +1252,10 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  //get interset of the users by  PathuserPathwayHistoryIdwayhistory id 
+  //get interset of the users by  PathuserPathwayHistoryIdwayhistory id
   '/user/v1/pathway/interests/:userPathwayHistoryId': createRouteObject({
     get: {
-     ROLE_CHECK: rolesGroup.common,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/pathway/create': createRouteObject({
@@ -1281,7 +1278,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-   '/user/v1/pathway/order/structure': createRouteObject({
+  '/user/v1/pathway/order/structure': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
@@ -1534,6 +1531,37 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/coupons': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/coupons/validate': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/coupons/:id/sync-stripe': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/coupons/code/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/payments/report/:id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/coupons/:id': createRouteObject({
+    put: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+
   //event-service
   //event
   '/event-service/attendance/v1/mark-attendance-by-userId': createRouteObject({
@@ -2242,9 +2270,7 @@ export const apiListForAcademicYear = [
 
 // Webhook endpoints that require raw body preservation for signature verification
 // These endpoints need the exact request body (including formatting) to be preserved
-export const webhookEndpoints = [
-  '/user/v1/payments/webhook/stripe',
-];
+export const webhookEndpoints = ['/user/v1/payments/webhook/stripe'];
 
 function convertToRegex(pattern) {
   const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');
