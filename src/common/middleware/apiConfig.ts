@@ -1,5 +1,6 @@
 'use strict';
 
+import { Delete } from '@nestjs/common';
 import path from 'path';
 
 /**
@@ -1531,6 +1532,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/coupons/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/coupons': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
@@ -1557,13 +1563,33 @@ export const apiList = {
     },
   }),
   '/user/v1/coupons/:id': createRouteObject({
-    put: {
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/coupons/archive/:id': createRouteObject({
+    delete: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
 
   //event-service
   //event
+    '/event-service/config': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+    '/event-service/storage/presigned-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+    '/event-service/storage/files': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/event-service/attendance/v1/mark-attendance-by-userId': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
