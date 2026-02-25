@@ -1325,6 +1325,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/cache/clear': createRouteObject({
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  
   //Content
   '/user/v1/content/create': createRouteObject({
     post: {
