@@ -1549,7 +1549,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-  '/user/v1/coupons/delete/:id': createRouteObject({
+  '/user/v1/coupons/archive/:id': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
