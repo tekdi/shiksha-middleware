@@ -1337,7 +1337,7 @@ export const apiList = {
   }),
    '/user/v1/content/list': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      ROLE_CHECK: rolesGroup.common,
     },
   }),
 
