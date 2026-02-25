@@ -1514,6 +1514,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/user/v1/coupons/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/coupons': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
@@ -1540,7 +1545,12 @@ export const apiList = {
     },
   }),
   '/user/v1/coupons/:id': createRouteObject({
-    put: {
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/user/v1/coupons/delete/:id': createRouteObject({
+    delete: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
