@@ -1336,7 +1336,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-   '/user/v1/content/list': createRouteObject({
+  '/user/v1/content/list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
@@ -1572,20 +1572,25 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/user/v1/country/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
 
   //event-service
   //event
-    '/event-service/config': createRouteObject({
+  '/event-service/config': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-    '/event-service/storage/presigned-url': createRouteObject({
+  '/event-service/storage/presigned-url': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-    '/event-service/storage/files': createRouteObject({
+  '/event-service/storage/files': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
