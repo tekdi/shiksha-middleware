@@ -1577,7 +1577,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-
+  '/user/v1/payments/transactions/:id/status/override': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   //event-service
   //event
   '/event-service/config': createRouteObject({
