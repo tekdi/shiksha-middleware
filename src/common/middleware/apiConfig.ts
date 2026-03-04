@@ -1578,7 +1578,7 @@ export const apiList = {
     },
   }),
   '/user/v1/payments/transactions/:id/status/override': createRouteObject({
-    post: {
+    patch: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
