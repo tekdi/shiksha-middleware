@@ -1582,6 +1582,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/user/v1/payments/by-session': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   //event-service
   //event
   '/event-service/config': createRouteObject({
