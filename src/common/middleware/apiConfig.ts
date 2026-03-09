@@ -553,12 +553,19 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  
   // Tests Module
   '/assessment/v1/tests': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
     get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  // Static route must be before the dynamic route /tests/:id
+  '/assessment/v1/tests/listsearch': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -618,6 +625,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  
   '/assessment/v1/questions/:id/child-questions': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
