@@ -553,7 +553,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  
+
   // Tests Module
   '/assessment/v1/tests': createRouteObject({
     post: {
@@ -830,7 +830,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-
+ '/aspirespecific/export/pathway': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
@@ -1264,6 +1268,11 @@ export const apiList = {
   //get interset of the users by  PathuserPathwayHistoryIdwayhistory id
   '/user/v1/pathway/interests/:userPathwayHistoryId': createRouteObject({
     get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/list-pathway-users': createRouteObject({
+    post: {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
