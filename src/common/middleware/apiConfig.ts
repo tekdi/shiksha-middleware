@@ -673,6 +673,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/user/v1/certificate/generate': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/certificate/template': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
