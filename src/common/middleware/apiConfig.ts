@@ -630,7 +630,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-  
+
   '/assessment/v1/questions/:id/child-questions': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
@@ -729,6 +729,16 @@ export const apiList = {
   '/aspirespecific/certificate/issue': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/certificate/regenerate': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+  '/aspirespecific/certificate/user/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/aspirespecific/certificate/render-PDF': createRouteObject({
@@ -840,7 +850,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
- '/aspirespecific/export/pathway': createRouteObject({
+  '/aspirespecific/export/pathway': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1357,7 +1367,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  
+
   //Content
   '/user/v1/content/create': createRouteObject({
     post: {
