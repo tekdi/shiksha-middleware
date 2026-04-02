@@ -564,7 +564,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-
+'/assessment/v1/file/delete': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // Tests Module
   '/assessment/v1/tests': createRouteObject({
     post: {
