@@ -1695,7 +1695,7 @@ export const apiList = {
     },
   }),
   '/event-service/attendance/v1/jobs': createRouteObject({
-    get: {
+    post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
