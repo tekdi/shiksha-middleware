@@ -31,6 +31,11 @@ const upload = multer({
   },
 });
 
+/** Paths that return binary (arraybuffer + res.end in gateway, not res.json). */
+const ENDPOINT_FILE_TYPE_DEFAULTS: Record<string, string> = {
+  '/aspirespecific/certificate/render-PDF': 'pdf',
+};
+
 @Injectable()
 export class MiddlewareServices {
   constructor(
@@ -320,6 +325,10 @@ export class MiddlewareServices {
 
   // Detect file type based on endpoint configuration
   private detectFileType(reqUrl: string): string | null {
+    const fromDefaults = ENDPOINT_FILE_TYPE_DEFAULTS[reqUrl];
+    if (fromDefaults) {
+      return fromDefaults;
+    }
     const endpointConfig =
       this.configService.get<string>('FILE_TYPE_ENDPOINTS') || '';
     const endpointMap = this.parseEndpointConfig(endpointConfig);

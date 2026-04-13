@@ -243,13 +243,21 @@ export class GatewayService {
     const configs = this.configService.get<string>('FILE_TYPE_CONFIG') || '';
     const configMap = this.parseFileTypeConfig(configs);
 
-    return (
-      configMap[fileType] || {
-        contentType: 'application/octet-stream',
+    if (configMap[fileType]) {
+      return configMap[fileType];
+    }
+    if (fileType === 'pdf') {
+      return {
+        contentType: 'application/pdf',
         disposition: 'attachment',
-        filename: `${fileType}.bin`,
-      }
-    );
+        filename: 'generated.pdf',
+      };
+    }
+    return {
+      contentType: 'application/octet-stream',
+      disposition: 'attachment',
+      filename: `${fileType}.bin`,
+    };
   }
 
   private parseFileTypeConfig(configString: string) {
