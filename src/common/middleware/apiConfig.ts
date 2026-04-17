@@ -1106,6 +1106,9 @@ export const apiList = {
   '/user/v1/cohortmember/cron/send-rejection-emails': createRouteObject({
     post: {},
   }),
+  '/user/v1/cohortmember/cron/send-shortlisting-emails': createRouteObject({
+    post: {},
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
@@ -2374,6 +2377,7 @@ export const publicAPI = [
   '/user/v1/fields/download-file/:id',
   '/user/v1/cohortmember/cron/evaluate-shortlisting-status',
   '/user/v1/cohortmember/cron/send-rejection-emails',
+  '/user/v1/cohortmember/cron/send-shortlisting-emails',
   '/user/v1/payments/webhook/stripe',
   '/aspirespecific/certificate/url',
 ];
