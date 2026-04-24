@@ -340,6 +340,12 @@ export const apiList = {
       PRIVILEGE_CHECK: privilegeGroup.lms.delete,
     },
   }),
+  '/lms-service/v1/enrollments/cohort': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+    },
+  }),
   '/lms-service/v1/enrollments/:enrollmentId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
