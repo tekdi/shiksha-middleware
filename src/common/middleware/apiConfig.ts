@@ -1620,7 +1620,7 @@ export const apiList = {
     },
   }),
   '/user/v1/payments/report/:id': createRouteObject({
-    get: {
+    post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
