@@ -6,10 +6,51 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GatewayService {
+  private static readonly FORWARDED_HEADERS_TO_PASSTHROUGH = [
+    'x-forwarded-proto',
+    'x-forwarded-host',
+    'x-forwarded-port',
+    'x-real-ip',
+    'forwarded',
+  ] as const;
+
   constructor(
     private readonly middlewareLogger: MiddlewareLogger,
     private readonly configService: ConfigService,
   ) {}
+
+  private extractClientIpFromXff(xForwardedFor: unknown): string | undefined {
+    if (!xForwardedFor) return undefined;
+    const raw =
+      typeof xForwardedFor === 'string'
+        ? xForwardedFor
+        : Array.isArray(xForwardedFor)
+          ? xForwardedFor.join(',')
+          : undefined;
+    if (!raw) return undefined;
+
+    // Defensive against spoofing: only forward a single derived client IP downstream.
+    // Many proxies (including ALB) append, so the right-most value is the most recently added.
+    const ips = raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (ips.length === 0) return undefined;
+    return ips[ips.length - 1];
+  }
+
+  private forwardProxyHeaders(oheaders: any, targetHeaders: Record<string, any>) {
+    // Preserve original proxy context so downstream services can derive request.ip safely.
+    // Node normalizes incoming header names to lowercase, so we read lowercase variants.
+    for (const header of GatewayService.FORWARDED_HEADERS_TO_PASSTHROUGH) {
+      const value = oheaders?.[header];
+      if (value) targetHeaders[header] = value;
+    }
+
+    // Always sanitize XFF before forwarding to downstream services to prevent spoofing.
+    const clientIp = this.extractClientIpFromXff(oheaders?.['x-forwarded-for']);
+    if (clientIp) targetHeaders['x-forwarded-for'] = clientIp;
+  }
 
   async handleRequest(
     method: string,
@@ -34,6 +75,7 @@ export class GatewayService {
     if (oheaders['stripe-signature']) {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
+    this.forwardProxyHeaders(oheaders, newheaders);
 
     try {
       const response = await axios({
@@ -104,6 +146,7 @@ export class GatewayService {
         headers.organisationid = oheaders.organisationid;
       if (oheaders['stripe-signature'])
         headers['stripe-signature'] = oheaders['stripe-signature'];
+      this.forwardProxyHeaders(oheaders, headers);
       response = await axios({
         method: method.toLowerCase(),
         url,
@@ -161,6 +204,7 @@ export class GatewayService {
     if (oheaders['stripe-signature']) {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
+    this.forwardProxyHeaders(oheaders, newheaders);
 
     try {
       const response = await axios({
@@ -312,6 +356,7 @@ export class GatewayService {
         headers['x-channel-id'] = oheaders['x-channel-id'];
       if (oheaders['stripe-signature'])
         headers['stripe-signature'] = oheaders['stripe-signature'];
+      this.forwardProxyHeaders(oheaders, headers);
 
       response = await axios({
         method: method.toLowerCase(),
