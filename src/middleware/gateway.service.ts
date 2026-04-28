@@ -11,6 +11,23 @@ export class GatewayService {
     private readonly configService: ConfigService,
   ) {}
 
+  private forwardProxyHeaders(oheaders: any, targetHeaders: Record<string, any>) {
+    // Preserve original client/proxy chain so downstream services can derive request.ip safely.
+    // Node normalizes incoming header names to lowercase, so we read lowercase variants.
+    const passThrough = [
+      'x-forwarded-for',
+      'x-forwarded-proto',
+      'x-forwarded-host',
+      'x-forwarded-port',
+      'x-real-ip',
+      'forwarded',
+    ];
+    for (const header of passThrough) {
+      const value = oheaders?.[header];
+      if (value) targetHeaders[header] = value;
+    }
+  }
+
   async handleRequest(
     method: string,
     url: string,
@@ -34,6 +51,7 @@ export class GatewayService {
     if (oheaders['stripe-signature']) {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
+    this.forwardProxyHeaders(oheaders, newheaders);
 
     try {
       const response = await axios({
@@ -104,6 +122,7 @@ export class GatewayService {
         headers.organisationid = oheaders.organisationid;
       if (oheaders['stripe-signature'])
         headers['stripe-signature'] = oheaders['stripe-signature'];
+      this.forwardProxyHeaders(oheaders, headers);
       response = await axios({
         method: method.toLowerCase(),
         url,
@@ -161,6 +180,7 @@ export class GatewayService {
     if (oheaders['stripe-signature']) {
       newheaders['stripe-signature'] = oheaders['stripe-signature'];
     }
+    this.forwardProxyHeaders(oheaders, newheaders);
 
     try {
       const response = await axios({
@@ -312,6 +332,7 @@ export class GatewayService {
         headers['x-channel-id'] = oheaders['x-channel-id'];
       if (oheaders['stripe-signature'])
         headers['stripe-signature'] = oheaders['stripe-signature'];
+      this.forwardProxyHeaders(oheaders, headers);
 
       response = await axios({
         method: method.toLowerCase(),
