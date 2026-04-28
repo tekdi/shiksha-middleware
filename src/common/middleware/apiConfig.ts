@@ -1807,6 +1807,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/notifications/in-app/admin/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   //notification-queue
   '/queue': createRouteObject({
     post: {
