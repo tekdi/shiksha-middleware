@@ -6,6 +6,15 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GatewayService {
+  private static readonly FORWARDED_HEADERS_TO_PASSTHROUGH = [
+    'x-forwarded-for',
+    'x-forwarded-proto',
+    'x-forwarded-host',
+    'x-forwarded-port',
+    'x-real-ip',
+    'forwarded',
+  ] as const;
+
   constructor(
     private readonly middlewareLogger: MiddlewareLogger,
     private readonly configService: ConfigService,
@@ -14,15 +23,7 @@ export class GatewayService {
   private forwardProxyHeaders(oheaders: any, targetHeaders: Record<string, any>) {
     // Preserve original client/proxy chain so downstream services can derive request.ip safely.
     // Node normalizes incoming header names to lowercase, so we read lowercase variants.
-    const passThrough = [
-      'x-forwarded-for',
-      'x-forwarded-proto',
-      'x-forwarded-host',
-      'x-forwarded-port',
-      'x-real-ip',
-      'forwarded',
-    ];
-    for (const header of passThrough) {
+    for (const header of GatewayService.FORWARDED_HEADERS_TO_PASSTHROUGH) {
       const value = oheaders?.[header];
       if (value) targetHeaders[header] = value;
     }
