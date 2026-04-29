@@ -534,7 +534,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-  
+
   '/assessment/v1/attempts/import/resultstatus': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
@@ -570,7 +570,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
-'/assessment/v1/file/delete': createRouteObject({
+  '/assessment/v1/file/download-url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/file/delete': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
     },
@@ -1698,7 +1703,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
- '/event-service/attendance/v1/status/:jobId': createRouteObject({
+  '/event-service/attendance/v1/status/:jobId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
