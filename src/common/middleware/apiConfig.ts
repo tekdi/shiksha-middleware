@@ -1399,9 +1399,7 @@ export const apiList = {
     },
   }),
   '/user/v1/content/list': createRouteObject({
-    post: {
-      ROLE_CHECK: rolesGroup.common,
-    },
+     post: {},
   }),
 
   //AssignTenant
@@ -2391,6 +2389,7 @@ export const publicAPI = [
   '/user/v1/cohortmember/cron/send-shortlisting-emails',
   '/user/v1/payments/webhook/stripe',
   '/aspirespecific/certificate/url',
+  '/user/v1/content/list',
 ];
 
 // api which required academic year
