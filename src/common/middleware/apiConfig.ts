@@ -1674,6 +1674,16 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  '/event-service/attendance/v1/bulk-import': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
+   '/event-service/attendance/v1/bulk-import/status': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/event-service/event/v1/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
