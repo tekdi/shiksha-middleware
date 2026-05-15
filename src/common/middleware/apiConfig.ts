@@ -700,7 +700,48 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-
+  //referral API
+  '/user/v1/referrals': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/referrals/list': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/referrals/resolve': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/referrals/import': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/referrals/bulk': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/referrals/:id': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  // Referral bulk CSV import (aspire-specific-service)
+  '/aspirespecific/import-users/referrals/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/import-users/referrals/status/:jobId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Certificate Genration API
   '/aspirespecific/certificate/cron/trigger': createRouteObject({
     post: {
