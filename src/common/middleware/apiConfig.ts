@@ -726,6 +726,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/user/v1/referrals/report': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/user/v1/referrals/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -907,12 +912,22 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/aspirespecific/export/jobs/:export_job_id': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/export/event': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/export/pathway': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/referrals': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
