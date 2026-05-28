@@ -398,6 +398,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/lms-service/v1/tracking/recalculate-progress/jobs': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/lms-service/v1/tracking/userjourney': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
