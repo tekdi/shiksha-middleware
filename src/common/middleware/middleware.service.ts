@@ -24,10 +24,10 @@ import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
-// Set up Multer with file size limit (e.g., 2 MB)
+// Set up Multer with file size limit (e.g., 2 GB)
 const upload = multer({
   limits: {
-    fileSize: 200 * 1024 * 1024, // 200 MB limit
+    fileSize: 2 * 1024 * 1024 * 1024, // 2GB limit
   },
 });
 
