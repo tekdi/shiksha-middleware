@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import * as https from 'node:https';
+import * as http from 'node:http';
 import {
   Injectable,
   HttpException,
@@ -32,7 +34,7 @@ const upload = multer({
 
 // Endpoints where the middleware pipes raw bytes directly to the service.
 // The service owns parsing, disk storage, and size validation — no buffering here.
-const RAW_PIPE_ENDPOINTS = ['/assessment/v1/file/upload'];
+const RAW_PIPE_ENDPOINTS = new Set(['/assessment/v1/file/upload']);
 
 /** Paths that return binary (arraybuffer + res.end in gateway, not res.json). */
 const ENDPOINT_FILE_TYPE_DEFAULTS: Record<string, string> = {
@@ -184,7 +186,7 @@ export class MiddlewareServices {
 
     // For endpoints in RAW_PIPE_ENDPOINTS: pipe raw bytes directly to the service.
     // No multer parsing in middleware — zero memory buffering, service owns everything.
-    if (req.is('multipart/form-data') && RAW_PIPE_ENDPOINTS.includes(reqUrl)) {
+    if (req.is('multipart/form-data') && RAW_PIPE_ENDPOINTS.has(reqUrl)) {
       return await this.streamRawToService(req, fullUrl);
     }
 
@@ -296,7 +298,7 @@ export class MiddlewareServices {
     return new Promise((resolve, reject) => {
       const targetUrl = new URL(fullUrl);
       const isHttps = targetUrl.protocol === 'https:';
-      const transport = isHttps ? require('https') : require('http');
+      const transport = isHttps ? https : http;
 
       const headers = { ...req.headers };
       headers['host'] = targetUrl.host;
