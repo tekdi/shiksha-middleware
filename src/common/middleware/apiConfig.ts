@@ -570,6 +570,21 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/assessment/v1/assessment/:attemptId/ai-feedback-status': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/assessment/:attemptId/ai-feedback': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/assessment/:attemptId/ai-feedback/retry': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   '/assessment/v1/file/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
@@ -1165,6 +1180,9 @@ export const apiList = {
     post: {},
   }),
   '/user/v1/payments/webhook/stripe': createRouteObject({
+    post: {},
+  }),
+  '/assessment/v1/ai-feedback/devrev/webhook': createRouteObject({
     post: {},
   }),
   '/user/v1/cohort/search': createRouteObject({
@@ -2472,6 +2490,7 @@ export const publicAPI = [
   '/user/v1/cohortmember/cron/send-rejection-emails',
   '/user/v1/cohortmember/cron/send-shortlisting-emails',
   '/user/v1/payments/webhook/stripe',
+  '/assessment/v1/ai-feedback/devrev/webhook',
   '/aspirespecific/certificate/url',
   '/user/v1/content/list',
 ];
@@ -2490,7 +2509,10 @@ export const apiListForAcademicYear = [
 
 // Webhook endpoints that require raw body preservation for signature verification
 // These endpoints need the exact request body (including formatting) to be preserved
-export const webhookEndpoints = ['/user/v1/payments/webhook/stripe'];
+export const webhookEndpoints = [
+  '/user/v1/payments/webhook/stripe',
+  '/assessment/v1/ai-feedback/devrev/webhook',
+];
 
 function convertToRegex(pattern) {
   const regexString = pattern.replace(/:[^\s/]+/g, '([\\w-]+)');
