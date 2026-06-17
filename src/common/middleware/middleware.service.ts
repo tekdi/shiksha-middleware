@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import * as https from 'node:https';
+import * as http from 'node:http';
 import {
   Injectable,
   HttpException,
@@ -24,12 +26,15 @@ import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
-// Set up Multer with file size limit (e.g., 2 MB)
 const upload = multer({
   limits: {
-    fileSize: 200 * 1024 * 1024, // 200 MB limit
+    fileSize: 200 * 1024 * 1024, // 200 MB for general multipart
   },
 });
+
+// Endpoints where the middleware pipes raw bytes directly to the service.
+// The service owns parsing, disk storage, and size validation — no buffering here.
+const RAW_PIPE_ENDPOINTS = new Set(['/assessment/v1/file/upload']);
 
 /** Paths that return binary (arraybuffer + res.end in gateway, not res.json). */
 const ENDPOINT_FILE_TYPE_DEFAULTS: Record<string, string> = {
@@ -179,6 +184,12 @@ export class MiddlewareServices {
       );
     }
 
+    // For endpoints in RAW_PIPE_ENDPOINTS: pipe raw bytes directly to the service.
+    // No multer parsing in middleware — zero memory buffering, service owns everything.
+    if (req.is('multipart/form-data') && RAW_PIPE_ENDPOINTS.has(reqUrl)) {
+      return await this.streamRawToService(req, fullUrl);
+    }
+
     // Handle multipart/form-data first (file uploads)
     if (req.is('multipart/form-data')) {
       this.middlewareLogger.log(
@@ -279,6 +290,46 @@ export class MiddlewareServices {
       return redirectUrlParts.join('/');
     }
     return redirectUrl;
+  }
+
+  // Pipe raw multipart bytes directly to the target service using Node's built-in http/https.
+  // req is a Readable stream — bytes flow client → middleware → service with zero RAM buffering.
+  streamRawToService(req: Request, fullUrl: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const targetUrl = new URL(fullUrl);
+      const isHttps = targetUrl.protocol === 'https:';
+      const transport = isHttps ? https : http;
+
+      const headers = { ...req.headers };
+      headers['host'] = targetUrl.host;
+      delete headers['connection'];
+
+      const proxyReq = transport.request(
+        {
+          hostname: targetUrl.hostname,
+          port: targetUrl.port || (isHttps ? 443 : 80),
+          path: targetUrl.pathname + targetUrl.search,
+          method: req.method,
+          headers,
+        },
+        (proxyRes: any) => {
+          const chunks: Uint8Array[] = [];
+          proxyRes.on('data', (chunk: Uint8Array) => chunks.push(chunk));
+          proxyRes.on('end', () => {
+            const body = Buffer.concat(chunks).toString('utf8');
+            try {
+              resolve(JSON.parse(body));
+            } catch {
+              resolve(body);
+            }
+          });
+          proxyRes.on('error', reject);
+        },
+      );
+
+      proxyReq.on('error', reject);
+      req.pipe(proxyReq);
+    });
   }
 
   // Handle multipart/form-data
