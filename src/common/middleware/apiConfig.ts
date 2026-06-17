@@ -731,6 +731,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/user/v1/referrals/report/summary': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/user/v1/referrals/report': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
