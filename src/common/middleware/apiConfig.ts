@@ -592,7 +592,7 @@ export const apiList = {
   }),
   '/assessment/v1/assessment/:attemptId/ai-feedback/:attemptAnsId/rating':
     createRouteObject({
-      post: {
+      put: {
         ROLE_CHECK: rolesGroup.common,
       },
     }),
