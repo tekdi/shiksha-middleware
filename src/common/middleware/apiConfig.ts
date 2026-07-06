@@ -585,6 +585,17 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  '/assessment/v1/attempts/:attemptId/feedback-viewed': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/assessment/v1/assessment/:attemptId/ai-feedback/:attemptAnsId/rating':
+    createRouteObject({
+      put: {
+        ROLE_CHECK: rolesGroup.common,
+      },
+    }),
   '/assessment/v1/file/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
@@ -1486,7 +1497,7 @@ export const apiList = {
     },
   }),
   '/user/v1/content/list': createRouteObject({
-     post: {},
+    post: {},
   }),
 
   //AssignTenant
@@ -1761,7 +1772,7 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
-   '/event-service/attendance/v1/bulk-import/status': createRouteObject({
+  '/event-service/attendance/v1/bulk-import/status': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
     },
