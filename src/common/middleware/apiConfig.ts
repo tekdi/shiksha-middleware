@@ -781,6 +781,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/aspirespecific/import-users/bulk-issue/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/import-users/referrals/status/:jobId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
