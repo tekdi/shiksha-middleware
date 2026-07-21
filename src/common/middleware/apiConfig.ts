@@ -1417,6 +1417,32 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
   }),
+  // Volunteer pathway endpoints
+  '/user/v1/pathway/volunteer/check-eligibility': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/volunteer/active/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/course-completed': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/history/:id/status': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/user/v1/pathway/:id/active-course': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   '/user/v1/pathway/:id': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
