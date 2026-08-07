@@ -64,7 +64,8 @@ const rolesGroup = {
   common: ['admin', 'regional_admin', 'student'],
   regional_admin: ['regional_admin'],
   student: ['student'],
-  superadmin: ['admin'],
+  // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
+  superadmin: ['admin', 'alp_program_admin'],
   superadmin_regional_admin: ['admin', 'regional_admin'],
   student_regional_admin: ['student', 'regional_admin'],
   superadmin_regional_admin_student: ['admin', 'regional_admin', 'student'],
