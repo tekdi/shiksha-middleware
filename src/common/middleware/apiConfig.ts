@@ -61,7 +61,7 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'regional_admin', 'student'],
+  common: ['admin', 'regional_admin', 'student', 'alp_program_admin'],
   regional_admin: ['regional_admin'],
   student: ['student'],
   // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
