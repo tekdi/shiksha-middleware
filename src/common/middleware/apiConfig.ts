@@ -1595,6 +1595,16 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/user/v1/rbac/privileges/registry/grouped': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/auth/rbac/token': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/user/v1/rbac/usersRoles': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -1612,6 +1622,19 @@ export const apiList = {
   }),
   '/user/v1/assignprivilege/:roleId': createRouteObject({
     get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/assignprivilege/:roleId/grouped': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/user/v1/assignprivilege/:roleId/:privilegeId': createRouteObject({
+    delete: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
