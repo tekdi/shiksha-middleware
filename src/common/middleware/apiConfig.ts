@@ -1274,6 +1274,14 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  // GDPR-style anonymization of one or more users (by email). Admin-only; the user
+  // service additionally re-checks the 'admin' role for the tenantid header.
+  '/user/v1/anonymize': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.users.read,
