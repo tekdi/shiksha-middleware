@@ -1,49 +1,54 @@
-name: MIDDLEWARE-TAG-BASED-IMAGE-BUILD
+name: MIDDLEWARE-BUILD
+
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
     inputs:
-      environment:
-        description: "Target environment (qa or prod)"
-        required: true
-        default: "qa"
       tag:
-        description: "Image tag to build"
+        description: "Docker image tag"
         required: true
+
 jobs:
   build:
-    name: Build and Push Docker Image to AWS ECR
+    name: Build and Push Middleware Image
     runs-on: ubuntu-latest
-    # Use qa for tag pushes, or the chosen input for workflow_dispatch
-    environment: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'qa' }}
-    env:
-      ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'qa' }}
-      TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
+    environment: prod
+
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Extract ECR Registry from Repository
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_MIDDLEWARE }}
+          IMAGE_TAG: ${{ github.event.inputs.tag }}
         run: |
-          FULL_REPO="${{ secrets.ECR_REPOSITORY_MIDDLEWARE }}"
-          REGISTRY="$(echo $FULL_REPO | cut -d'/' -f1)"
-          echo "ECR_REGISTRY=$REGISTRY" >> $GITHUB_ENV
-          echo "ECR_REPOSITORY=$FULL_REPO" >> $GITHUB_ENV
-      - name: Log in to Amazon ECR
+          docker build \
+            -t "$ECR_REPOSITORY:$IMAGE_TAG" \
+            .
+
+      - name: Push Docker image to ECR
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_MIDDLEWARE }}
+          IMAGE_TAG: ${{ github.event.inputs.tag }}
         run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
-            | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-      - name: Build, Tag, and Push Docker Image
+          docker push "$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Verify image
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_MIDDLEWARE }}
+          IMAGE_TAG: ${{ github.event.inputs.tag }}
         run: |
-          IMAGE_URI="${{ env.ECR_REPOSITORY }}:${{ env.TAG }}"
-          echo "Building image: $IMAGE_URI"
-          docker build -t $IMAGE_URI .
-          docker push $IMAGE_URI
-          docker rmi $IMAGE_URI
+          aws ecr describe-images \
+            --repository-name "$(echo "$ECR_REPOSITORY" | cut -d/ -f2)" \
+            --image-ids imageTag="$IMAGE_TAG" \
+            --region "${{ secrets.AWS_REGION }}"
