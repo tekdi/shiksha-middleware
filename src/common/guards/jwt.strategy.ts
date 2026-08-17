@@ -23,10 +23,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     private readonly middlewareLogger: MiddlewareLogger,
     @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {
+    const jwtSecret = configService.get('JWT_SECRET');
+    middlewareLogger.log(
+      `[JwtStrategy] JWT_SECRET loaded: isDefined=${!!jwtSecret}, length=${jwtSecret?.length ?? 0}, hasLiteralBackslashN=${jwtSecret?.includes('\\n') ?? false}, hasRealNewline=${jwtSecret?.includes('\n') ?? false}`,
+    );
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET'),
+      secretOrKey: jwtSecret,
       passReqToCallback: true,
     });
   }
