@@ -24,6 +24,8 @@ import { PermissionsService } from '../service/permissions.service';
 import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
+import { isRbacV2Enabled } from '../config/rbac.config';
+import { RBAC_CACHE_INVALIDATE_PATH } from '../rbac/rbac-cache.controller';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
 const upload = multer({
@@ -68,7 +70,9 @@ export class MiddlewareServices {
         // Basic check if user is a valid keyCloack user, if tenant ID present in the request
         const context = new ExecutionContextHost([req, res, next]);
         // Create an instance of the JwtAuthGuard
-        const guard = new JwtAuthGuard(this.reflector);
+        // (AuthGuard('jwt') takes no constructor args — the Reflector previously
+        // passed here was silently discarded.)
+        const guard = new JwtAuthGuard();
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
@@ -79,7 +83,7 @@ export class MiddlewareServices {
         }
       }
       // Skip whitelist check for local endpoints like /metrics
-      const localEndpoints = ['/metrics', '/api/swagger-docs', '/health', '/health/live', '/health/ready'];
+      const localEndpoints = ['/metrics', '/api/swagger-docs', '/health', '/health/live', '/health/ready', RBAC_CACHE_INVALIDATE_PATH];
       if (localEndpoints.includes(reqUrl)) {
         // Allow local endpoints to proceed without forwarding
         return next();
@@ -119,7 +123,9 @@ export class MiddlewareServices {
           },
         );
 
-        this.executeChecks(req, res, next, checksToExecute);
+        // Awaited so a downstream failure surfaces in this try/catch rather than
+        // escaping as an unhandled rejection with no response sent.
+        await this.executeChecks(req, res, next, checksToExecute);
       } else {
         //If API is not whitelisted
         this.middlewareLogger.log(
@@ -160,19 +166,28 @@ export class MiddlewareServices {
       : '';
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
-      const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
-      const decodedPayload = Buffer.from(payload, 'base64').toString('utf-8'); // Decode the base64 payload with proper Unicode support
-      const parsedPayload = JSON.parse(decodedPayload);
-      let userId = parsedPayload.sub;
+      let userId: string | undefined;
+      if (isRbacV2Enabled(this.configService)) {
+        // Trust only the `sub` that JwtStrategy set after verifying the signature.
+        // Public routes skip the guard entirely, so this is correctly undefined
+        // there and nothing is injected.
+        userId = (req as any).userId;
+      } else {
+        // Legacy: base64-decodes the token payload WITHOUT verifying it. Kept
+        // behind the flag for backward compatibility only — on publicAPI routes
+        // the guard never ran, so a forged token reaches the upstream service.
+        const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
+        const decodedPayload = Buffer.from(payload, 'base64').toString('utf-8'); // Decode the base64 payload with proper Unicode support
+        const parsedPayload = JSON.parse(decodedPayload);
+        userId = parsedPayload.sub;
+      }
       if (userId) {
-        console.log('in if ', userId);
-
         fullUrl =
           fullUrl +
           (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
-    console.log('fullUrl', fullUrl);
+    this.middlewareLogger.debug(`forwarding to: ${fullUrl}`);
 
     // Check if this is a file request
     const fileType = this.detectFileType(reqUrl);
@@ -573,10 +588,14 @@ export class MiddlewareServices {
      * @since - release-3.1.0
      */
     DATA_TENANT_CONTEXT: async (resolve, reject, req) => {
+      // Was a copy of DATA_CONTEXT and called checkUserCohortValidation, making it
+      // indistinguishable from that check. Now validates what its name says: that
+      // the requested context belongs to the requested tenant. No route currently
+      // declares this check, so correcting it cannot regress live traffic.
       const isValidUserContextRelation =
-        await this.dataValidationService.checkUserCohortValidation(
-          req.body.userId,
+        await this.dataValidationService.checkCohortTenantValidation(
           req.body.contextId,
+          req.headers['tenantid'],
         );
       if (isValidUserContextRelation) {
         return resolve(true);

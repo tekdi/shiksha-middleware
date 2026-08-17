@@ -2,6 +2,7 @@
 
 import { Delete } from '@nestjs/common';
 import path from 'path';
+import { privilegeGroup } from '../rbac/permission-registry';
 
 /**
  * @file - Sourcing Portal Backend API(s) list
@@ -76,28 +77,9 @@ const rolesGroup = {
   ],
   superadmin_student: ['admin', 'student', 'alp_program_admin'],
 };
-const createPrivilegeGroup = (entity: string) => {
-  return {
-    create: [`${entity}.create`],
-    read: [`${entity}.read`],
-    update: [`${entity}.update`],
-    delete: [`${entity}.delete`],
-    review: [`${entity}.review`],
-    approve: [`${entity}.approve`],
-    publish: [`${entity}.publish`],
-  };
-};
-const privilegeGroup = {
-  tracking: createPrivilegeGroup('tracking'),
-  content: createPrivilegeGroup('content'),
-  users: createPrivilegeGroup('users'),
-  cohort: createPrivilegeGroup('cohort'),
-  cohortmembers: createPrivilegeGroup('cohortmembers'),
-  attendance: createPrivilegeGroup('attendance'),
-  event: createPrivilegeGroup('event'),
-  opportunity: createPrivilegeGroup('opportunity'),
-  lms: createPrivilegeGroup('lms'),
-};
+// Permission codes now live in the canonical registry so `apiConfig.ts` and the
+// `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
+// and `npm run rbac:drift`. Shape is unchanged, so route entries below are untouched.
 const common_public_get = { get: {} };
 const common_role_check = {
   ROLE_CHECK: rolesGroup.superadmin,
@@ -2518,6 +2500,10 @@ export const urlPatterns = Object.keys(apiList);
 
 //add public api
 export const publicAPI = [
+  // Served by RbacCacheController in this service, not proxied. Authenticated by
+  // the INTERNAL_API_KEY shared secret rather than a user JWT, since the caller is
+  // the user service and has no user context.
+  '/internal/rbac/cache/invalidate',
   '/metrics', // Prometheus metrics endpoint - must be public for scraping
   '/health', // Health check endpoint - must be public for monitoring
   '/health/live', // Liveness probe - must be public for Kubernetes

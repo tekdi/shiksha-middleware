@@ -12,6 +12,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { MiddlewareLogger } from '../loggers/logger.service';
 import { UserPrivilegeRoleDto } from '../service/dto/user-privileges';
+import { isRbacV2Enabled } from '../config/rbac.config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -32,15 +33,55 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(request: any, payload: any) {
-    let userPrivileges;
-    const ttl = this.configService.get('TTL');
-    //try {
     const tenantId = request.headers['tenantid'];
     if (!tenantId?.trim()) {
       throw new BadRequestException('Tenant id not found');
     }
     request.userId = payload.sub;
-    const requiredPermissions = request.requiredPermissions;
+
+    if (isRbacV2Enabled(this.configService)) {
+      return await this.validateV2(payload, tenantId);
+    }
+    return await this.validateLegacy(payload, tenantId);
+  }
+
+  /**
+   * Uses the shared tenant-scoped loader, so this call warms exactly the cache
+   * entry that PRIVILEGE_CHECK / ROLE_CHECK will read later in the same request.
+   */
+  private async validateV2(payload: any, tenantId: string) {
+    const cachedData = await this.permissionService.getCachedPrivilegesAndRoles(
+      payload.sub,
+      tenantId,
+    );
+    if (cachedData instanceof UnauthorizedException) {
+      throw cachedData;
+    }
+
+    const userPrivileges: string[] =
+      (cachedData as UserPrivilegeRoleDto).privileges?.[tenantId] ?? [];
+
+    // Legacy wrote `if (!userPrivileges && userPrivileges.length == 0)` — the `&&`
+    // meant it never fired. Corrected here to a real emptiness test but kept
+    // non-fatal: most routes are still ROLE_CHECK-only, so a user holding roles
+    // and no privilege rows is legitimate today. Promote to a throw in the same
+    // change that flips PRIVILEGE_CHECK to enforcing.
+    if (userPrivileges.length === 0) {
+      this.middlewareLogger.warn(
+        `user ${payload.sub} has roles but no privileges in tenant ${tenantId}`,
+      );
+    }
+
+    this.middlewareLogger.log(
+      `user: ${payload.sub} username: ${payload.username} userPrivileges: ${userPrivileges}`,
+    );
+    return true;
+  }
+
+  /** Pre-v2 behaviour, preserved verbatim so the flag default changes nothing. */
+  private async validateLegacy(payload: any, tenantId: string) {
+    let userPrivileges;
+    const ttl = this.configService.get('TTL');
 
     const cachedData: UserPrivilegeRoleDto = await this.cacheService.get(
       payload.sub,
