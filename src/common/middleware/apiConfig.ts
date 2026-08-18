@@ -1862,9 +1862,7 @@ export const apiList = {
     },
   }),
   '/user/v1/auth/rbac/token': createRouteObject({
-    get: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-    },
+    get: {},
   }),
   '/user/v1/rbac/usersRoles': createRouteObject({
     post: {
@@ -2823,6 +2821,7 @@ export const publicAPI = [
   '/user/v1/tenant/delete/:identifier',
   '/user/v1/auth/login',
   '/user/v1/auth',
+  '/user/v1/auth/rbac/token',
   '/api/question/v2/list',
   '/action/question/v2/list',
   '/action/question/v2/private/read/:identifier',
