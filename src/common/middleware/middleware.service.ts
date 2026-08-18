@@ -101,27 +101,75 @@ export class MiddlewareServices {
           reqUrl + ': ' + apiList[reqUrl][req.method.toLowerCase()],
         );
         let checksToExecute = [];
-        // Iterate for checks defined for API and push to array
-        apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
-          (CHECK) => {
-            checksToExecute.push(
-              new Promise((res, rej) => {
-                if (
-                  apiList[reqUrl][req.method.toLowerCase()][CHECK] &&
-                  typeof this.urlChecks[CHECK] === 'function'
-                ) {
-                  this.urlChecks[CHECK](
-                    res,
-                    rej,
-                    req,
-                    apiList[reqUrl][req.method.toLowerCase()][CHECK],
-                    reqUrl,
+        const methodConfig = apiList[reqUrl][req.method.toLowerCase()];
+        const hasRoleCheck = !!methodConfig.ROLE_CHECK;
+        const hasPrivilegeCheck = !!methodConfig.PRIVILEGE_CHECK;
+
+        // Where a route declares BOTH checks, either one matching is enough -
+        // a user with the right role but no matching privilege still gets in,
+        // and a user with the right privilege but an unmapped/legacy role
+        // (e.g. a role never added to a rolesGroup) also gets in. Only reject
+        // when BOTH checks reject. Routes with just one check are unaffected.
+        if (hasRoleCheck && hasPrivilegeCheck) {
+          checksToExecute.push(
+            new Promise((resolve, reject) => {
+              const roleResult = new Promise((res, rej) =>
+                this.urlChecks.ROLE_CHECK(
+                  res,
+                  rej,
+                  req,
+                  methodConfig.ROLE_CHECK,
+                  reqUrl,
+                ),
+              );
+              const privilegeResult = new Promise((res, rej) =>
+                this.urlChecks.PRIVILEGE_CHECK(
+                  res,
+                  rej,
+                  req,
+                  methodConfig.PRIVILEGE_CHECK,
+                  reqUrl,
+                ),
+              );
+              Promise.allSettled([roleResult, privilegeResult]).then(
+                ([roleOutcome, privilegeOutcome]: any) => {
+                  if (
+                    roleOutcome.status === 'fulfilled' ||
+                    privilegeOutcome.status === 'fulfilled'
+                  ) {
+                    return resolve(true);
+                  }
+                  return reject(
+                    privilegeOutcome.reason ?? roleOutcome.reason,
                   );
-                }
-              }),
-            );
-          },
-        );
+                },
+              );
+            }),
+          );
+        }
+
+        // Iterate for remaining checks defined for API and push to array.
+        // ROLE_CHECK/PRIVILEGE_CHECK are skipped here when both are present -
+        // they were already combined into the single OR-check above.
+        methodConfig.checksNeeded?.forEach((CHECK) => {
+          if (
+            (CHECK === 'ROLE_CHECK' || CHECK === 'PRIVILEGE_CHECK') &&
+            hasRoleCheck &&
+            hasPrivilegeCheck
+          ) {
+            return;
+          }
+          checksToExecute.push(
+            new Promise((res, rej) => {
+              if (
+                methodConfig[CHECK] &&
+                typeof this.urlChecks[CHECK] === 'function'
+              ) {
+                this.urlChecks[CHECK](res, rej, req, methodConfig[CHECK], reqUrl);
+              }
+            }),
+          );
+        });
 
         // Awaited so a downstream failure surfaces in this try/catch rather than
         // escaping as an unhandled rejection with no response sent.
