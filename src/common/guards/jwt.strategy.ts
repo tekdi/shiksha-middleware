@@ -1,15 +1,12 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import {
-  Inject,
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionsService } from '../service/permissions.service';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 import { MiddlewareLogger } from '../loggers/logger.service';
 import { UserPrivilegeRoleDto } from '../service/dto/user-privileges';
 
@@ -18,10 +15,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   jwt_expires_In: any;
   jwt_secret: any;
   constructor(
-    private configService: ConfigService,
+    configService: ConfigService,
     private permissionService: PermissionsService,
     private readonly middlewareLogger: MiddlewareLogger,
-    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -32,46 +28,37 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(request: any, payload: any) {
-    let userPrivileges;
-    const ttl = this.configService.get('TTL');
-    //try {
     const tenantId = request.headers['tenantid'];
     if (!tenantId?.trim()) {
       throw new BadRequestException('Tenant id not found');
     }
     request.userId = payload.sub;
-    const requiredPermissions = request.requiredPermissions;
 
-    const cachedData: UserPrivilegeRoleDto = await this.cacheService.get(
+    // Uses the shared tenant-scoped loader, so this call warms exactly the
+    // cache entry that PRIVILEGE_CHECK / ROLE_CHECK will read later in the
+    // same request.
+    const cachedData = await this.permissionService.getCachedPrivilegesAndRoles(
       payload.sub,
+      tenantId,
     );
-    if (!cachedData) {
-      const userPrivilegesAndRoles: any =
-        await this.permissionService.getUserPrivilegesAndRoles(
-          payload.sub,
-          tenantId,
-        );
-      if (userPrivilegesAndRoles.length == 0) {
-        throw new UnauthorizedException(
-          'User does not have any privileges in the Tenant',
-        );
-      }
-      userPrivileges = userPrivilegesAndRoles['privileges'][tenantId]
-        ? userPrivilegesAndRoles['privileges'][tenantId]
-        : [];
-      this.cacheService.set(payload.sub, userPrivilegesAndRoles, ttl);
-    } else {
-      userPrivileges = cachedData.privileges[tenantId]
-        ? cachedData.privileges[tenantId]
-        : [];
+    if (cachedData instanceof UnauthorizedException) {
+      throw cachedData;
     }
-    if (!userPrivileges && userPrivileges.length == 0) {
-      throw new UnauthorizedException(
-        'User does not have any privileges in the Tenant',
+
+    const userPrivileges: string[] =
+      (cachedData as UserPrivilegeRoleDto).privileges?.[tenantId] ?? [];
+
+    // Most routes are still ROLE_CHECK-only, so a user holding roles and no
+    // privilege rows is legitimate today; kept non-fatal until PRIVILEGE_CHECK
+    // is enforcing everywhere.
+    if (userPrivileges.length === 0) {
+      this.middlewareLogger.warn(
+        `user ${payload.sub} has roles but no privileges in tenant ${tenantId}`,
       );
     }
+
     this.middlewareLogger.log(
-      `user : ${payload.sub - payload.username} userPrivileges: ${userPrivileges}`,
+      `user: ${payload.sub} username: ${payload.username} userPrivileges: ${userPrivileges}`,
     );
     return true;
   }

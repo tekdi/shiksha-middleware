@@ -1,5 +1,3 @@
-import { CacheModule } from '@nestjs/cache-manager';
-import { MemoryStore } from 'cache-manager-memory-store';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -24,11 +22,13 @@ import { MetricsMiddleware } from './common/metrics/metrics.middleware';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health/health.controller';
 import { HealthService } from './health/health.service';
+import { AppCacheModule } from './common/cache/cache.module';
+import { RbacCacheController } from './common/rbac/rbac-cache.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    CacheModule.register({ isGlobal: true, store: MemoryStore }),
+    AppCacheModule,
     TypeOrmModule.forFeature([
       UserRolesMapping,
       UserTenantMapping,
@@ -42,7 +42,7 @@ import { HealthService } from './health/health.service';
     MetricsModule,
     TerminusModule,
   ],
-  controllers: [AppController, HealthController],
+  controllers: [AppController, HealthController, RbacCacheController],
   providers: [
     AppService,
     MiddlewareServices,

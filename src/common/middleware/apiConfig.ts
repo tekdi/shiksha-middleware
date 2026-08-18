@@ -2,6 +2,7 @@
 
 import { Delete } from '@nestjs/common';
 import path from 'path';
+import { privilegeCatalog, privilegeGroup } from '../rbac/permission-registry';
 
 /**
  * @file - Sourcing Portal Backend API(s) list
@@ -76,28 +77,9 @@ const rolesGroup = {
   ],
   superadmin_student: ['admin', 'student', 'alp_program_admin'],
 };
-const createPrivilegeGroup = (entity: string) => {
-  return {
-    create: [`${entity}.create`],
-    read: [`${entity}.read`],
-    update: [`${entity}.update`],
-    delete: [`${entity}.delete`],
-    review: [`${entity}.review`],
-    approve: [`${entity}.approve`],
-    publish: [`${entity}.publish`],
-  };
-};
-const privilegeGroup = {
-  tracking: createPrivilegeGroup('tracking'),
-  content: createPrivilegeGroup('content'),
-  users: createPrivilegeGroup('users'),
-  cohort: createPrivilegeGroup('cohort'),
-  cohortmembers: createPrivilegeGroup('cohortmembers'),
-  attendance: createPrivilegeGroup('attendance'),
-  event: createPrivilegeGroup('event'),
-  opportunity: createPrivilegeGroup('opportunity'),
-  lms: createPrivilegeGroup('lms'),
-};
+// Permission codes now live in the canonical registry so `apiConfig.ts` and the
+// `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
+// and `npm run rbac:drift`. Shape is unchanged, so route entries below are untouched.
 const common_public_get = { get: {} };
 const common_role_check = {
   ROLE_CHECK: rolesGroup.superadmin,
@@ -133,13 +115,36 @@ export const apiList = {
   '/lms-service/v1/courses': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/courses/search': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      // PRIVILEGE_CHECK passes if the user holds ANY listed code, so accepting the
+      // catalog code alongside the legacy one lets alp_program_admin (which holds
+      // modulemgmt.modules.view but no lms.* privilege) through without having to
+      // re-seed RolePrivilegesMapping first.
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.bulkimport.assessment.view,
+        ...privilegeCatalog.bulkimport.certificate.view,
+        ...privilegeCatalog.bulkimport.discord.view,
+        ...privilegeCatalog.bulkimport.eventattendance.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.participant_content.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.alumni.discordimport.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({
@@ -155,21 +160,39 @@ export const apiList = {
   '/lms-service/v1/courses/:courseId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.report.alumni_exporthistory.view,
+        ...privilegeCatalog.report.participant_exporthistory.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/courses/:courseId/hierarchy': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
   }),
   '/lms-service/v1/courses/next-id': createRouteObject({
@@ -194,7 +217,11 @@ export const apiList = {
   '/lms-service/v1/courses/:courseId/structure': createRouteObject({
     put: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/courses/order/structure': createRouteObject({
@@ -206,19 +233,30 @@ export const apiList = {
   '/lms-service/v1/courses/:courseId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/modules/:moduleId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/lessons/:lessonId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
     },
   }),
   '/lms-service/v1/storage/files/copy': createRouteObject({
@@ -230,7 +268,11 @@ export const apiList = {
   '/lms-service/v1/storage/files': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/assessment/v1/storage/files': createRouteObject({
@@ -246,8 +288,12 @@ export const apiList = {
   }),
   '/lms-service/v1/course/report': createRouteObject({
     get: {
-      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
     '/lms-service/v1/modules/search': createRouteObject({
       get: {
@@ -261,21 +307,43 @@ export const apiList = {
   '/lms-service/v1/modules': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/modules/:moduleId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.participant_content.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/modules/course/:courseId': createRouteObject({
@@ -289,25 +357,49 @@ export const apiList = {
   '/lms-service/v1/lessons': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.bulkimport.assessment.view,
+        ...privilegeCatalog.bulkimport.eventattendance.view,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
   }),
   '/lms-service/v1/lessons/:lessonId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.report.alumni_exporthistory.view,
+        ...privilegeCatalog.report.participant_exporthistory.view,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/lessons/:lessonId/display': createRouteObject({
@@ -326,7 +418,15 @@ export const apiList = {
   '/lms-service/v1/lessons/module/:moduleId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.participant_content.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+      ],
     },
   }),
   '/lms-service/v1/lessons/test/:testId': createRouteObject({
@@ -354,7 +454,10 @@ export const apiList = {
   '/lms-service/v1/enrollments/cohort': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
     },
   }),
   '/lms-service/v1/enrollments/:enrollmentId': createRouteObject({
@@ -372,7 +475,11 @@ export const apiList = {
   '/lms-service/v1/media/upload': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
   '/lms-service/v1/media': createRouteObject({
@@ -388,29 +495,47 @@ export const apiList = {
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
 
   '/lms-service/v1/media/:mediaId/associate/:lessonId': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
     delete: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.delete,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
     },
   }),
 
   // Tracking API
   '/lms-service/v1/tracking/recalculate-progress': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/lms-service/v1/tracking/recalculate-progress/jobs': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -467,7 +592,11 @@ export const apiList = {
   '/lms-service/v1/config': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
   }),
 
@@ -475,7 +604,11 @@ export const apiList = {
   '/lms-service/v1/storage/presigned-url': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
-      PRIVILEGE_CHECK: privilegeGroup.lms.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
     },
   }),
 
@@ -516,6 +649,9 @@ export const apiList = {
   // Questions Module
   '/assessment/v1/questions': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     get: {
@@ -524,11 +660,17 @@ export const apiList = {
   }),
   '/assessment/v1/questions/associate-option': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/assessment/v1/questions/disassociate-option': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -537,9 +679,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -625,6 +773,9 @@ export const apiList = {
   // Tests Module
   '/assessment/v1/tests': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     get: {
@@ -642,9 +793,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -660,6 +817,9 @@ export const apiList = {
   }),
   '/assessment/v1/tests/:id/test-hierarchy': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -685,6 +845,9 @@ export const apiList = {
   }),
   '/assessment/v1/tests/:testId/structure': createRouteObject({
     put: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -702,6 +865,9 @@ export const apiList = {
   // Sections Module
   '/assessment/v1/sections': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     get: {
@@ -718,9 +884,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -815,11 +987,18 @@ export const apiList = {
   }),
   '/aspirespecific/certificate/template': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.credential.manage.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/certificate/templates-list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.credential.manage.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -830,16 +1009,25 @@ export const apiList = {
   }),
   '/aspirespecific/certificate/edit-template': createRouteObject({
     put: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.credential.manage.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/certificate/get-template': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.credential.manage.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/certificate/course-template': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -855,11 +1043,17 @@ export const apiList = {
   }),
   '/aspirespecific/certificate/regenerate': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.credential.manage.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/aspirespecific/certificate/user/:userId': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.credential.manage.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1250,7 +1444,18 @@ export const apiList = {
   }),
   '/user/v1/read/:userId': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: privilegeGroup.users.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.users.read,
+        ...privilegeCatalog.bulkimport.history.view,
+        ...privilegeCatalog.cohort.list.view,
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.report.alumni_exporthistory.view,
+        ...privilegeCatalog.report.participant_exporthistory.view,
+        ...privilegeCatalog.usermgmt.applicants.view,
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+        ...privilegeCatalog.usermgmt.regionaladmin.view,
+        ...privilegeCatalog.alumni.importhistory.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
@@ -1262,7 +1467,12 @@ export const apiList = {
   }),
   '/user/v1/update/:userId': createRouteObject({
     patch: {
-      PRIVILEGE_CHECK: privilegeGroup.users.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.users.update,
+        ...privilegeCatalog.usermgmt.applicants.edit,
+        ...privilegeCatalog.usermgmt.cohortstudents.edit,
+        ...privilegeCatalog.usermgmt.regionaladmin.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin.concat(
         rolesGroup.student,
       ),
@@ -1284,7 +1494,11 @@ export const apiList = {
   }),
   '/user/v1/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.users.read,
+        ...privilegeCatalog.usermgmt.applicants.view,
+        ...privilegeCatalog.usermgmt.regionaladmin.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
@@ -1332,13 +1546,19 @@ export const apiList = {
   }),
   '/user/v1/cohort/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohort.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohort.create,
+        ...privilegeCatalog.cohort.list.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/user/v1/cohort/update/:cohortId': createRouteObject({
     put: {
-      PRIVILEGE_CHECK: privilegeGroup.cohort.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohort.update,
+        ...privilegeCatalog.cohort.list.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1357,7 +1577,10 @@ export const apiList = {
   //cohort member
   '/user/v1/cohortmember/create': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
@@ -1369,19 +1592,29 @@ export const apiList = {
   }),
   '/user/v1/cohortmember/list': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
   '/user/v1/cohortmember/list-application': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/user/v1/cohortmember/update/:cohortmembershipid': createRouteObject({
     put: {
-      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.update,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.usermgmt.cohortstudents.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_student,
     },
   }),
@@ -1564,6 +1797,9 @@ export const apiList = {
   }),
   '/user/v1/content/update/:id': createRouteObject({
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.pagemgmt.pages.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1873,6 +2109,10 @@ export const apiList = {
   }),
   '/event-service/event/v1/create': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1888,6 +2128,10 @@ export const apiList = {
   }),
   '/event-service/event/v1/event/:eventId': createRouteObject({
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1905,6 +2149,9 @@ export const apiList = {
   }),
   '/event-service/attendance/v1/jobs': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1937,6 +2184,9 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1964,6 +2214,9 @@ export const apiList = {
 
   '/event-service/attendance/v1/mark-attendance': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -1985,14 +2238,23 @@ export const apiList = {
   }),
   '/notification-templates/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.notification.templates.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/notification-templates/action/:id': createRouteObject({
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.notification.templates.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.notification.templates.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -2032,11 +2294,17 @@ export const apiList = {
   }),
   '/notification/public/in-app': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.notification.inapp.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/notifications/in-app/admin/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.notification.inapp.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -2537,6 +2805,10 @@ export const urlPatterns = Object.keys(apiList);
 
 //add public api
 export const publicAPI = [
+  // Served by RbacCacheController in this service, not proxied. Authenticated by
+  // the INTERNAL_API_KEY shared secret rather than a user JWT, since the caller is
+  // the user service and has no user context.
+  '/internal/rbac/cache/invalidate',
   '/metrics', // Prometheus metrics endpoint - must be public for scraping
   '/health', // Health check endpoint - must be public for monitoring
   '/health/live', // Liveness probe - must be public for Kubernetes

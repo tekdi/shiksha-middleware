@@ -24,6 +24,7 @@ import { PermissionsService } from '../service/permissions.service';
 import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
+import { RBAC_CACHE_INVALIDATE_PATH } from '../rbac/rbac-cache.controller';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
 const upload = multer({
@@ -68,7 +69,9 @@ export class MiddlewareServices {
         // Basic check if user is a valid keyCloack user, if tenant ID present in the request
         const context = new ExecutionContextHost([req, res, next]);
         // Create an instance of the JwtAuthGuard
-        const guard = new JwtAuthGuard(this.reflector);
+        // (AuthGuard('jwt') takes no constructor args — the Reflector previously
+        // passed here was silently discarded.)
+        const guard = new JwtAuthGuard();
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
       }
@@ -79,7 +82,7 @@ export class MiddlewareServices {
         }
       }
       // Skip whitelist check for local endpoints like /metrics
-      const localEndpoints = ['/metrics', '/api/swagger-docs', '/health', '/health/live', '/health/ready'];
+      const localEndpoints = ['/metrics', '/api/swagger-docs', '/health', '/health/live', '/health/ready', RBAC_CACHE_INVALIDATE_PATH];
       if (localEndpoints.includes(reqUrl)) {
         // Allow local endpoints to proceed without forwarding
         return next();
@@ -97,29 +100,79 @@ export class MiddlewareServices {
           reqUrl + ': ' + apiList[reqUrl][req.method.toLowerCase()],
         );
         let checksToExecute = [];
-        // Iterate for checks defined for API and push to array
-        apiList[reqUrl][req.method.toLowerCase()].checksNeeded?.forEach(
-          (CHECK) => {
-            checksToExecute.push(
-              new Promise((res, rej) => {
-                if (
-                  apiList[reqUrl][req.method.toLowerCase()][CHECK] &&
-                  typeof this.urlChecks[CHECK] === 'function'
-                ) {
-                  this.urlChecks[CHECK](
-                    res,
-                    rej,
-                    req,
-                    apiList[reqUrl][req.method.toLowerCase()][CHECK],
-                    reqUrl,
-                  );
-                }
-              }),
-            );
-          },
-        );
+        const methodConfig = apiList[reqUrl][req.method.toLowerCase()];
+        const hasRoleCheck = !!methodConfig.ROLE_CHECK;
+        const hasPrivilegeCheck = !!methodConfig.PRIVILEGE_CHECK;
 
-        this.executeChecks(req, res, next, checksToExecute);
+        // Where a route declares BOTH checks, either one matching is enough -
+        // a user with the right role but no matching privilege still gets in,
+        // and a user with the right privilege but an unmapped/legacy role
+        // (e.g. a role never added to a rolesGroup) also gets in. Only reject
+        // when BOTH checks reject. Routes with just one check are unaffected.
+        if (hasRoleCheck && hasPrivilegeCheck) {
+          checksToExecute.push(
+            new Promise((resolve, reject) => {
+              const roleResult = new Promise((res, rej) =>
+                this.urlChecks.ROLE_CHECK(
+                  res,
+                  rej,
+                  req,
+                  methodConfig.ROLE_CHECK,
+                  reqUrl,
+                ),
+              );
+              const privilegeResult = new Promise((res, rej) =>
+                this.urlChecks.PRIVILEGE_CHECK(
+                  res,
+                  rej,
+                  req,
+                  methodConfig.PRIVILEGE_CHECK,
+                  reqUrl,
+                ),
+              );
+              Promise.allSettled([roleResult, privilegeResult]).then(
+                ([roleOutcome, privilegeOutcome]: any) => {
+                  if (
+                    roleOutcome.status === 'fulfilled' ||
+                    privilegeOutcome.status === 'fulfilled'
+                  ) {
+                    return resolve(true);
+                  }
+                  return reject(
+                    privilegeOutcome.reason ?? roleOutcome.reason,
+                  );
+                },
+              );
+            }),
+          );
+        }
+
+        // Iterate for remaining checks defined for API and push to array.
+        // ROLE_CHECK/PRIVILEGE_CHECK are skipped here when both are present -
+        // they were already combined into the single OR-check above.
+        methodConfig.checksNeeded?.forEach((CHECK) => {
+          if (
+            (CHECK === 'ROLE_CHECK' || CHECK === 'PRIVILEGE_CHECK') &&
+            hasRoleCheck &&
+            hasPrivilegeCheck
+          ) {
+            return;
+          }
+          checksToExecute.push(
+            new Promise((res, rej) => {
+              if (
+                methodConfig[CHECK] &&
+                typeof this.urlChecks[CHECK] === 'function'
+              ) {
+                this.urlChecks[CHECK](res, rej, req, methodConfig[CHECK], reqUrl);
+              }
+            }),
+          );
+        });
+
+        // Awaited so a downstream failure surfaces in this try/catch rather than
+        // escaping as an unhandled rejection with no response sent.
+        await this.executeChecks(req, res, next, checksToExecute);
       } else {
         //If API is not whitelisted
         this.middlewareLogger.log(
@@ -160,19 +213,17 @@ export class MiddlewareServices {
       : '';
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
-      const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
-      const decodedPayload = Buffer.from(payload, 'base64').toString('utf-8'); // Decode the base64 payload with proper Unicode support
-      const parsedPayload = JSON.parse(decodedPayload);
-      let userId = parsedPayload.sub;
+      // Trust only the `sub` that JwtStrategy set after verifying the signature.
+      // Public routes skip the guard entirely, so this is correctly undefined
+      // there and nothing is injected.
+      const userId: string | undefined = (req as any).userId;
       if (userId) {
-        console.log('in if ', userId);
-
         fullUrl =
           fullUrl +
           (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
-    console.log('fullUrl', fullUrl);
+    this.middlewareLogger.debug(`forwarding to: ${fullUrl}`);
 
     // Check if this is a file request
     const fileType = this.detectFileType(reqUrl);
@@ -573,10 +624,14 @@ export class MiddlewareServices {
      * @since - release-3.1.0
      */
     DATA_TENANT_CONTEXT: async (resolve, reject, req) => {
+      // Was a copy of DATA_CONTEXT and called checkUserCohortValidation, making it
+      // indistinguishable from that check. Now validates what its name says: that
+      // the requested context belongs to the requested tenant. No route currently
+      // declares this check, so correcting it cannot regress live traffic.
       const isValidUserContextRelation =
-        await this.dataValidationService.checkUserCohortValidation(
-          req.body.userId,
+        await this.dataValidationService.checkCohortTenantValidation(
           req.body.contextId,
+          req.headers['tenantid'],
         );
       if (isValidUserContextRelation) {
         return resolve(true);
