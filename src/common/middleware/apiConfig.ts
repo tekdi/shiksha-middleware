@@ -1484,6 +1484,14 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
+  // GDPR-style anonymization of one or more users (by email). Admin-only; the user
+  // service additionally re-checks the 'admin' role for the tenantid header.
+  '/user/v1/anonymize': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      ROLE_CHECK: rolesGroup.superadmin,
+    },
+  }),
   '/user/v1/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
@@ -1619,6 +1627,17 @@ export const apiList = {
   '/user/v1/cohortmember/bulkCreate': createRouteObject({
     post: {
       PRIVILEGE_CHECK: privilegeGroup.cohortmembers.create,
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  // Aspire Leaders-specific reporting endpoint (see
+  // docs/regional-admin-cohort-country-report.md): called server-to-server by
+  // LMS/Assessment/Event/Referral report handlers, forwarding the original admin's
+  // auth context. Admin/Regional Admin only - the endpoint itself resolves role and,
+  // for Regional Admins, applies automatic country filtering server-side.
+  '/user/v1/cohortmember/report-filter': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: privilegeGroup.cohortmembers.read,
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
