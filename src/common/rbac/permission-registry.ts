@@ -78,7 +78,43 @@ export const privilegeGroup = PERMISSION_ENTITIES.reduce(
  *
  * Only the codes routes currently need are listed. The full set is in the database.
  */
-export const CATALOG_PRIVILEGE_CODES = ['modulemgmt.modules.view'] as const;
+export const CATALOG_PRIVILEGE_CODES = [
+  'alumni.discordimport.view',
+  'alumni.events.edit',
+  'alumni.importhistory.view',
+  'alumni.pathway.edit',
+  'alumni.pathway.view',
+  'bulkimport.assessment.view',
+  'bulkimport.certificate.view',
+  'bulkimport.discord.view',
+  'bulkimport.eventattendance.view',
+  'bulkimport.history.view',
+  'cohort.list.edit',
+  'cohort.list.view',
+  'credential.manage.edit',
+  'credential.manage.view',
+  'modulemgmt.modules.edit',
+  'modulemgmt.modules.view',
+  'notification.inapp.edit',
+  'notification.inapp.view',
+  'notification.templates.edit',
+  'notification.templates.view',
+  'pagemgmt.pages.edit',
+  'report.alumni_assessment.view',
+  'report.alumni_content.view',
+  'report.alumni_exporthistory.view',
+  'report.alumni_masterclass.view',
+  'report.participant_assessment.view',
+  'report.participant_content.view',
+  'report.participant_exporthistory.view',
+  'report.participant_masterclass.view',
+  'usermgmt.applicants.edit',
+  'usermgmt.applicants.view',
+  'usermgmt.cohortstudents.edit',
+  'usermgmt.cohortstudents.view',
+  'usermgmt.regionaladmin.edit',
+  'usermgmt.regionaladmin.view',
+] as const;
 
 /**
  * Nested accessor for catalog codes:
