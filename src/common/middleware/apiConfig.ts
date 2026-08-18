@@ -2,7 +2,7 @@
 
 import { Delete } from '@nestjs/common';
 import path from 'path';
-import { privilegeGroup } from '../rbac/permission-registry';
+import { privilegeCatalog, privilegeGroup } from '../rbac/permission-registry';
 
 /**
  * @file - Sourcing Portal Backend API(s) list
@@ -121,7 +121,14 @@ export const apiList = {
   '/lms-service/v1/courses/search': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
-      PRIVILEGE_CHECK: privilegeGroup.lms.read,
+      // PRIVILEGE_CHECK passes if the user holds ANY listed code, so accepting the
+      // catalog code alongside the legacy one lets alp_program_admin (which holds
+      // modulemgmt.modules.view but no lms.* privilege) through without having to
+      // re-seed RolePrivilegesMapping first.
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
     },
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({

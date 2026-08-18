@@ -65,11 +65,47 @@ export const privilegeGroup = PERMISSION_ENTITIES.reduce(
   {} as Record<PermissionEntity, Record<PermissionAction, string[]>>,
 );
 
+/**
+ * Catalog codes: `{module}.{submodule}.{view|edit}`.
+ *
+ * The `Privileges` table holds 67 of these alongside the 28 legacy `{entity}.{action}`
+ * codes above. They are the shape the admin UI and the user service use, and they are
+ * the only codes carrying `module` / `submodule` / `isVisibleInUI` metadata.
+ *
+ * They cannot come from the entity x action product above — that only ever joins two
+ * segments — so they are listed explicitly. Add a code here before referencing it in
+ * `apiConfig.ts`; `npm run rbac:drift` fails on a route requiring an undeclared code.
+ *
+ * Only the codes routes currently need are listed. The full set is in the database.
+ */
+export const CATALOG_PRIVILEGE_CODES = ['modulemgmt.modules.view'] as const;
+
+/**
+ * Nested accessor for catalog codes:
+ * `privilegeCatalog.modulemgmt.modules.view` -> `['modulemgmt.modules.view']`.
+ */
+export const privilegeCatalog: Record<
+  string,
+  Record<string, Record<string, string[]>>
+> = CATALOG_PRIVILEGE_CODES.reduce(
+  (root, code) => {
+    const [module, submodule, action] = code.split('.');
+    root[module] ??= {};
+    root[module][submodule] ??= {};
+    root[module][submodule][action] = [code];
+    return root;
+  },
+  {} as Record<string, Record<string, Record<string, string[]>>>,
+);
+
 /** Every permission code this middleware knows about, sorted. */
 export const ALL_PERMISSION_CODES: readonly string[] = Object.freeze(
-  PERMISSION_ENTITIES.flatMap((entity) =>
-    PERMISSION_ACTIONS.map((action) => `${entity}.${action}`),
-  ).sort(),
+  [
+    ...PERMISSION_ENTITIES.flatMap((entity) =>
+      PERMISSION_ACTIONS.map((action) => `${entity}.${action}`),
+    ),
+    ...CATALOG_PRIVILEGE_CODES,
+  ].sort((a, b) => a.localeCompare(b)),
 );
 
 const PERMISSION_CODE_SET = new Set(ALL_PERMISSION_CODES);
