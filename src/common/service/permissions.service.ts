@@ -5,7 +5,6 @@ import { UserRolesMapping } from '../entities/UserRoleMapping.entity';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ConfigService } from '@nestjs/config';
-import { isRbacV2Enabled } from '../config/rbac.config';
 import { MiddlewareLogger } from '../loggers/logger.service';
 
 @Injectable()
@@ -61,21 +60,15 @@ export class PermissionsService {
     };
   }
 
-  /** Whether the RBAC v2 cache/lookup path is enabled. See `rbac.config.ts`. */
-  get isV2(): boolean {
-    return isRbacV2Enabled(this.configService);
-  }
-
   /**
    * Cache key for a user's effective privileges/roles.
    *
-   * v2 is tenant-scoped: `getUserPrivilegesAndRoles` filters by tenantId, so the
-   * legacy userId-only key serves the first tenant's result for every other tenant.
-   * Legacy mode keeps the bare userId key so a mid-rollout deploy still reads the
-   * entries written by pods running the old code.
+   * Tenant-scoped: `getUserPrivilegesAndRoles` filters by tenantId, so the key
+   * must include it too, or one tenant's cached result would be served for
+   * every other tenant the same user belongs to.
    */
   cacheKey(userId: string, tenantId: string): string {
-    return this.isV2 ? `rbac:privileges:${userId}:${tenantId}` : userId;
+    return `rbac:privileges:${userId}:${tenantId}`;
   }
 
   /**
@@ -187,12 +180,6 @@ export class PermissionsService {
    * with nothing cached would report one key removed.
    */
   async invalidateUser(userId: string, tenantId?: string): Promise<string[]> {
-    if (!this.isV2) {
-      // Legacy keys are not tenant-scoped, so there is only ever one entry.
-      await this.cacheDel(userId);
-      return [userId];
-    }
-
     if (tenantId) {
       const key = this.cacheKey(userId, tenantId);
       await this.cacheDel(key);
@@ -208,63 +195,18 @@ export class PermissionsService {
   }
 
   async getUserPrivilegesForTenant(userId: string, tenantId: string) {
-    if (this.isV2) {
-      const data: any = await this.getCachedPrivilegesAndRoles(userId, tenantId);
-      if (data instanceof UnauthorizedException) {
-        return data;
-      }
-      return data.privileges?.[tenantId];
+    const data: any = await this.getCachedPrivilegesAndRoles(userId, tenantId);
+    if (data instanceof UnauthorizedException) {
+      return data;
     }
-
-    // Legacy path — preserved verbatim, including the cold-cache bug where
-    // `cachedData` is still undefined on the miss branch (so the first call after
-    // a miss returns undefined and PRIVILEGE_CHECK rejects). Fixed under v2.
-    const cachedData: any = await this.cacheService.get(userId);
-    if (!cachedData) {
-      const userPrivilegesAndRoles: any = await this.getUserPrivilegesAndRoles(
-        userId,
-        tenantId,
-      );
-      if (userPrivilegesAndRoles.length == 0) {
-        return new UnauthorizedException(
-          'User does not have any privileges in the Tenant',
-        );
-      }
-      await this.cacheService.set(
-        userId,
-        userPrivilegesAndRoles,
-        this.configService.get('TTL'),
-      );
-      return cachedData?.privileges[tenantId];
-    } else {
-      return cachedData?.privileges[tenantId];
-    }
+    return data.privileges?.[tenantId];
   }
 
   async getUserRolesForTenant(userId: string, tenantId: string) {
-    if (this.isV2) {
-      const data: any = await this.getCachedPrivilegesAndRoles(userId, tenantId);
-      if (data instanceof UnauthorizedException) {
-        return data;
-      }
-      return data.roles?.[tenantId];
+    const data: any = await this.getCachedPrivilegesAndRoles(userId, tenantId);
+    if (data instanceof UnauthorizedException) {
+      return data;
     }
-
-    // Legacy path — preserved verbatim, including the missing TTL on set().
-    let cachedData: any = await this.cacheService.get(userId);
-    if (!cachedData) {
-      const userPrivilegesAndRoles: any = await this.getUserPrivilegesAndRoles(
-        userId,
-        tenantId,
-      );
-      if (userPrivilegesAndRoles.length == 0) {
-        return new UnauthorizedException(
-          'User does not have any privileges in the Tenant',
-        );
-      }
-      await this.cacheService.set(userId, userPrivilegesAndRoles);
-      cachedData = userPrivilegesAndRoles;
-    }
-    return cachedData.roles[tenantId];
+    return data.roles?.[tenantId];
   }
 }

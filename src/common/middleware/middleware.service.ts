@@ -24,7 +24,6 @@ import { PermissionsService } from '../service/permissions.service';
 import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
-import { isRbacV2Enabled } from '../config/rbac.config';
 import { RBAC_CACHE_INVALIDATE_PATH } from '../rbac/rbac-cache.controller';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
@@ -214,21 +213,10 @@ export class MiddlewareServices {
       : '';
     //get userId
     if (req.method.toLowerCase() != 'get' && req?.headers['authorization']) {
-      let userId: string | undefined;
-      if (isRbacV2Enabled(this.configService)) {
-        // Trust only the `sub` that JwtStrategy set after verifying the signature.
-        // Public routes skip the guard entirely, so this is correctly undefined
-        // there and nothing is injected.
-        userId = (req as any).userId;
-      } else {
-        // Legacy: base64-decodes the token payload WITHOUT verifying it. Kept
-        // behind the flag for backward compatibility only — on publicAPI routes
-        // the guard never ran, so a forged token reaches the upstream service.
-        const payload = req.headers['authorization'].split('.')[1]; // Get the payload part
-        const decodedPayload = Buffer.from(payload, 'base64').toString('utf-8'); // Decode the base64 payload with proper Unicode support
-        const parsedPayload = JSON.parse(decodedPayload);
-        userId = parsedPayload.sub;
-      }
+      // Trust only the `sub` that JwtStrategy set after verifying the signature.
+      // Public routes skip the guard entirely, so this is correctly undefined
+      // there and nothing is injected.
+      const userId: string | undefined = (req as any).userId;
       if (userId) {
         fullUrl =
           fullUrl +
