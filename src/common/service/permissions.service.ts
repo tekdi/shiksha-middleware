@@ -61,6 +61,23 @@ export class PermissionsService {
   }
 
   /**
+   * Whether the privilege/role cache is used at all. `RBAC_CACHE_ENABLED=false`
+   * turns it off; anything else (including unset) leaves it on, so the default
+   * behaviour is unchanged.
+   *
+   * With it off, a privilege or role change in the database takes effect on the
+   * very next request instead of waiting out `TTL` — useful while debugging a
+   * 403, and for environments that would rather pay for correctness than speed.
+   * The cost is real though: a request performs three lookups (the JWT guard,
+   * then ROLE_CHECK and PRIVILEGE_CHECK in parallel), so this turns 1 database
+   * query + 2 cache hits into 3 database queries.
+   */
+  private get isCacheEnabled(): boolean {
+    const raw = this.configService.get('RBAC_CACHE_ENABLED');
+    return String(raw ?? 'true').toLowerCase() !== 'false';
+  }
+
+  /**
    * Cache key for a user's effective privileges/roles.
    *
    * Tenant-scoped: `getUserPrivilegesAndRoles` filters by tenantId, so the key
@@ -147,7 +164,7 @@ export class PermissionsService {
    */
   async getCachedPrivilegesAndRoles(userId: string, tenantId: string) {
     const key = this.cacheKey(userId, tenantId);
-    let cachedData: any = await this.cacheGet(key);
+    let cachedData: any = this.isCacheEnabled ? await this.cacheGet(key) : null;
     if (!cachedData) {
       const userPrivilegesAndRoles: any = await this.getUserPrivilegesAndRoles(
         userId,
@@ -158,12 +175,14 @@ export class PermissionsService {
           'User does not have any privileges in the Tenant',
         );
       }
-      await this.cacheSet(
-        key,
-        userPrivilegesAndRoles,
-        this.configService.get('TTL'),
-      );
-      await this.rememberTenant(userId, tenantId);
+      if (this.isCacheEnabled) {
+        await this.cacheSet(
+          key,
+          userPrivilegesAndRoles,
+          this.configService.get('TTL'),
+        );
+        await this.rememberTenant(userId, tenantId);
+      }
       cachedData = userPrivilegesAndRoles;
     }
     return cachedData;
@@ -192,6 +211,26 @@ export class PermissionsService {
     await Promise.all(keys.map((k) => this.cacheDel(k)));
     await this.cacheDel(indexKey);
     return keys;
+  }
+
+  /**
+   * Drop and immediately rewarm a user's cached privileges/roles from the database.
+   *
+   * Called on the RBAC-token request, which the frontend issues after login and on
+   * tenant switch. That makes it the de-facto invalidation hook: a privilege change
+   * takes effect as soon as the user's client refetches its token, instead of waiting
+   * out the TTL. Deliberately tolerant of a missing userId/tenantId — on a request
+   * where the guard did not run there is nothing to refresh, and failing here must
+   * never fail the request.
+   */
+  async refreshPrivilegesAndRoles(userId?: string, tenantId?: string) {
+    if (!userId?.trim() || !tenantId?.trim() || !this.isCacheEnabled) {
+      // Nothing cached to refresh when the cache is off — every read already
+      // goes to the database, so this would just add a wasted round trip.
+      return;
+    }
+    await this.cacheDel(this.cacheKey(userId, tenantId));
+    return this.getCachedPrivilegesAndRoles(userId, tenantId);
   }
 
   async getUserPrivilegesForTenant(userId: string, tenantId: string) {
