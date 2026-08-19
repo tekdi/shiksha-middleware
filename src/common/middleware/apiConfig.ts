@@ -1083,6 +1083,10 @@ export const apiList = {
   //bulk discord upload
   '/aspirespecific/import-users/discord/upload': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.discord.edit,
+        ...privilegeCatalog.alumni.discordimport.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1105,6 +1109,10 @@ export const apiList = {
   }),
   '/aspirespecific/import-users/import-jobs/search': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.history.view,
+        ...privilegeCatalog.alumni.importhistory.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1143,21 +1151,39 @@ export const apiList = {
   }),
   '/aspirespecific/export/assessment': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_interest.view,
+        ...privilegeCatalog.report.alumni_omfeedback.view,
+        ...privilegeCatalog.report.alumni_longitudinal.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/export/content': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_content.view,
+        ...privilegeCatalog.report.alumni_content.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/export/application': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_application.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/export/jobs': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_exporthistory.view,
+        ...privilegeCatalog.report.alumni_exporthistory.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1168,11 +1194,19 @@ export const apiList = {
   }),
   '/aspirespecific/export/event': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   '/aspirespecific/export/pathway': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.alumni_pathway.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1183,12 +1217,30 @@ export const apiList = {
   }),
   '/aspirespecific/export/volunteer-report': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.alumni_pathway.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   //elasticsearch API
   '/user/v1/elasticsearch/users/search': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_application.view,
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.participant_content.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_interest.view,
+        ...privilegeCatalog.report.alumni_omfeedback.view,
+        ...privilegeCatalog.report.alumni_longitudinal.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
+        ...privilegeCatalog.report.alumni_pathway.view,
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1455,6 +1507,8 @@ export const apiList = {
         ...privilegeCatalog.usermgmt.cohortstudents.view,
         ...privilegeCatalog.usermgmt.regionaladmin.view,
         ...privilegeCatalog.alumni.importhistory.view,
+        ...privilegeCatalog.payment.transactions.view,
+        ...privilegeCatalog.payment.coupons.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
@@ -1662,6 +1716,9 @@ export const apiList = {
   //List Interest
   '/user/v1/interest/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1693,11 +1750,17 @@ export const apiList = {
   }),
   '/user/v1/pathway/create': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/pathway/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1729,11 +1792,17 @@ export const apiList = {
   }),
   '/user/v1/pathway/:id': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.pathway.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/pathway/update/:id': createRouteObject({
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1760,26 +1829,41 @@ export const apiList = {
   // Tag endpoints
   '/user/v1/tag/create': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.tags.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/tag/update/:id': createRouteObject({
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.tags.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/tag/delete/:id': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.tags.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/tag/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.tags.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
   '/user/v1/tag/fetch/:id': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.tags.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1923,6 +2007,9 @@ export const apiList = {
   }),
   '/user/v1/forms/submissions/search': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
@@ -2020,6 +2107,10 @@ export const apiList = {
   }),
   '/user/v1/coupons/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.transactions.view,
+        ...privilegeCatalog.payment.coupons.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -2045,6 +2136,9 @@ export const apiList = {
   }),
   '/user/v1/payments/report/:id': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.transactions.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
