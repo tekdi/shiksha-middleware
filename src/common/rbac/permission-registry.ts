@@ -104,6 +104,8 @@ export const CATALOG_PRIVILEGE_CODES = [
   'notification.templates.edit',
   'notification.templates.view',
   'pagemgmt.pages.edit',
+  'payment.coupons.view',
+  'payment.transactions.view',
   'report.alumni_assessment.view',
   'report.alumni_content.view',
   'report.alumni_exporthistory.view',

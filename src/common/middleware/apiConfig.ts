@@ -1507,6 +1507,8 @@ export const apiList = {
         ...privilegeCatalog.usermgmt.cohortstudents.view,
         ...privilegeCatalog.usermgmt.regionaladmin.view,
         ...privilegeCatalog.alumni.importhistory.view,
+        ...privilegeCatalog.payment.transactions.view,
+        ...privilegeCatalog.payment.coupons.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
@@ -2105,6 +2107,10 @@ export const apiList = {
   }),
   '/user/v1/coupons/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.transactions.view,
+        ...privilegeCatalog.payment.coupons.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -2130,6 +2136,9 @@ export const apiList = {
   }),
   '/user/v1/payments/report/:id': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.transactions.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
