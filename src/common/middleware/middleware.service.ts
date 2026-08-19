@@ -14,6 +14,7 @@ import {
   publicAPI,
   apiListForAcademicYear,
   webhookEndpoints,
+  RBAC_TOKEN_PATH,
 } from './apiConfig';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -74,6 +75,19 @@ export class MiddlewareServices {
         const guard = new JwtAuthGuard();
         // custom jwt.strategy will get executed
         await guard.canActivate(context);
+
+        // The frontend refetches its RBAC token after login and on tenant switch,
+        // and drives menu visibility from that response. Rewarming the privilege
+        // cache from the database on this same request keeps the middleware's view
+        // of a user's privileges in step with the frontend's — without it, a
+        // privilege change appears in the menu while APIs keep rejecting from a
+        // stale cache entry until the TTL expires.
+        if (reqUrl === RBAC_TOKEN_PATH) {
+          await this.permissionService.refreshPrivilegesAndRoles(
+            (req as any).userId,
+            tenantId,
+          );
+        }
       }
       //check for academic year
       if (apiListForAcademicYear.includes(reqUrl)) {
@@ -527,10 +541,16 @@ export class MiddlewareServices {
         );
 
       if (privilegeOfTenant == undefined || privilegeOfTenant == null) {
+        this.middlewareLogger.log(
+          `PRIVILEGE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} reason=lookup returned null/undefined requiredPrivileges=${JSON.stringify(privilegesForURL)}`,
+        );
         return reject("User doesn't have appropriate privilege");
       }
 
       if (privilegeOfTenant.name == 'UnauthorizedException') {
+        this.middlewareLogger.log(
+          `PRIVILEGE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} reason=UnauthorizedException from lookup requiredPrivileges=${JSON.stringify(privilegesForURL)}`,
+        );
         return reject("User doesn't have appropriate privilege");
       }
       const isAuthorized = privilegesForURL.some((permission: string) =>
@@ -539,6 +559,9 @@ export class MiddlewareServices {
       if (isAuthorized) {
         return resolve(true);
       }
+      this.middlewareLogger.log(
+        `PRIVILEGE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} requiredPrivileges=${JSON.stringify(privilegesForURL)} userPrivileges=${JSON.stringify(privilegeOfTenant)}`,
+      );
       return reject("User doesn't have appropriate privilege");
     },
 
@@ -558,9 +581,15 @@ export class MiddlewareServices {
           req.headers['tenantid'],
         );
       if (rolesOfTenant == undefined || rolesOfTenant == null) {
+        this.middlewareLogger.log(
+          `ROLE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} reason=lookup returned null/undefined (no roles resolved for this user+tenant) requiredRoles=${JSON.stringify(rolesForURL)}`,
+        );
         return reject("User doesn't have appropriate privilege");
       }
       if (rolesOfTenant.name == 'UnauthorizedException') {
+        this.middlewareLogger.log(
+          `ROLE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} reason=UnauthorizedException from lookup requiredRoles=${JSON.stringify(rolesForURL)}`,
+        );
         return reject("User doesn't have appropriate privilege");
       }
 
@@ -571,6 +600,9 @@ export class MiddlewareServices {
       if (isAuthorized) {
         return resolve(true);
       }
+      this.middlewareLogger.log(
+        `ROLE_CHECK rejected: route=${REQ_URL} method=${req.method} userId=${req.userId} tenantId=${req.headers['tenantid']} requiredRoles=${JSON.stringify(rolesForURL)} userRoles=${JSON.stringify(rolesOfTenant)}`,
+      );
       return reject("User doesn't have appropriate roles");
     },
     /**

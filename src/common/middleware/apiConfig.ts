@@ -110,6 +110,14 @@ const createRouteObject = (
   };
 };
 
+/**
+ * The frontend fetches this right after login and whenever the tenant changes, and
+ * decodes the returned token to populate the privileges that drive menu visibility.
+ * The middleware refreshes its own privilege cache on this same request, so both
+ * sides re-read the database at the same moment and cannot diverge.
+ */
+export const RBAC_TOKEN_PATH = '/user/v1/auth/rbac/token';
+
 export const apiList = {
   //LMS Service API
   '/lms-service/v1/courses': createRouteObject({
@@ -1945,7 +1953,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
-  '/user/v1/auth/rbac/token': createRouteObject({
+  // Deliberately declares no ROLE_CHECK/PRIVILEGE_CHECK: every authenticated role
+  // (students included) must be able to fetch its own RBAC token. It is NOT in
+  // `publicAPI`, because the JWT guard has to run to establish a verified userId —
+  // that is what lets the middleware refresh the privilege cache here. See
+  // RBAC_TOKEN_PATH in middleware.service.ts.
+  [RBAC_TOKEN_PATH]: createRouteObject({
     get: {},
   }),
   '/user/v1/rbac/usersRoles': createRouteObject({
@@ -2915,7 +2928,6 @@ export const publicAPI = [
   '/user/v1/tenant/delete/:identifier',
   '/user/v1/auth/login',
   '/user/v1/auth',
-  '/user/v1/auth/rbac/token',
   '/api/question/v2/list',
   '/action/question/v2/list',
   '/action/question/v2/private/read/:identifier',

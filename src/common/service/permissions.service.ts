@@ -194,6 +194,24 @@ export class PermissionsService {
     return keys;
   }
 
+  /**
+   * Drop and immediately rewarm a user's cached privileges/roles from the database.
+   *
+   * Called on the RBAC-token request, which the frontend issues after login and on
+   * tenant switch. That makes it the de-facto invalidation hook: a privilege change
+   * takes effect as soon as the user's client refetches its token, instead of waiting
+   * out the TTL. Deliberately tolerant of a missing userId/tenantId — on a request
+   * where the guard did not run there is nothing to refresh, and failing here must
+   * never fail the request.
+   */
+  async refreshPrivilegesAndRoles(userId?: string, tenantId?: string) {
+    if (!userId?.trim() || !tenantId?.trim()) {
+      return;
+    }
+    await this.cacheDel(this.cacheKey(userId, tenantId));
+    return this.getCachedPrivilegesAndRoles(userId, tenantId);
+  }
+
   async getUserPrivilegesForTenant(userId: string, tenantId: string) {
     const data: any = await this.getCachedPrivilegesAndRoles(userId, tenantId);
     if (data instanceof UnauthorizedException) {
