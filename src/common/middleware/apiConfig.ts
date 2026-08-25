@@ -957,6 +957,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/aspirespecific/export/course-progress': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/export/application': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -973,6 +978,11 @@ export const apiList = {
     },
   }),
   '/aspirespecific/export/event': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/event-assessment': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
