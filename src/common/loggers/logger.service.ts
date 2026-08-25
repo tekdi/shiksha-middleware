@@ -20,6 +20,7 @@ export class MiddlewareLogger implements LoggerService {
           level: 'error',
         }),
         new winston.transports.File({ filename: 'logs/combined.log' }),
+        new winston.transports.Console(),
       ],
     });
   }
