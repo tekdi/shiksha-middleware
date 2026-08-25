@@ -1178,6 +1178,11 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  '/aspirespecific/export/course-progress': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/export/application': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
@@ -1203,6 +1208,16 @@ export const apiList = {
   '/aspirespecific/export/event': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/export/event-assessment': createRouteObject({
+    post: {
+       PRIVILEGE_CHECK: [
         ...privilegeCatalog.report.participant_masterclass.view,
         ...privilegeCatalog.report.alumni_masterclass.view,
         ...privilegeCatalog.report.alumni_openmasterclass.view,
