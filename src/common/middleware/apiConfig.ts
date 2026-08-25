@@ -1217,6 +1217,11 @@ export const apiList = {
   }),
   '/aspirespecific/export/event-assessment': createRouteObject({
     post: {
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
