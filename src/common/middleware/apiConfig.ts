@@ -1108,6 +1108,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.bulkimport.discord.edit,
         ...privilegeCatalog.alumni.discordimport.edit,
+        ...privilegeCatalog.alumni.discordimport.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -2350,6 +2351,10 @@ export const apiList = {
 
   '/event-service/event/v1/:eventId': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
