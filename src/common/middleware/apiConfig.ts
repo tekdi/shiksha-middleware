@@ -783,10 +783,16 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.feedback.view,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.feedback.view,
+        ...privilegeCatalog.alumni.feedback.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -820,6 +826,10 @@ export const apiList = {
   }),
   '/assessment/v1/tests/:id/hierarchy': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.assessment.view,
+        ...privilegeCatalog.bulkimport.assessment.edit,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -974,6 +984,10 @@ export const apiList = {
   }),
   '/aspirespecific/import-users/bulk-issue/upload': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.certificate.view,
+        ...privilegeCatalog.bulkimport.certificate.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1106,12 +1120,20 @@ export const apiList = {
   //Bulk import and kafka API
   '/user/v1/bulk-import/xlsx-template': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.application.view,
+        ...privilegeCatalog.bulkimport.application.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
 
   '/aspirespecific/import-users/upload': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.application.view,
+        ...privilegeCatalog.bulkimport.application.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1149,6 +1171,10 @@ export const apiList = {
 
   '/aspirespecific/import-users/assessment/upload': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.assessment.view,
+        ...privilegeCatalog.bulkimport.assessment.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
@@ -2235,12 +2261,19 @@ export const apiList = {
   }),
   '/event-service/attendance/v1/bulk-import': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.eventattendance.view,
+        ...privilegeCatalog.bulkimport.eventattendance.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
   '/event-service/attendance/v1/bulk-import/status': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.history.view,
+      ],
     },
   }),
   '/event-service/event/v1/create': createRouteObject({
@@ -2320,11 +2353,15 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.events.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
