@@ -1938,6 +1938,10 @@ export const apiList = {
   }),
   '/user/v1/rbac/roles/list/roles': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.rbac.roles.view,
+        ...privilegeCatalog.usermgmt.regionaladmin.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1994,19 +1998,31 @@ export const apiList = {
   '/user/v1/assignprivilege/:roleId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.rbac.roles.view
+      ],
     },
     patch: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.rbac.roles.view
+      ],
     },
   }),
   '/user/v1/assignprivilege/:roleId/grouped': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.rbac.roles.view
+      ],
     },
   }),
   '/user/v1/assignprivilege/:roleId/:privilegeId': createRouteObject({
     delete: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.rbac.roles.view
+      ],
     },
   }),
   '/user/v1/tenant/create': createRouteObject({
@@ -2238,6 +2254,9 @@ export const apiList = {
   }),
   '/event-service/event/v1/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.events.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
