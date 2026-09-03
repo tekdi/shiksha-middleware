@@ -2138,6 +2138,9 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.payment.transactions.view,
         ...privilegeCatalog.payment.coupons.view,
+        ...privilegeCatalog.notification.inapp.view,
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+        ...privilegeCatalog.report.participant_masterclass.view
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
