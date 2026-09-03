@@ -1596,7 +1596,9 @@ export const apiList = {
   // service additionally re-checks the 'admin' role for the tenantid header.
   '/user/v1/anonymize': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: privilegeGroup.users.delete,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.usermgmt.applicants.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
