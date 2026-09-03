@@ -940,6 +940,9 @@ export const apiList = {
   }),
   '/user/v1/referrals/list': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.tracking.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1207,6 +1210,9 @@ export const apiList = {
   }),
   '/aspirespecific/export/course-progress': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+              ...privilegeCatalog.report.participant_course_progress.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1245,9 +1251,7 @@ export const apiList = {
   '/aspirespecific/export/event-assessment': createRouteObject({
     post: {
        PRIVILEGE_CHECK: [
-        ...privilegeCatalog.report.participant_masterclass.view,
-        ...privilegeCatalog.report.alumni_masterclass.view,
-        ...privilegeCatalog.report.alumni_openmasterclass.view,
+        ...privilegeCatalog.report.participant_completion_criteria_report.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -2225,6 +2229,20 @@ export const apiList = {
   }),
   '/user/v1/country/list': createRouteObject({
     post: {
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.coupons.view,
+        ...privilegeCatalog.notification.inapp.view,
+        ...privilegeCatalog.usermgmt.cohortstudents.view,
+        ...privilegeCatalog.usermgmt.applicants.view,
+        ...privilegeCatalog.usermgmt.regionaladmin.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+        ...privilegeCatalog.report.participant_application.view,
+        ...privilegeCatalog.report.participant_assessment.view,
+        ...privilegeCatalog.report.participant_course_progress.view,
+        ...privilegeCatalog.report.participant_completion_criteria_report.view,
+        ...privilegeCatalog.referral.tracking.view,
+        ...privilegeCatalog.referral.report.view
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),

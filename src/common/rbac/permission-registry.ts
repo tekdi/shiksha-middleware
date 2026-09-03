@@ -129,6 +129,8 @@ export const CATALOG_PRIVILEGE_CODES = [
   'report.participant_content.view',
   'report.participant_exporthistory.view',
   'report.participant_masterclass.view',
+  'report.participant_course_progress.view',
+  'report.participant_completion_criteria_report.view',
   'usermgmt.applicants.edit',
   'usermgmt.applicants.view',
   'usermgmt.cohortstudents.edit',
