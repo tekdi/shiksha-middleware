@@ -137,6 +137,8 @@ export const CATALOG_PRIVILEGE_CODES = [
   'usermgmt.cohortstudents.view',
   'usermgmt.regionaladmin.edit',
   'usermgmt.regionaladmin.view',
+  'referral.tracking.view',
+  'referral.report.view'
 ] as const;
 
 /**
