@@ -1633,6 +1633,9 @@ export const apiList = {
   '/prathamservice/v1/webhook/update': createRouteObject({
     post: {},
   }),
+  '/prathamservice/v1/webhook/erp-status': createRouteObject({
+    post: {},
+  }),
   '/prathamservice/v1/save-user-salesforce': createRouteObject({
     post: {},
   }),
@@ -1684,6 +1687,7 @@ export const publicAPI = [
   '/user/v1/suggestUsername',
   '/role-permission/create',
   '/prathamservice/v1/webhook/update',
+  '/prathamservice/v1/webhook/erp-status',
   '/prathamservice/v1/save-user-salesforce',
   '/user/v1/presigned-url',
   '/action/assessment/v3/items/read/:identifier',
