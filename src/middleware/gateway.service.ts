@@ -46,6 +46,9 @@ export class GatewayService {
     if (oheaders['x-signature']) {
       newheaders['x-signature'] = oheaders['x-signature'];
     }
+    if (oheaders['x-erp-secret']) {
+      newheaders['x-erp-secret'] = oheaders['x-erp-secret'];
+    }
     this.middlewareLogger.log(
       `[GatewayService] Outbound request: ${buildCurl(method, url, newheaders, body)}`,
     );
