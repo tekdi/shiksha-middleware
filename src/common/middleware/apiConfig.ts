@@ -157,6 +157,11 @@ export const apiList = {
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({
     post: {
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.participant_completion_criteria_report.view,
+        ...privilegeCatalog.report.participant_masterclass.view,
+            ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -1598,6 +1603,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.usermgmt.applicants.view,
+        ...privilegeCatalog.usermgmt.applicants.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2118,6 +2124,9 @@ export const apiList = {
   }),
   '/user/v1/form/update/:formId': createRouteObject({
     patch: {
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.cohort.list.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
