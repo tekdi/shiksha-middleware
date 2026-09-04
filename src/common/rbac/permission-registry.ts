@@ -113,6 +113,7 @@ export const CATALOG_PRIVILEGE_CODES = [
   'notification.templates.view',
   'pagemgmt.pages.edit',
   'payment.coupons.view',
+  'payment.coupons.edit',
   'payment.transactions.view',
   'rbac.roles.view',
   'report.alumni_assessment.view',
@@ -137,8 +138,14 @@ export const CATALOG_PRIVILEGE_CODES = [
   'usermgmt.cohortstudents.view',
   'usermgmt.regionaladmin.edit',
   'usermgmt.regionaladmin.view',
+  'referral.exporthistory.view',
+  'referral.import.edit',
+  'referral.import.view',
+  'referral.importhistory.view',
+  'referral.report.view',
+  'referral.tracking.edit',
   'referral.tracking.view',
-  'referral.report.view'
+  'tools.s3download.view',
 ] as const;
 
 /**
