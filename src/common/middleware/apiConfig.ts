@@ -775,6 +775,9 @@ export const apiList = {
   }),
   '/assessment/v1/file/download-url': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.tools.s3download.view,
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -940,13 +943,18 @@ export const apiList = {
   //referral API
   '/user/v1/referrals': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.tracking.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // Listed by both the Referral Tracking page and the Referral report page.
   '/user/v1/referrals/list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.referral.tracking.view,
+        ...privilegeCatalog.referral.report.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -978,15 +986,25 @@ export const apiList = {
   }),
   '/user/v1/referrals/:id': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.tracking.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
     patch: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.tracking.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
   // Referral bulk CSV import (aspire-specific-service)
   '/aspirespecific/import-users/referrals/upload': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.import.view,
+        ...privilegeCatalog.referral.import.edit,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1001,6 +1019,9 @@ export const apiList = {
   }),
   '/aspirespecific/import-users/referrals/status/:jobId': createRouteObject({
     get: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.importhistory.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -1153,6 +1174,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.bulkimport.history.view,
         ...privilegeCatalog.alumni.importhistory.view,
+        ...privilegeCatalog.referral.importhistory.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1236,6 +1258,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.report.participant_exporthistory.view,
         ...privilegeCatalog.report.alumni_exporthistory.view,
+        ...privilegeCatalog.referral.exporthistory.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1273,6 +1296,9 @@ export const apiList = {
   }),
   '/aspirespecific/export/referrals': createRouteObject({
     post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.referral.report.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
@@ -2120,6 +2146,9 @@ export const apiList = {
         ...privilegeCatalog.cohort.list.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.cohort.list.edit,
+      ],
     },
   }),
   '/user/v1/form/create': createRouteObject({
@@ -2208,6 +2237,9 @@ export const apiList = {
   '/user/v1/coupons': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.coupons.edit,
+      ],
     },
   }),
   '/user/v1/coupons/validate': createRouteObject({
@@ -2223,6 +2255,11 @@ export const apiList = {
   '/user/v1/coupons/code/:id': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.transactions.view,
+        ...privilegeCatalog.payment.coupons.view,
+        ...privilegeCatalog.payment.coupons.edit,
+      ],
     },
   }),
   '/user/v1/payments/report/:id': createRouteObject({
@@ -2236,6 +2273,9 @@ export const apiList = {
   '/user/v1/coupons/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.coupons.edit,
+      ],
     },
   }),
   '/user/v1/coupons/archive/:id': createRouteObject({
