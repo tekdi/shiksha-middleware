@@ -1192,6 +1192,11 @@ export const apiList = {
   '/aspirespecific/import-users/import-jobs/:import_job_id/failures':
     createRouteObject({
       get: {
+         PRIVILEGE_CHECK: [
+        ...privilegeCatalog.bulkimport.history.view,
+        ...privilegeCatalog.alumni.importhistory.view,
+        ...privilegeCatalog.referral.importhistory.view,
+      ],
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
