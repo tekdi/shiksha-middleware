@@ -664,6 +664,8 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -675,6 +677,8 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -683,6 +687,8 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -694,12 +700,16 @@ export const apiList = {
     patch: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -793,6 +803,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.feedback.view,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.events.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -800,6 +811,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.feedback.view,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.events.edit,
       ],
       ROLE_CHECK: rolesGroup.common,
     },
@@ -817,12 +829,16 @@ export const apiList = {
     patch: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -873,6 +889,8 @@ export const apiList = {
     put: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -893,6 +911,8 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -912,12 +932,16 @@ export const apiList = {
     patch: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
     delete: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.feedback.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -1056,6 +1080,10 @@ export const apiList = {
   '/aspirespecific/certificate/course-template/list': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.credential.manage.view,
+      ],
     },
   }),
   '/aspirespecific/certificate/edit-template': createRouteObject({
