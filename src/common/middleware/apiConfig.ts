@@ -2146,9 +2146,6 @@ export const apiList = {
         ...privilegeCatalog.cohort.list.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
-       PRIVILEGE_CHECK: [
-        ...privilegeCatalog.cohort.list.edit,
-      ],
     },
   }),
   '/user/v1/form/create': createRouteObject({
