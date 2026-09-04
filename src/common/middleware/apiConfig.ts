@@ -2268,6 +2268,9 @@ export const apiList = {
   '/user/v1/coupons/:id': createRouteObject({
     patch: {
       ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.payment.coupons.edit,
+      ],
     },
   }),
   '/user/v1/coupons/archive/:id': createRouteObject({
