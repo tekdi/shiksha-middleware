@@ -1083,6 +1083,7 @@ export const apiList = {
     get: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.usermgmt.applicants.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -1115,6 +1116,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.bulkimport.discord.edit,
+        ...privilegeCatalog.bulkimport.discord.view,
         ...privilegeCatalog.alumni.discordimport.edit,
         ...privilegeCatalog.alumni.discordimport.view,
       ],
@@ -2114,6 +2116,9 @@ export const apiList = {
   }),
   '/user/v1/form/copy': createRouteObject({
     post: {
+        PRIVILEGE_CHECK: [
+        ...privilegeCatalog.cohort.list.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
