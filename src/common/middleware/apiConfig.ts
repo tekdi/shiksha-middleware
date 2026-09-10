@@ -62,20 +62,20 @@ sample output from above input
 ``
  */
 const rolesGroup = {
-  common: ['admin', 'regional_admin', 'student', 'alp_program_admin'],
+  common: ['admin', 'regional_admin', 'student', 'observer'],
   regional_admin: ['regional_admin'],
-  student: ['student'],
+  student: ['student', 'observer'],
   // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
   superadmin: ['admin', 'alp_program_admin'],
   superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin'],
-  student_regional_admin: ['student', 'regional_admin', 'alp_program_admin'],
+  student_regional_admin: ['student', 'regional_admin', 'observer'],
   superadmin_regional_admin_student: [
     'admin',
     'regional_admin',
     'student',
-    'alp_program_admin',
+    'observer',
   ],
-  superadmin_student: ['admin', 'student', 'alp_program_admin'],
+  superadmin_student: ['admin', 'student', 'observer'],
 };
 // Permission codes now live in the canonical registry so `apiConfig.ts` and the
 // `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
