@@ -27,11 +27,10 @@ import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
 import { RBAC_CACHE_INVALIDATE_PATH } from '../rbac/rbac-cache.controller';
 import {
-  appendObserverFlag,
-  hasObserverRole,
-  isObserverFlagKey,
-  stripClientObserverFlag,
-} from './observer';
+  appendRoleFlags,
+  isReservedFlagKey,
+  stripClientRoleFlags,
+} from './role-flags';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
 const upload = multer({
@@ -63,10 +62,10 @@ export class MiddlewareServices {
   async use(req: Request, res: Response, next: NextFunction) {
     try {
       // First thing on every request, before any routing or authorization
-      // decision: remove anything the client sent under the reserved observer
-      // parameter. Only `forwardRequest` may set it, and only after the roles
-      // resolved for this user say it belongs there.
-      stripClientObserverFlag(req);
+      // decision: remove anything the client sent under a reserved role-flag
+      // parameter. Only `forwardRequest` may set those, and only for the roles
+      // actually resolved for this user.
+      stripClientRoleFlags(req);
 
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
@@ -249,14 +248,12 @@ export class MiddlewareServices {
           (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
-    // Observer is a read-only role, so services are told to skip the
-    // membership/ownership validations that would reject a caller who is
-    // deliberately looking at programmes they take no part in. Derived from the
-    // roles JwtStrategy resolved from the database for this tenant; a client
-    // copy of the parameter was already dropped on the way in.
-    if (hasObserverRole((req as any).userRoles)) {
-      fullUrl = appendObserverFlag(fullUrl);
-    }
+    // Tell the service which validations to relax for this caller — observer
+    // today, whatever `ROLE_FLAGS` lists tomorrow. Derived from the roles
+    // JwtStrategy resolved from the database for this tenant; client copies of
+    // these parameters were already dropped on the way in. A no-op for a caller
+    // holding no flagged role, and on public routes where the guard never ran.
+    fullUrl = appendRoleFlags(fullUrl, (req as any).userRoles);
 
     this.middlewareLogger.debug(`forwarding to: ${fullUrl}`);
 
@@ -454,10 +451,10 @@ export class MiddlewareServices {
     if (reqObject.data) {
       Object.keys(reqObject.data).forEach((key) => {
         // Multer parses the multipart body well after the inbound scrub in
-        // `use()`, so a client-supplied observer flag would otherwise survive as
-        // a form field. The name is reserved; the middleware asserts it on the
-        // query string only.
-        if (isObserverFlagKey(key)) {
+        // `use()`, so a client-supplied role flag would otherwise survive as a
+        // form field. These names are reserved; the middleware asserts them on
+        // the query string only.
+        if (isReservedFlagKey(key)) {
           return;
         }
         formData.append(key, reqObject.data[key]);
