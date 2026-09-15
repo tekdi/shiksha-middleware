@@ -26,6 +26,12 @@ import APIResponse from 'src/common/response/response';
 import { ConfigService } from '@nestjs/config';
 import { DataValidationService } from '../service/dataValidation.service';
 import { RBAC_CACHE_INVALIDATE_PATH } from '../rbac/rbac-cache.controller';
+import {
+  appendObserverFlag,
+  hasObserverRole,
+  isObserverFlagKey,
+  stripClientObserverFlag,
+} from './observer';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
 const upload = multer({
@@ -56,6 +62,12 @@ export class MiddlewareServices {
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
+      // First thing on every request, before any routing or authorization
+      // decision: remove anything the client sent under the reserved observer
+      // parameter. Only `forwardRequest` may set it, and only after the roles
+      // resolved for this user say it belongs there.
+      stripClientObserverFlag(req);
+
       const originalUrl = req.originalUrl;
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl);
@@ -237,6 +249,15 @@ export class MiddlewareServices {
           (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
       }
     }
+    // Observer is a read-only role, so services are told to skip the
+    // membership/ownership validations that would reject a caller who is
+    // deliberately looking at programmes they take no part in. Derived from the
+    // roles JwtStrategy resolved from the database for this tenant; a client
+    // copy of the parameter was already dropped on the way in.
+    if (hasObserverRole((req as any).userRoles)) {
+      fullUrl = appendObserverFlag(fullUrl);
+    }
+
     this.middlewareLogger.debug(`forwarding to: ${fullUrl}`);
 
     // Check if this is a file request
@@ -432,6 +453,13 @@ export class MiddlewareServices {
     // Append other form data (e.g., text fields)
     if (reqObject.data) {
       Object.keys(reqObject.data).forEach((key) => {
+        // Multer parses the multipart body well after the inbound scrub in
+        // `use()`, so a client-supplied observer flag would otherwise survive as
+        // a form field. The name is reserved; the middleware asserts it on the
+        // query string only.
+        if (isObserverFlagKey(key)) {
+          return;
+        }
         formData.append(key, reqObject.data[key]);
       });
     }

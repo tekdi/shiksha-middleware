@@ -48,6 +48,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const userPrivileges: string[] =
       (cachedData as UserPrivilegeRoleDto).privileges?.[tenantId] ?? [];
 
+    // Stashed for MiddlewareServices, which derives the forwarded observer flag
+    // from these roles. Reading them here costs nothing extra — the lookup above
+    // already returned them — and keeps the flag sourced from the verified JWT
+    // plus the database, never from anything the client sent.
+    const userRoles: string[] =
+      (cachedData as UserPrivilegeRoleDto).roles?.[tenantId] ?? [];
+    request.userRoles = userRoles;
+
     // Most routes are still ROLE_CHECK-only, so a user holding roles and no
     // privilege rows is legitimate today; kept non-fatal until PRIVILEGE_CHECK
     // is enforcing everywhere.
@@ -58,7 +66,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     this.middlewareLogger.log(
-      `user: ${payload.sub} username: ${payload.username} userPrivileges: ${userPrivileges}`,
+      `user: ${payload.sub} username: ${payload.username} userPrivileges: ${userPrivileges} userRoles: ${userRoles}`,
     );
     return true;
   }
