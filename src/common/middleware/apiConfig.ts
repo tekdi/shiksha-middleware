@@ -178,6 +178,26 @@ export const apiList = {
   '/prathamservice/v1/cronjob/markautoattendance': createRouteObject({
     get: {},
   }),
+  '/prathamservice/v1/placement-property/create': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_scta_ccta
+    },
+  }),
+  '/prathamservice/v1/placement-property/update': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_scta_ccta,
+    },
+  }),
+  '/prathamservice/v1/placement-property/status': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_scta_ccta,
+    },
+  }),
+  '/prathamservice/v1/placement-property/search': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.admin_scta_ccta,
+    },
+  }),
   //user-service
   '/user/v1/auth': createRouteObject(common_public_get),
   //Need confirmation in to self registration
