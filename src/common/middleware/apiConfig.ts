@@ -1778,6 +1778,17 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeGroup.cohortmembers.read,
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.usermgmt.observers.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/cohortmember/move': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.usermgmt.observers.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
