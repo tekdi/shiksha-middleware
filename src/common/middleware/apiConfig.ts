@@ -189,7 +189,7 @@ export const apiList = {
     },
   }),
   '/prathamservice/v1/placement-property/status': createRouteObject({
-    post: {
+    patch: {
       ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
