@@ -807,6 +807,8 @@ export const apiList = {
         ...privilegeCatalog.alumni.feedback.view,
         ...privilegeCatalog.alumni.feedback.edit,
         ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.report.alumni_interest.view,
+        ...privilegeCatalog.report.alumni_longitudinal.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2438,6 +2440,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.view,
+       ...privilegeCatalog.report.alumni_omfeedback.view
       ],
       ROLE_CHECK: rolesGroup.common,
     },
