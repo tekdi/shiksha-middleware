@@ -1835,6 +1835,25 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // Cohort-less sibling of the route above, for reports scoped by a pathway
+  // rather than a cohort. Same admin-only role gate: it returns per-user
+  // country data, so an unlisted route (which this middleware forwards with no
+  // check at all) would let any authenticated caller read it.
+  '/user/v1/aspire-leaders-specific/report-country-filter': createRouteObject({
+    post: {
+     PRIVILEGE_CHECK: [
+        ...privilegeCatalog.report.alumni_pathway.view,
+        ...privilegeCatalog.report.alumni_interest.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_longitudinal.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
+        ...privilegeCatalog.report.alumni_omfeedback.view,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Create Interest
   '/user/v1/interest/create': createRouteObject({
     post: {
