@@ -152,6 +152,9 @@ export const apiList = {
         ...privilegeCatalog.report.participant_masterclass.view,
         ...privilegeCatalog.alumni.discordimport.view,
         ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.payment.coupons.view,
+        ...privilegeCatalog.payment.coupons.edit,
+        ...privilegeCatalog.payment.transactions.view,
       ],
     },
   }),
@@ -1782,6 +1785,17 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeGroup.cohortmembers.read,
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.usermgmt.observers.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
+    },
+  }),
+  '/user/v1/cohortmember/move': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.cohortmembers.read,
+        ...privilegeCatalog.usermgmt.observers.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
@@ -1912,6 +1926,14 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.report.alumni_pathway.view,
+        ...privilegeCatalog.report.alumni_interest.view,
+        ...privilegeCatalog.report.alumni_longitudinal.view,
+        ...privilegeCatalog.report.alumni_omfeedback.view,
+        ...privilegeCatalog.report.alumni_assessment.view,
+        ...privilegeCatalog.report.alumni_content.view,
+        ...privilegeCatalog.report.alumni_masterclass.view,
+        ...privilegeCatalog.report.alumni_openmasterclass.view,
       ],
       ROLE_CHECK: rolesGroup.common,
     },
