@@ -1079,6 +1079,8 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.view,
         ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1089,6 +1091,8 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit
       ],
     },
   }),
@@ -2393,6 +2397,14 @@ export const apiList = {
   //event
   '/event-service/config': createRouteObject({
     get: {
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.events.view,
+        ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
   }),
