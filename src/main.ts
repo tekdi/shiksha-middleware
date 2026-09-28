@@ -10,6 +10,7 @@ import { json } from 'express';
 async function bootstrap() {
   dotenv.config(); // Load environment variables from .env file
   const app = await NestFactory.create(AppModule);
+  app.getHttpAdapter().getInstance().set('trust proxy', true);
 
   const configService = app.get(ConfigService);
 
