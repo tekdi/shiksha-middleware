@@ -33,6 +33,7 @@ export class GatewayService {
     oheaders: any,
     changeResponse: boolean,
     res: Response,
+    clientIp?: string,
   ) {
     let newheaders = {
       tenantId: oheaders['tenantid'],
@@ -48,6 +49,18 @@ export class GatewayService {
     }
     if (oheaders['x-erp-secret']) {
       newheaders['x-erp-secret'] = oheaders['x-erp-secret'];
+    }
+    // Downstream services (e.g. pratham-microservice's ERP webhook) do their own
+    // IP-based access control off x-forwarded-for. Plain axios calls don't forward
+    // this automatically, so build/extend the chain explicitly before proxying.
+    const forwardedFor = [oheaders['x-forwarded-for'], clientIp]
+      .filter(Boolean)
+      .join(', ');
+    if (forwardedFor) {
+      newheaders['x-forwarded-for'] = forwardedFor;
+    }
+    if (clientIp) {
+      newheaders['x-real-ip'] = clientIp;
     }
     this.middlewareLogger.log(
       `[GatewayService] Outbound request: ${buildCurl(method, url, newheaders, body)}`,
@@ -121,12 +134,19 @@ export class GatewayService {
     method: string,
     formData: any,
     token?: string,
+    clientIp?: string,
+    incomingForwardedFor?: string,
   ) {
     try {
       let response: any;
+      const forwardedFor = [incomingForwardedFor, clientIp]
+        .filter(Boolean)
+        .join(', ');
       const headers = {
         ...formData.getHeaders(),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(forwardedFor ? { 'x-forwarded-for': forwardedFor } : {}),
+        ...(clientIp ? { 'x-real-ip': clientIp } : {}),
       };
       this.middlewareLogger.log(
         `[GatewayService] Outbound multipart request: ${buildCurl(method, url, headers)}`,

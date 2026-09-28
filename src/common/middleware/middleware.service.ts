@@ -148,6 +148,8 @@ export class MiddlewareServices {
           req.method,
           formData,
           token,
+          req.ip,
+          req.headers['x-forwarded-for'] as string,
         );
       }
     } else {
@@ -158,6 +160,7 @@ export class MiddlewareServices {
         req.headers,
         apiList[reqUrl].changeResponse,
         res,
+        req.ip,
       );
     }
   }
