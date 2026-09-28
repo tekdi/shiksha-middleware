@@ -272,6 +272,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeGroup.lms.create,
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
     },
   }),
@@ -473,6 +474,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeGroup.lms.create,
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
     },
   }),
@@ -543,6 +545,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -551,6 +554,7 @@ export const apiList = {
     get: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -669,6 +673,8 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -682,6 +688,8 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -692,6 +700,8 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -705,6 +715,8 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -713,6 +725,8 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -807,7 +821,7 @@ export const apiList = {
         ...privilegeCatalog.alumni.feedback.view,
         ...privilegeCatalog.alumni.feedback.edit,
         ...privilegeCatalog.alumni.events.edit,
-        
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -837,6 +851,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -845,6 +860,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -867,6 +883,9 @@ export const apiList = {
     get: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.feedback.view,
+        ...privilegeCatalog.alumni.events.view,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -897,6 +916,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -919,6 +939,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -940,6 +961,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -948,6 +970,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.feedback.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -1080,7 +1103,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.view,
         ...privilegeCatalog.credential.manage.view,
         ...privilegeCatalog.alumni.pathway.view,
-        ...privilegeCatalog.alumni.pathway.edit
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1092,7 +1115,7 @@ export const apiList = {
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.credential.manage.view,
         ...privilegeCatalog.alumni.pathway.view,
-        ...privilegeCatalog.alumni.pathway.edit
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
     },
   }),
@@ -1116,6 +1139,9 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1640,6 +1666,7 @@ export const apiList = {
         ...privilegeCatalog.alumni.importhistory.view,
         ...privilegeCatalog.payment.transactions.view,
         ...privilegeCatalog.payment.coupons.view,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
@@ -2445,6 +2472,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2453,7 +2481,8 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.view,
-       ...privilegeCatalog.report.alumni_omfeedback.view
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.report.alumni_omfeedback.view
       ],
       ROLE_CHECK: rolesGroup.common,
     },
@@ -2468,6 +2497,7 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
         ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2488,6 +2518,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2518,12 +2549,14 @@ export const apiList = {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.common,
     },
     patch: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
@@ -2561,6 +2594,7 @@ export const apiList = {
     post: {
       PRIVILEGE_CHECK: [
         ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
