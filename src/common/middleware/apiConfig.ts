@@ -1684,6 +1684,7 @@ export const apiList = {
         ...privilegeCatalog.usermgmt.applicants.edit,
         ...privilegeCatalog.usermgmt.cohortstudents.edit,
         ...privilegeCatalog.usermgmt.regionaladmin.edit,
+        ...privilegeCatalog.alumni.pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin.concat(
         rolesGroup.student,
