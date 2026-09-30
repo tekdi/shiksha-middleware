@@ -67,7 +67,8 @@ const rolesGroup = {
   student: ['student', 'observer'],
   // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
   superadmin: ['admin', 'alp_program_admin'],
-  superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin'],
+  // Added finance_admin role to superadmin group for testing purpose, will be removed once we devlop a saperate functionality of admin user create
+  superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin','finance_admin','reporting_admin','elp_program_admin','outreach_admin','tech_admin'],
   student_regional_admin: ['student', 'regional_admin', 'observer'],
   superadmin_regional_admin_student: [
     'admin',
