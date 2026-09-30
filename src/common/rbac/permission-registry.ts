@@ -136,6 +136,8 @@ export const CATALOG_PRIVILEGE_CODES = [
   'usermgmt.applicants.view',
   'usermgmt.cohortstudents.edit',
   'usermgmt.cohortstudents.view',
+  'usermgmt.manageadminusers.edit',
+  'usermgmt.manageadminusers.view',
   'usermgmt.regionaladmin.edit',
   'usermgmt.regionaladmin.view',
   'usermgmt.observers.view',
