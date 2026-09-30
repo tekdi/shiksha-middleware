@@ -2507,8 +2507,13 @@ export const apiList = {
   }),
   '/event-service/storage/presigned-url': createRouteObject({
     post: {
-      PRIVILEGE_CHECK: [
+       PRIVILEGE_CHECK: [
+        ...privilegeCatalog.alumni.events.view,
         ...privilegeCatalog.alumni.events.edit,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.modulemgmt.modules.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin,
     },
