@@ -1088,6 +1088,31 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // Cohort shortlisting background jobs (aspire-specific-service)
+  // POST starts a job (userId is appended from the token by forwardRequest);
+  // GET lists jobs for a cohort (?cohortId=&status=&limit=&offset=)
+  '/aspirespecific/import-users/shortlisting/jobs': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [...privilegeCatalog.cohort.list.edit],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+    get: {
+      PRIVILEGE_CHECK: [...privilegeCatalog.cohort.list.view],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/import-users/shortlisting/jobs/:jobId': createRouteObject({
+    get: {
+      PRIVILEGE_CHECK: [...privilegeCatalog.cohort.list.view],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/aspirespecific/import-users/shortlisting/jobs/:jobId/failures': createRouteObject({
+    get: {
+      PRIVILEGE_CHECK: [...privilegeCatalog.cohort.list.view],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   //Certificate Genration API
   '/aspirespecific/certificate/cron/trigger': createRouteObject({
     post: {
