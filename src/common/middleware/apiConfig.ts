@@ -178,6 +178,9 @@ export const apiList = {
   '/prathamservice/v1/cronjob/markautoattendance': createRouteObject({
     get: {},
   }),
+  '/prathamservice/v1/cronjob/markCourseCompleted': createRouteObject({
+    get: {},
+  }),
   '/prathamservice/v1/placement-property/create': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.admin_scta_ccta
@@ -1701,6 +1704,7 @@ export const publicAPI = [
   '/api/course/v1/hierarchy/:identifier',
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/cronjob/markautoattendance',
+  '/prathamservice/v1/cronjob/markCourseCompleted',
   '/prathamservice/v1/import-user',
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
