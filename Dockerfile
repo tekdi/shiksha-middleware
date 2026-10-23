@@ -1,4 +1,4 @@
-FROM node:20 as dependencies
+FROM node:22.23.4-alpine
 WORKDIR usr/src/app
 ENV NODE_TLS_REJECT_UNAUTHORIZED=1
 COPY package*.json  ./
