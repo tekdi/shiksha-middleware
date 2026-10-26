@@ -8,8 +8,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -21,8 +21,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -34,8 +34,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -47,8 +47,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -60,8 +60,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -73,8 +73,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -86,8 +86,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -99,8 +99,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -112,8 +112,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -125,8 +125,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -138,8 +138,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -151,8 +151,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -164,8 +164,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -177,8 +177,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -190,8 +190,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -203,8 +203,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -216,8 +216,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -229,8 +229,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -242,8 +242,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -255,8 +255,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -268,8 +268,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -281,8 +281,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -294,8 +294,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -307,8 +307,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -320,8 +320,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -333,8 +333,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -346,8 +346,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -359,8 +359,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -372,8 +372,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -385,8 +385,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -398,8 +398,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -411,8 +411,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -424,8 +424,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -437,8 +437,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -450,8 +450,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -463,8 +463,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -476,8 +476,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -489,8 +489,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -502,8 +502,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -515,8 +515,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -528,8 +528,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -541,8 +541,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -554,8 +554,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -567,8 +567,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -580,8 +580,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -593,8 +593,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -606,8 +606,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -619,8 +619,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -632,8 +632,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -645,8 +645,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -658,8 +658,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -671,8 +671,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -684,8 +684,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -697,8 +697,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -710,8 +710,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -723,8 +723,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -736,8 +736,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -749,8 +749,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -762,8 +762,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -775,8 +775,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -788,8 +788,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -801,8 +801,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -814,8 +814,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -827,8 +827,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -840,8 +840,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -853,8 +853,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -866,8 +866,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -879,8 +879,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -892,8 +892,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -905,8 +905,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -918,8 +918,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -931,8 +931,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -944,8 +944,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -957,8 +957,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -970,8 +970,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -983,8 +983,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -996,8 +996,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1009,8 +1009,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1023,8 +1023,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1036,8 +1036,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1049,8 +1049,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1062,8 +1062,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1075,8 +1075,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1088,8 +1088,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1101,8 +1101,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1114,8 +1114,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1127,8 +1127,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1140,8 +1140,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1153,8 +1153,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1166,8 +1166,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1179,8 +1179,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1192,8 +1192,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1205,8 +1205,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1218,8 +1218,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1231,8 +1231,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1244,8 +1244,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1257,8 +1257,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1270,8 +1270,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1283,8 +1283,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1296,8 +1296,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1309,8 +1309,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1322,8 +1322,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1335,8 +1335,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1348,8 +1348,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1361,8 +1361,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1374,8 +1374,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1387,8 +1387,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1400,8 +1400,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1413,8 +1413,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1426,8 +1426,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1452,8 +1452,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1465,8 +1465,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1478,8 +1478,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1491,8 +1491,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1504,8 +1504,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1517,8 +1517,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1530,8 +1530,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1543,8 +1543,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1556,8 +1556,8 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		},
@@ -1569,8 +1569,73 @@
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "cms",
-					"packageName": "shiksha-cms"
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
+				}
+			]
+		},
+			{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/create",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/read/:identifier",
+			"type": "GET",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/update/:identifier",
+			"type": "PATCH",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/review/:identifier",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/interface/v1/learning-service/assessment/v3/items/retire/:identifier",
+			"type": "DELETE",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "ecml-cms",
+					"packageName": "shiksha-ecml-cms"
 				}
 			]
 		}
