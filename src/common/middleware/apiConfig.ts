@@ -183,22 +183,18 @@ export const apiList = {
   }),
   '/prathamservice/v1/placement-property/create': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_scta_ccta
     },
   }),
   '/prathamservice/v1/placement-property/update': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
   '/prathamservice/v1/placement-property/status': createRouteObject({
     patch: {
-      ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
   '/prathamservice/v1/placement-property/search': createRouteObject({
     post: {
-      ROLE_CHECK: rolesGroup.admin_scta_ccta,
     },
   }),
   //user-service
@@ -1705,6 +1701,10 @@ export const publicAPI = [
   '/prathamservice/v1/cronjob',
   '/prathamservice/v1/cronjob/markautoattendance',
   '/prathamservice/v1/cronjob/markCourseCompleted',
+   '/prathamservice/v1/placement-property/create',
+  '/prathamservice/v1/placement-property/update',
+  '/prathamservice/v1/placement-property/status',
+  '/prathamservice/v1/placement-property/search',
   '/prathamservice/v1/import-user',
   '/user/v1/fields/options/delete/:identifier',
   '/user/v1/check',
