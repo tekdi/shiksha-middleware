@@ -43,6 +43,11 @@ const upload = multer({
 // The service owns parsing, disk storage, and size validation — no buffering here.
 const RAW_PIPE_ENDPOINTS = new Set(['/assessment/v1/file/upload']);
 
+// Files the LMS stores on local disk and serves statically. Opened from <img>, <iframe>
+// and links, which cannot send Authorization/tenantid, so these skip auth and the
+// whitelist: read-only, streamed with the LMS's own Content-Type.
+const LMS_UPLOADS_PREFIX = '/lms-service/uploads/';
+
 /** Paths that return binary (arraybuffer + res.end in gateway, not res.json). */
 const ENDPOINT_FILE_TYPE_DEFAULTS: Record<string, string> = {
   '/aspirespecific/certificate/render-PDF': 'pdf',
@@ -68,6 +73,10 @@ export class MiddlewareServices {
       stripClientRoleFlags(req);
 
       const originalUrl = req.originalUrl;
+      if (originalUrl.split('?')[0].startsWith(LMS_UPLOADS_PREFIX)) {
+        return await this.streamLmsUpload(req, res);
+      }
+
       let reqUrl = originalUrl.split('?')[0];
       const withPattern = this.matchUrl(reqUrl);
       reqUrl = withPattern || reqUrl;
@@ -412,6 +421,55 @@ export class MiddlewareServices {
 
       proxyReq.on('error', reject);
       req.pipe(proxyReq);
+    });
+  }
+
+  // Stream an uploaded file from the LMS to the client without buffering it.
+  streamLmsUpload(req: Request, res: Response): Promise<void> {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      throw new HttpException(
+        'SHIKSHA_API_WHITELIST: URL not whitelisted',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    // req.path is relative to the middleware mount point, so use originalUrl
+    const filePath = req.originalUrl.split('?')[0];
+    // express.static on the LMS also rejects traversal; refuse it here too
+    if (decodeURIComponent(filePath).split('/').includes('..')) {
+      throw new BadRequestException('Invalid file path');
+    }
+    const target = new URL(filePath, this.configService.get('LMS_SERVICE'));
+    const transport = target.protocol === 'https:' ? https : http;
+
+    return new Promise((resolve, reject) => {
+      const headers: Record<string, string> = {};
+      // Range lets browsers seek in videos and page through large PDFs
+      for (const h of ['range', 'if-none-match', 'if-modified-since']) {
+        if (req.headers[h]) headers[h] = req.headers[h] as string;
+      }
+      const proxyReq = transport.request(
+        target,
+        { method: req.method, headers },
+        (proxyRes) => {
+          const passHeaders = [
+            'content-type', 'content-length', 'content-range', 'accept-ranges',
+            'etag', 'last-modified', 'cache-control',
+          ];
+          for (const h of passHeaders) {
+            if (proxyRes.headers[h]) res.setHeader(h, proxyRes.headers[h]);
+          }
+          // helmet's defaults would stop other origins from embedding the file
+          res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+          res.removeHeader('X-Frame-Options');
+          res.removeHeader('Content-Security-Policy');
+          res.status(proxyRes.statusCode);
+          proxyRes.pipe(res);
+          proxyRes.on('end', resolve);
+          proxyRes.on('error', reject);
+        },
+      );
+      proxyReq.on('error', reject);
+      proxyReq.end();
     });
   }
 
