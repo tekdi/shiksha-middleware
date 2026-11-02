@@ -1265,6 +1265,13 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // Direct CSV/XLSX user import. It creates users, so it needs edit (not view).
+  '/user/v1/bulk-import/users': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [...privilegeCatalog.bulkimport.application.edit],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
 
   '/aspirespecific/import-users/upload': createRouteObject({
     post: {
