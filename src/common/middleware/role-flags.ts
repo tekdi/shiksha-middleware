@@ -82,6 +82,25 @@ export function stripReservedFlagsFromQueryString(queryString: string): string {
   return kept.length === pairs.length ? queryString : kept.join('&');
 }
 
+/**
+ * Set `key` to `value` in a URL's query string, dropping every copy the URL
+ * already had (matched on the decoded key), so the outgoing URL carries exactly
+ * one. The rest of the query is left byte-for-byte intact.
+ *
+ * Appending instead would send the parameter twice when the client already sent
+ * it, and Express parses a repeated parameter into an array.
+ */
+export function setQueryParam(url: string, key: string, value: string): string {
+  const [path, queryString] = splitAtFirstQuestionMark(url);
+  const kept = queryString
+    ? queryString
+        .split('&')
+        .filter((pair) => pair && decodeQueryKey(pair.split('=')[0]) !== key)
+    : [];
+  kept.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+  return `${path}?${kept.join('&')}`;
+}
+
 /** Delete the reserved keys from a parsed query/body object, in place. */
 export function stripReservedFlagsFromObject(value: unknown): void {
   if (
