@@ -30,6 +30,7 @@ import {
   appendRoleFlags,
   isReservedFlagKey,
   stripClientRoleFlags,
+  setQueryParam,
 } from './role-flags';
 import * as multer from 'multer';
 import * as FormData from 'form-data';
@@ -252,9 +253,9 @@ export class MiddlewareServices {
       // there and nothing is injected.
       const userId: string | undefined = (req as any).userId;
       if (userId) {
-        fullUrl =
-          fullUrl +
-          (fullUrl.includes('?') ? `&userId=${userId}` : `?userId=${userId}`);
+        // Replace, not append: a client-sent userId must neither survive nor be
+        // duplicated (a repeated param reaches the service as an array).
+        fullUrl = setQueryParam(fullUrl, 'userId', userId);
       }
     }
     // Tell the service which validations to relax for this caller — observer
