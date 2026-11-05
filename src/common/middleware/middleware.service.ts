@@ -42,7 +42,11 @@ const upload = multer({
 
 // Endpoints where the middleware pipes raw bytes directly to the service.
 // The service owns parsing, disk storage, and size validation — no buffering here.
-const RAW_PIPE_ENDPOINTS = new Set(['/assessment/v1/file/upload']);
+const RAW_PIPE_ENDPOINTS = new Set([
+  '/assessment/v1/file/upload',
+  // Video lesson files (up to 500MB) — LMS validates type and size itself
+  '/lms-service/v1/media/upload-video',
+]);
 
 // Files the LMS stores on local disk and serves statically. Opened from <img>, <iframe>
 // and links, which cannot send Authorization/tenantid, so these skip auth and the
@@ -63,7 +67,7 @@ export class MiddlewareServices {
     private permissionService: PermissionsService,
     private configService: ConfigService,
     private dataValidationService: DataValidationService,
-  ) {}
+  ) { }
 
   async use(req: Request, res: Response, next: NextFunction) {
     try {
@@ -280,7 +284,7 @@ export class MiddlewareServices {
     // For endpoints in RAW_PIPE_ENDPOINTS: pipe raw bytes directly to the service.
     // No multer parsing in middleware — zero memory buffering, service owns everything.
     if (req.is('multipart/form-data') && RAW_PIPE_ENDPOINTS.has(reqUrl)) {
-      return await this.streamRawToService(req, fullUrl);
+      return await this.streamRawToService(req, fullUrl, res);
     }
 
     // Handle multipart/form-data first (file uploads)
@@ -333,10 +337,10 @@ export class MiddlewareServices {
 
     // Check if this is a webhook endpoint that needs raw body preservation
     const isWebhookEndpoint = webhookEndpoints.includes(reqUrl);
-    
+
     // For webhook endpoints, use raw body if available to preserve exact formatting
-    const bodyToForward = isWebhookEndpoint && (req as any).rawBody 
-      ? (req as any).rawBody 
+    const bodyToForward = isWebhookEndpoint && (req as any).rawBody
+      ? (req as any).rawBody
       : req.body;
 
     // Handle regular JSON requests
@@ -387,7 +391,7 @@ export class MiddlewareServices {
 
   // Pipe raw multipart bytes directly to the target service using Node's built-in http/https.
   // req is a Readable stream — bytes flow client → middleware → service with zero RAM buffering.
-  streamRawToService(req: Request, fullUrl: string): Promise<any> {
+  streamRawToService(req: Request, fullUrl: string, res?: Response): Promise<any> {
     return new Promise((resolve, reject) => {
       const targetUrl = new URL(fullUrl);
       const isHttps = targetUrl.protocol === 'https:';
@@ -406,6 +410,9 @@ export class MiddlewareServices {
           headers,
         },
         (proxyRes: any) => {
+          if (res && proxyRes.statusCode >= 400) {
+            res.status(proxyRes.statusCode);
+          }
           const chunks: Uint8Array[] = [];
           proxyRes.on('data', (chunk: Uint8Array) => chunks.push(chunk));
           proxyRes.on('end', () => {
@@ -421,6 +428,7 @@ export class MiddlewareServices {
       );
 
       proxyReq.on('error', reject);
+      req.on('aborted', () => proxyReq.destroy());
       req.pipe(proxyReq);
     });
   }
