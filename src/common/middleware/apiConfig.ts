@@ -1149,6 +1149,29 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // LMS-service certificate routes (same access rules as the aspirespecific ones)
+  '/lms-service/v1/certificate/templates-list': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/lms-service/v1/certificate/course-template': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/certificate/templates-list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
