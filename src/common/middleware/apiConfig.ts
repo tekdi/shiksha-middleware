@@ -70,7 +70,7 @@ const rolesGroup = {
   // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
   superadmin: ['admin', 'alp_program_admin'],
   // Added finance_admin role to superadmin group for testing purpose, will be removed once we devlop a saperate functionality of admin user create
-  superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin','finance_admin','reporting_admin','elp_program_admin','outreach_admin','tech_admin'],
+  superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin', 'finance_admin', 'reporting_admin', 'elp_program_admin', 'outreach_admin', 'tech_admin'],
   student_regional_admin: ['student', 'regional_admin', 'observer', 'trainer'],
   superadmin_regional_admin_student: [
     'admin',
@@ -166,11 +166,11 @@ export const apiList = {
   }),
   '/lms-service/v1/course/aggregate-content': createRouteObject({
     post: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.report.alumni_masterclass.view,
         ...privilegeCatalog.report.participant_completion_criteria_report.view,
         ...privilegeCatalog.report.participant_masterclass.view,
-            ],
+      ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
@@ -500,6 +500,17 @@ export const apiList = {
 
   // Media API
   '/lms-service/v1/media/upload': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
+    },
+  }),
+  // Video lesson file upload — same access as /media/upload; streamed raw (RAW_PIPE_ENDPOINTS)
+  '/lms-service/v1/media/upload-video': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
       PRIVILEGE_CHECK: [
@@ -1138,6 +1149,29 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // LMS-service certificate routes (same access rules as the aspirespecific ones)
+  '/lms-service/v1/certificate/templates-list': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.view,
+        ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  '/lms-service/v1/certificate/course-template': createRouteObject({
+    post: {
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.modulemgmt.modules.edit,
+        ...privilegeCatalog.credential.manage.view,
+        ...privilegeCatalog.alumni.pathway.view,
+        ...privilegeCatalog.alumni.pathway.edit,
+      ],
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
   '/aspirespecific/certificate/templates-list': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
@@ -1308,11 +1342,11 @@ export const apiList = {
   '/aspirespecific/import-users/import-jobs/:import_job_id/failures':
     createRouteObject({
       get: {
-         PRIVILEGE_CHECK: [
-        ...privilegeCatalog.bulkimport.history.view,
-        ...privilegeCatalog.alumni.importhistory.view,
-        ...privilegeCatalog.referral.importhistory.view,
-      ],
+        PRIVILEGE_CHECK: [
+          ...privilegeCatalog.bulkimport.history.view,
+          ...privilegeCatalog.alumni.importhistory.view,
+          ...privilegeCatalog.referral.importhistory.view,
+        ],
         ROLE_CHECK: rolesGroup.superadmin_regional_admin,
       },
     }),
@@ -1361,7 +1395,7 @@ export const apiList = {
   '/aspirespecific/export/course-progress': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
-              ...privilegeCatalog.report.participant_course_progress.view,
+        ...privilegeCatalog.report.participant_course_progress.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1401,7 +1435,7 @@ export const apiList = {
   }),
   '/aspirespecific/export/event-assessment': createRouteObject({
     post: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.report.participant_completion_criteria_report.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -1939,7 +1973,7 @@ export const apiList = {
   // check at all) would let any authenticated caller read it.
   '/user/v1/aspire-leaders-specific/report-country-filter': createRouteObject({
     post: {
-     PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.report.alumni_pathway.view,
         ...privilegeCatalog.report.alumni_interest.view,
         ...privilegeCatalog.report.alumni_assessment.view,
@@ -2337,7 +2371,7 @@ export const apiList = {
   }),
   '/user/v1/form/copy': createRouteObject({
     post: {
-        PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.cohort.list.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -2353,7 +2387,7 @@ export const apiList = {
   }),
   '/user/v1/form/update/:formId': createRouteObject({
     patch: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.cohort.list.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
@@ -2486,7 +2520,7 @@ export const apiList = {
   }),
   '/user/v1/country/list': createRouteObject({
     post: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.payment.coupons.view,
         ...privilegeCatalog.notification.inapp.view,
         ...privilegeCatalog.usermgmt.cohortstudents.view,
@@ -2530,7 +2564,7 @@ export const apiList = {
   //event
   '/event-service/config': createRouteObject({
     get: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.view,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.pathway.view,
@@ -2543,7 +2577,7 @@ export const apiList = {
   }),
   '/event-service/storage/presigned-url': createRouteObject({
     post: {
-       PRIVILEGE_CHECK: [
+      PRIVILEGE_CHECK: [
         ...privilegeCatalog.alumni.events.view,
         ...privilegeCatalog.alumni.events.edit,
         ...privilegeCatalog.alumni.pathway.view,
