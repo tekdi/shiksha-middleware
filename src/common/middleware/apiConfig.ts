@@ -77,6 +77,9 @@ const rolesGroup = {
     'observer',
   ],
   superadmin_student: ['admin', 'student', 'observer'],
+  // Aspire Connect admin APIs: same role list as the user service's
+  // ConnectAdminGuard (CONNECT_ADMIN_ROLE_CODES), so both layers agree.
+  connect_admin: ['admin'],
 };
 // Permission codes now live in the canonical registry so `apiConfig.ts` and the
 // `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
@@ -1061,6 +1064,62 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // Aspire Connect (user-service src/connect). Membership (joined / suspended)
+  // is checked by the user service; admin routes are re-checked there too.
+  '/user/v1/connect/me': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.superadmin_student },
+    patch: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/me/leave': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/options': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/join': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/reports': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/profile/:userId': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  '/user/v1/connect/profile/:userId/linkedin-click': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.superadmin_student },
+  }),
+  // Aspire Connect admin
+  '/user/v1/connect/admin/career-domain-groups': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.connect_admin },
+    post: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/career-domain-groups/:id': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/career-domains': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.connect_admin },
+    post: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/career-domains/:id': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/support-offerings': createRouteObject({
+    get: { ROLE_CHECK: rolesGroup.connect_admin },
+    post: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/support-offerings/:id': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  // must stay above safety-reports/:id: the first matching pattern wins
+  '/user/v1/connect/admin/safety-reports/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  '/user/v1/connect/admin/safety-reports/:id': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
   // Referral bulk CSV import (aspire-specific-service)
   '/aspirespecific/import-users/referrals/upload': createRouteObject({
     post: {
@@ -1690,6 +1749,13 @@ export const apiList = {
     post: {
       // PRIVILEGE_CHECK: privilegeGroup.users.create,
       // ROLE_CHECK: rolesGroup.admin_team_leader_teacher,
+    },
+  }),
+  // Admin-type user creation (admin users, regional admins, observers);
+  // user/v1/create only accepts the student role.
+  '/user/v1/admin/create': createRouteObject({
+    post: {
+
     },
   }),
   '/user/v1/read/:userId': createRouteObject({
@@ -3306,6 +3372,7 @@ export const publicAPI = [
   '/health/ready', // Readiness probe - must be public for Kubernetes
   '/user/v1/auth',
   '/user/v1/create',
+  '/user/v1/admin/create',
   '/user/v1/fields/options/read',
   '/user/v1/tenant/read',
   '/user/v1/tenant/create',
