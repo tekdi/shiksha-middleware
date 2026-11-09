@@ -1149,6 +1149,38 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
   }),
+  // LMS-service certificate routes used by the learner app: issue on course
+  // completion, list own certificates, view (HTML), download (PDF), image URL.
+  '/lms-service/v1/certificate/issue': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/lms-service/v1/certificate/user-certificates': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/lms-service/v1/certificate/user/:userId': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/lms-service/v1/certificate/render': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/lms-service/v1/certificate/render-PDF': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
+  '/lms-service/v1/certificate/url': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.common,
+    },
+  }),
   // LMS-service certificate routes (same access rules as the aspirespecific ones)
   '/lms-service/v1/certificate/templates-list': createRouteObject({
     post: {
