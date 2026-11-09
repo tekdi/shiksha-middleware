@@ -56,6 +56,7 @@ const LMS_UPLOADS_PREFIX = '/lms-service/uploads/';
 /** Paths that return binary (arraybuffer + res.end in gateway, not res.json). */
 const ENDPOINT_FILE_TYPE_DEFAULTS: Record<string, string> = {
   '/aspirespecific/certificate/render-PDF': 'pdf',
+  '/lms-service/v1/certificate/render-PDF': 'pdf',
 };
 
 @Injectable()
