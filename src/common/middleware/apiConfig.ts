@@ -3047,6 +3047,14 @@ export const apiList = {
     common_public_get,
     '/content/v3/read/:identifier',
   ),
+  '/action/content/v3/retire/:identifier': createRouteObject(
+    {
+      delete: {
+        ...common_role_check,
+      },
+    },
+    '/content/v3/retire/:identifier',
+  ),
   '/action/questionset/private/v2/read/:identifier': createRouteObject(
     common_public_get,
     '/questionset/v5/private/read/:identifier',
