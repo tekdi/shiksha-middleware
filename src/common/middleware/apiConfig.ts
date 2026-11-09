@@ -2285,6 +2285,12 @@ export const apiList = {
     post: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
+    get: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+    delete: {
+      ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
   }),
   '/user/v1/assignprivilege': createRouteObject({
     post: {
