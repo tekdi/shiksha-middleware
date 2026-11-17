@@ -896,10 +896,10 @@ export const apiList = {
   }),
   '/assessment/v1/tests/:id/hierarchy': createRouteObject({
     get: {
-      PRIVILEGE_CHECK: [
-        ...privilegeCatalog.bulkimport.assessment.view,
-        ...privilegeCatalog.bulkimport.assessment.edit,
-      ],
+      // PRIVILEGE_CHECK: [
+      //   ...privilegeCatalog.bulkimport.assessment.view,
+      //   ...privilegeCatalog.bulkimport.assessment.edit,
+      // ],
       ROLE_CHECK: rolesGroup.common,
     },
   }),
