@@ -61,25 +61,29 @@ sample output from above input
 }
 ``
  */
-// Learner roles. Swadhaar has no `student` role: its learners hold `trainer`, so
-// `trainer` sits beside `student` in every group that grants learner access.
+// Learner roles. Swadhaar has no `student` role: its learners hold `trainer`
+// (Trainer/CFL Incharge), `cfl` (District Incharge) or `arm` (ARM), which share
+// one privilege set, so all three sit beside `student` in every group that
+// grants learner access.
 const rolesGroup = {
-  common: ['admin', 'regional_admin', 'student', 'observer', 'trainer'],
+  common: ['admin', 'regional_admin', 'student', 'observer', 'trainer', 'cfl', 'arm'],
   regional_admin: ['regional_admin'],
-  student: ['student', 'observer', 'trainer'],
+  student: ['student', 'observer', 'trainer', 'cfl', 'arm'],
   // Added alp_program_admin role to superadmin group for testing purpose, will be removed once alp_program_admin role is added to the user_roles_mapping table
   superadmin: ['admin', 'alp_program_admin'],
   // Added finance_admin role to superadmin group for testing purpose, will be removed once we devlop a saperate functionality of admin user create
   superadmin_regional_admin: ['admin', 'regional_admin', 'alp_program_admin', 'finance_admin', 'reporting_admin', 'elp_program_admin', 'outreach_admin', 'tech_admin'],
-  student_regional_admin: ['student', 'regional_admin', 'observer', 'trainer'],
+  student_regional_admin: ['student', 'regional_admin', 'observer', 'trainer', 'cfl', 'arm'],
   superadmin_regional_admin_student: [
     'admin',
     'regional_admin',
     'student',
     'observer',
     'trainer',
+    'cfl',
+    'arm',
   ],
-  superadmin_student: ['admin', 'student', 'observer', 'trainer'],
+  superadmin_student: ['admin', 'student', 'observer', 'trainer', 'cfl', 'arm'],
 };
 // Permission codes now live in the canonical registry so `apiConfig.ts` and the
 // `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
