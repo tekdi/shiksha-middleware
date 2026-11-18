@@ -1085,10 +1085,10 @@ export const apiList = {
   '/user/v1/connect/reports': createRouteObject({
     post: { ROLE_CHECK: rolesGroup.superadmin_student },
   }),
-  '/user/v1/connect/profile/:userId': createRouteObject({
+  '/user/v1/connect/profile/:connectUserId': createRouteObject({
     get: { ROLE_CHECK: rolesGroup.superadmin_student },
   }),
-  '/user/v1/connect/profile/:userId/linkedin-click': createRouteObject({
+  '/user/v1/connect/profile/:connectUserId/linkedin-click': createRouteObject({
     post: { ROLE_CHECK: rolesGroup.superadmin_student },
   }),
   // Aspire Connect admin
