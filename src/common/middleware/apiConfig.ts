@@ -1960,6 +1960,12 @@ export const apiList = {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin_student,
     },
   }),
+  // Swadhaar Task 16a: the caller's own groups and their role in each (learner / reviewer).
+  // Any signed-in user: the user service reads the user from the token, so no one sees
+  // another user's groups. The JWT and tenantid are checked above for every non-public route.
+  '/user/v1/cohortmember/my-groups': createRouteObject({
+    get: {},
+  }),
   '/user/v1/cohortmember/list-application': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
