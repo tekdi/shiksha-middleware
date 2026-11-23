@@ -1992,6 +1992,11 @@ export const apiList = {
   '/user/v1/cohortmember/my-groups': createRouteObject({
     get: {},
   }),
+    // Swadhaar Task 17: the Learners the caller may review. Any signed-in user, like my-groups:
+  // the user service reads the user from the token, so the result is always the caller's own.
+  '/user/v1/hierarchy/my-scope': createRouteObject({
+    get: {},
+  }),
   '/user/v1/cohortmember/list-application': createRouteObject({
     post: {
       PRIVILEGE_CHECK: [
