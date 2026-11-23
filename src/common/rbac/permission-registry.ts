@@ -152,6 +152,8 @@ export const CATALOG_PRIVILEGE_CODES = [
   // Aspire Connect admin reports (Connect Management menu)
   'connect.report.view',
   'connect.exporthistory.view',
+  'connect.masterdata.view',
+  'connect.masterdata.edit',
   'tools.s3download.view',
 ] as const;
 
