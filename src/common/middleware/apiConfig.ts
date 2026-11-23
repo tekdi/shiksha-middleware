@@ -267,6 +267,32 @@ export const apiList = {
       ],
     },
   }),
+   // Task 35: language versions of a course (English / Hindi / Marathi)
+  '/lms-service/v1/courses/:courseId/translations': createRouteObject({
+    get: {
+      ROLE_CHECK: rolesGroup.common,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.read,
+        ...privilegeCatalog.modulemgmt.modules.view,
+      ],
+    },
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.create,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
+    },
+  }),
+  '/lms-service/v1/courses/:courseId/translation-group': createRouteObject({
+    patch: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: [
+        ...privilegeGroup.lms.update,
+        ...privilegeCatalog.modulemgmt.modules.edit,
+      ],
+    },
+  }),
   '/lms-service/v1/modules/:moduleId/clone': createRouteObject({
     post: {
       ROLE_CHECK: rolesGroup.superadmin,
