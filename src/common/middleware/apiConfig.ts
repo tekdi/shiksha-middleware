@@ -517,6 +517,14 @@ export const apiList = {
       ],
     },
   }),
+    // Withdraws learners from courses (archives their enrollments; progress is kept). Listed before
+  // /enrollments/:enrollmentId, which would otherwise match "withdraw" as an id.
+  '/lms-service/v1/enrollments/withdraw': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.superadmin,
+      PRIVILEGE_CHECK: privilegeGroup.lms.update,
+    },
+  }),
   '/lms-service/v1/enrollments/:enrollmentId': createRouteObject({
     get: {
       ROLE_CHECK: rolesGroup.common,
