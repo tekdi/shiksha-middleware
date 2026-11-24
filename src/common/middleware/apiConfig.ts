@@ -1091,27 +1091,64 @@ export const apiList = {
   '/user/v1/connect/profile/:connectUserId/linkedin-click': createRouteObject({
     post: { ROLE_CHECK: rolesGroup.superadmin_student },
   }),
-  // Aspire Connect admin
+  // Aspire Connect admin. B4–B6 master data: admin role OR the
+  // connect.masterdata.* privilege (either check passing is enough)
   '/user/v1/connect/admin/career-domain-groups': createRouteObject({
-    get: { ROLE_CHECK: rolesGroup.connect_admin },
-    post: { ROLE_CHECK: rolesGroup.connect_admin },
+    get: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.connect.masterdata.view,
+        ...privilegeCatalog.connect.masterdata.edit,
+      ],
+    },
+    post: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   '/user/v1/connect/admin/career-domain-groups/:id': createRouteObject({
-    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+    patch: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   '/user/v1/connect/admin/career-domains': createRouteObject({
-    get: { ROLE_CHECK: rolesGroup.connect_admin },
-    post: { ROLE_CHECK: rolesGroup.connect_admin },
+    get: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.connect.masterdata.view,
+        ...privilegeCatalog.connect.masterdata.edit,
+      ],
+    },
+    post: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   '/user/v1/connect/admin/career-domains/:id': createRouteObject({
-    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+    patch: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   '/user/v1/connect/admin/support-offerings': createRouteObject({
-    get: { ROLE_CHECK: rolesGroup.connect_admin },
-    post: { ROLE_CHECK: rolesGroup.connect_admin },
+    get: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [
+        ...privilegeCatalog.connect.masterdata.view,
+        ...privilegeCatalog.connect.masterdata.edit,
+      ],
+    },
+    post: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   '/user/v1/connect/admin/support-offerings/:id': createRouteObject({
-    patch: { ROLE_CHECK: rolesGroup.connect_admin },
+    patch: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.masterdata.edit],
+    },
   }),
   // must stay above safety-reports/:id: the first matching pattern wins
   '/user/v1/connect/admin/safety-reports/list': createRouteObject({
@@ -1119,6 +1156,14 @@ export const apiList = {
   }),
   '/user/v1/connect/admin/safety-reports/:id': createRouteObject({
     patch: { ROLE_CHECK: rolesGroup.connect_admin },
+  }),
+  // B9 report rows (Connect Management → Connect Report): admin role OR the
+  // connect.report.view privilege (either check passing is enough)
+  '/user/v1/connect/admin/reports': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.report.view],
+    },
   }),
   // Referral bulk CSV import (aspire-specific-service)
   '/aspirespecific/import-users/referrals/upload': createRouteObject({
@@ -1429,6 +1474,7 @@ export const apiList = {
         ...privilegeCatalog.report.participant_exporthistory.view,
         ...privilegeCatalog.report.alumni_exporthistory.view,
         ...privilegeCatalog.referral.exporthistory.view,
+        ...privilegeCatalog.connect.exporthistory.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
@@ -1462,6 +1508,13 @@ export const apiList = {
         ...privilegeCatalog.report.alumni_pathway.view,
       ],
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
+    },
+  }),
+  // Aspire Connect report export job (active / left / reported members)
+  '/aspirespecific/export/connect': createRouteObject({
+    post: {
+      ROLE_CHECK: rolesGroup.connect_admin,
+      PRIVILEGE_CHECK: [...privilegeCatalog.connect.report.view],
     },
   }),
   '/aspirespecific/export/referrals': createRouteObject({
@@ -1777,6 +1830,7 @@ export const apiList = {
         ...privilegeCatalog.referral.tracking.view,
         ...privilegeCatalog.referral.importhistory.view,
         ...privilegeCatalog.referral.exporthistory.view,
+        ...privilegeCatalog.connect.exporthistory.view,
         ...privilegeCatalog.credential.manage.view,
         ...privilegeCatalog.usermgmt.observers.edit,
         ...privilegeCatalog.usermgmt.manageadminusers.edit,
