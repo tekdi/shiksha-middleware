@@ -84,6 +84,8 @@ const rolesGroup = {
     'arm',
   ],
   superadmin_student: ['admin', 'student', 'observer', 'trainer', 'cfl', 'arm'],
+  swadhaar_admin: ['admin'],
+
 };
 // Permission codes now live in the canonical registry so `apiConfig.ts` and the
 // `Privileges` table cannot drift undetected. See `common/rbac/permission-registry.ts`
@@ -2326,6 +2328,32 @@ export const apiList = {
     delete: {
       ROLE_CHECK: rolesGroup.superadmin_regional_admin,
     },
+  }),
+    // Org Management and Branch Management (user service src/masters). Admin role only.
+  // No delete routes: orgs and branches are deactivated through update.
+  '/user/v1/masters/organisation/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/organisation/create': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/organisation/update/:id': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/state/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/district/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/branch/list': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/branch/create': createRouteObject({
+    post: { ROLE_CHECK: rolesGroup.swadhaar_admin },
+  }),
+  '/user/v1/masters/branch/update/:value': createRouteObject({
+    patch: { ROLE_CHECK: rolesGroup.swadhaar_admin },
   }),
   '/user/v1/rbac/privileges': createRouteObject({
     get: {
